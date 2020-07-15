@@ -1,27 +1,38 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
+model Conversation {
+  createdAt DateTime  @default(now()) @map("created_at")
+  id        Int       @default(autoincrement()) @id
+  name      String
+  message   Message[]
+
+  @@map(name: "conversation")
 }
 
-model User {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
-  name  String?
-  posts Post[]
+model Message {
+  content        String
+  conversationID Int          @map("conversation_id")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  id             Int          @default(autoincrement()) @id
+  conversation   Conversation @relation(fields: [conversationID], references: [id])
+
+  @@map(name: "message")
 }
 
-model Post {
-  id        Int     @default(autoincrement()) @id
-  authorId  Int?
-  content   String?
-  published Boolean @default(false)
-  title     String
-  author    User?   @relation(fields: [authorId], references: [id])
+model Person {
+  createdAt DateTime  @default(now()) @map("created_at")
+  email     String
+  id        Int       @default(autoincrement()) @id
+  isActive  Boolean   @default(true) @map("is_active")
+  lastSeen  DateTime? @map("last_seen")
+  username  String
+
+  @@map(name: "person")
 }
