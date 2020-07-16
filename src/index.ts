@@ -4,8 +4,6 @@ import { ApolloServer } from 'apollo-server-fastify';
 import { schema } from './schema';
 import { context } from './context';
 
-import './generated/nexus';
-
 const main = async () => {
     const app = fastify();
     const server = new ApolloServer({

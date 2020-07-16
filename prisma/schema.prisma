@@ -28,11 +28,13 @@ model Message {
 
 model Person {
   createdAt DateTime  @default(now()) @map("created_at")
-  email     String
+  email     String    @unique
   id        Int       @default(autoincrement()) @id
   isActive  Boolean   @default(true) @map("is_active")
   lastSeen  DateTime? @map("last_seen")
-  username  String
+  username  String    @unique
+  hash      String
+  salt      String
 
   @@map(name: "person")
 }

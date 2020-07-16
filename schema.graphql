@@ -166,13 +166,12 @@ input MessageWhereUniqueInput {
 type Mutation {
   createOneConversation(data: ConversationCreateInput!): Conversation!
   createOneMessage(data: MessageCreateInput!): Message!
-  createOnePerson(data: PersonCreateInput!): Person!
   deleteOneConversation(where: ConversationWhereUniqueInput!): Conversation
   deleteOneMessage(where: MessageWhereUniqueInput!): Message
   deleteOnePerson(where: PersonWhereUniqueInput!): Person
+  register(email: String!, password: String!, username: String!): Person!
   updateOneConversation(data: ConversationUpdateInput!, where: ConversationWhereUniqueInput!): Conversation
   updateOneMessage(data: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message
-  updateOnePerson(data: PersonUpdateInput!, where: PersonWhereUniqueInput!): Person
 }
 
 type Person {
@@ -184,30 +183,16 @@ type Person {
   username: String!
 }
 
-input PersonCreateInput {
-  createdAt: DateTime
-  email: String!
-  isActive: Boolean
-  lastSeen: DateTime
-  username: String!
-}
-
-input PersonUpdateInput {
-  createdAt: DateTime
+input PersonWhereUniqueInput {
   email: String
   id: Int
-  isActive: Boolean
-  lastSeen: DateTime
   username: String
-}
-
-input PersonWhereUniqueInput {
-  id: Int
 }
 
 type Query {
   conversation(where: ConversationWhereUniqueInput!): Conversation
   conversations(after: ConversationWhereUniqueInput, before: ConversationWhereUniqueInput, first: Int, last: Int): [Conversation!]!
+  login(password: String!, username: String!): Person!
   message(where: MessageWhereUniqueInput!): Message
   messages(after: MessageWhereUniqueInput, before: MessageWhereUniqueInput, first: Int, last: Int): [Message!]!
   people(after: PersonWhereUniqueInput, before: PersonWhereUniqueInput, first: Int, last: Int): [Person!]!
