@@ -10,6 +10,7 @@ module.exports = {
     },
     rules: {
         '@typescript-eslint/indent': ['warn', 4, { SwitchCase: 1 }],
+        '@typescript-eslint/no-explicit-any': 0,
         '@typescript-eslint/no-unused-vars': ['warn', { 'argsIgnorePattern': '^_' }],
         'arrow-body-style': 0,
         'consistent-return': 0,
