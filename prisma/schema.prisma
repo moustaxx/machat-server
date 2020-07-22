@@ -38,3 +38,12 @@ model Person {
 
   @@map(name: "person")
 }
+
+model Session {
+  id      String    @id
+  sid     String?
+  data    String?
+  expires DateTime?
+
+  @@map(name: "session")
+}
