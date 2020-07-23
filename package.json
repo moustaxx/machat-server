@@ -16,11 +16,12 @@
     "dependencies": {
         "@nexus/schema": "^0.14.0",
         "@quixo3/prisma-session-store": "^0.2.0",
-        "apollo-server-fastify": "^2.15.1",
+        "apollo-server-errors": "^2.4.2",
         "dotenv": "^8.2.0",
         "fastify": "^3.0.2",
         "fastify-cookie": "^4.0.2",
         "fastify-cors": "^4.0.0",
+        "fastify-gql": "^5.1.1",
         "fastify-session": "^4.0.1",
         "graphql": "^15.3.0",
         "graphql-iso-date": "^3.6.1",

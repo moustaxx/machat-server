@@ -6,12 +6,14 @@ export const prisma = new PrismaClient();
 
 type TRequest = FastifyRequest<any, any, any, any>;
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function createContext(req: TRequest) {
+export interface Context {
+    prisma: typeof prisma;
+    session: TRequest['session'];
+}
+
+export async function createContext(req: TRequest): Promise<Context> {
     return {
         prisma,
         session: req.session,
     };
 }
-
-export type Context = ReturnType<typeof createContext>;

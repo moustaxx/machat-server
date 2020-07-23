@@ -1,5 +1,5 @@
 import fastify from 'fastify';
-import { ApolloServer } from 'apollo-server-fastify';
+import fastifyGQL from 'fastify-gql';
 import fastifyCors from 'fastify-cors';
 import fastifyCookie from 'fastify-cookie';
 import fastifySession from 'fastify-session';
@@ -32,10 +32,6 @@ const sessionOptions = {
 
 const main = async () => {
     const app = fastify();
-    const server = new ApolloServer({
-        schema,
-        context: createContext,
-    });
 
     await app.register(fastifyCors, {
         credentials: true,
@@ -48,7 +44,11 @@ const main = async () => {
 
     await app.register(fastifySession as any, sessionOptions);
 
-    await app.register(server.createHandler());
+    await app.register(fastifyGQL, {
+        schema,
+        graphiql: 'playground',
+        context: createContext,
+    });
     await app.listen(4000);
     console.log('🚀 Server ready at: http://localhost:4000/graphql');
 };

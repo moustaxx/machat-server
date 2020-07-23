@@ -1,5 +1,5 @@
 import { objectType, queryField, stringArg, mutationField } from '@nexus/schema';
-import { ValidationError } from 'apollo-server-fastify';
+import { ValidationError } from 'apollo-server-errors';
 import { scryptSync, randomBytes } from 'crypto';
 
 export const Person = objectType({
