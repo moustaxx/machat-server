@@ -40,10 +40,9 @@ model Person {
 }
 
 model Session {
-  id      String    @id
-  sid     String?
-  data    String?
-  expires DateTime?
+  sid    String   @id
+  sess   Json
+  expire DateTime
 
   @@map(name: "session")
 }

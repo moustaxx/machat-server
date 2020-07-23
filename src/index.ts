@@ -3,31 +3,28 @@ import fastifyGQL from 'fastify-gql';
 import fastifyCors from 'fastify-cors';
 import fastifyCookie from 'fastify-cookie';
 import fastifySession from 'fastify-session';
-import prismaSessionStore from '@quixo3/prisma-session-store';
+import pgSession from 'connect-pg-simple';
 import dotenv from 'dotenv';
 
 import { schema } from './schema';
-import { createContext, prisma } from './context';
+import { createContext } from './context';
 
 dotenv.config();
 
-const PrismaSessionStore = prismaSessionStore(fastifySession);
-
 const sessionOptions = {
-    store: new PrismaSessionStore(
-        prisma,
-        {
-            checkPeriod: 2 * 60 * 1000, // ms
-            dbRecordIdIsSessionId: true,
-            dbRecordIdFunction: null,
+    store: new (pgSession(fastifySession as any))({
+        conObject: {
+            connectionString: process.env.DATABASE_URL,
+            ssl: { rejectUnauthorized: process.env.NODE_ENV !== 'development' },
         },
-    ),
+    }),
     cookie: {
         secure: false,
         maxAge: 15552000000, // 6 months
     },
     secret: process.env.SESSION_SECRET,
     saveUninitialized: false,
+    resave: false,
 };
 
 const main = async () => {
