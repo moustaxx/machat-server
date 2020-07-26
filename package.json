@@ -13,6 +13,9 @@
         "postinstall": "yarn generate",
         "dev": "tsnd --respawn --transpile-only --ignore-watch ./src/generated ./src"
     },
+    "resolutions": {
+        "connect-pg-simple/**/pg": "^8.2.1"
+    },
     "dependencies": {
         "@nexus/schema": "^0.14.0",
         "apollo-server-errors": "^2.4.2",
