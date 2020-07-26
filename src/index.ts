@@ -1,4 +1,4 @@
-import fastify from 'fastify';
+import fastify, { FastifyRequest } from 'fastify';
 import fastifyGQL from 'fastify-gql';
 import fastifyCors from 'fastify-cors';
 import fastifyCookie from 'fastify-cookie';
@@ -10,6 +10,18 @@ import { schema } from './schema';
 import { createContext } from './context';
 
 dotenv.config();
+
+interface ISession {
+    sessionId: string;
+    encryptedSessionId: string;
+    /** Updates the `expires` property of the session. */
+    touch(): void;
+    /** Regenerates the session by generating a new `sessionId`. */
+    regenerate(): void;
+
+    isLoggedIn?: boolean;
+    expires: Date;
+}
 
 const sessionOptions = {
     store: new (pgSession(fastifySession as any))({
@@ -40,6 +52,17 @@ const main = async () => {
     await app.register(fastifyCookie);
 
     await app.register(fastifySession as any, sessionOptions);
+
+    app.addHook('onSend', async (req: FastifyRequest<any, any, any, any>, reply) => {
+        const { session, cookies } = req;
+
+        const { isLoggedIn, expires } = session as ISession;
+        const loggedInCookie = cookies.loggedIn === '1';
+
+        if (isLoggedIn !== loggedInCookie) {
+            await reply.setCookie('loggedIn', isLoggedIn ? '1' : '0', { expires });
+        }
+    });
 
     await app.register(fastifyGQL, {
         schema,
