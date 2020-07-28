@@ -8,26 +8,17 @@ import dotenv from 'dotenv';
 
 import { schema } from './schema';
 import { createContext } from './context';
+import { ISession } from './types';
 
 dotenv.config();
 
-interface ISession {
-    sessionId: string;
-    encryptedSessionId: string;
-    /** Updates the `expires` property of the session. */
-    touch(): void;
-    /** Regenerates the session by generating a new `sessionId`. */
-    regenerate(): void;
-
-    isLoggedIn?: boolean;
-    expires: Date;
-}
+const isProduction = process.env.NODE_ENV !== 'development';
 
 const sessionOptions = {
     store: new (pgSession(fastifySession as any))({
         conObject: {
             connectionString: process.env.DATABASE_URL,
-            ssl: { rejectUnauthorized: process.env.NODE_ENV !== 'development' },
+            ssl: { rejectUnauthorized: isProduction },
         },
     }),
     cookie: {
@@ -40,7 +31,7 @@ const sessionOptions = {
 };
 
 const main = async () => {
-    const app = fastify();
+    const app = fastify({ logger: isProduction });
 
     await app.register(fastifyCors, {
         credentials: true,
@@ -55,11 +46,13 @@ const main = async () => {
 
     app.addHook('onSend', async (req: FastifyRequest<any, any, any, any>, reply) => {
         const { session, cookies } = req;
+        if (!session) return;
 
         const { isLoggedIn, expires } = session as ISession;
-        const loggedInCookie = cookies.loggedIn === '1';
+        const isLoggedInCookie = cookies.loggedIn === '1';
+        if (cookies.loggedIn === undefined && isLoggedIn === undefined) return;
 
-        if (isLoggedIn !== loggedInCookie) {
+        if (cookies.loggedIn === undefined || isLoggedIn !== isLoggedInCookie) {
             await reply.setCookie('loggedIn', isLoggedIn ? '1' : '0', { expires });
         }
     });

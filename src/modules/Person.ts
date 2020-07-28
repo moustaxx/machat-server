@@ -1,5 +1,5 @@
 import { objectType, queryField, stringArg, mutationField } from '@nexus/schema';
-import { ValidationError } from 'apollo-server-errors';
+import { ValidationError, ForbiddenError } from 'apollo-server-errors';
 import { scryptSync, randomBytes } from 'crypto';
 
 export const Person = objectType({
@@ -18,7 +18,7 @@ const getHash = (password: string, salt: string) => {
     return scryptSync(password, salt, 32).toString('hex');
 };
 
-export const usersQueryField = queryField('login', {
+export const loginQueryField = queryField('login', {
     type: 'Person',
     args: {
         username: stringArg({ required: true }),
@@ -38,12 +38,30 @@ export const usersQueryField = queryField('login', {
 
         if (!isValid) throw new ValidationError('Wrong username or password!');
 
+        if (!session) throw Error('No session!');
         session.isLoggedIn = true;
+        session.owner = data;
+
         return data;
     },
 });
 
-export const usersMutationField = mutationField('register', {
+export const logoutQueryField = queryField('logout', {
+    type: 'Person',
+    resolve: (_, _args, { session, req, reply }) => {
+        if (!session || !session.isLoggedIn || !session.owner) {
+            throw new ForbiddenError('You must be logged in to log out!');
+        }
+        const { owner } = session;
+        req.destroySession((err) => err && console.log);
+        req.session = null as any;
+        reply.setCookie('loggedIn', '0');
+
+        return owner;
+    },
+});
+
+export const registerMutationField = mutationField('register', {
     type: 'Person',
     args: {
         email: stringArg({ required: true }),
@@ -63,7 +81,9 @@ export const usersMutationField = mutationField('register', {
             },
         });
 
+        if (!session) throw Error('No session!');
         session.isLoggedIn = true;
+        session.owner = data;
         return data;
     },
 });

@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { PrismaClient } from '@prisma/client';
 import { FastifyRequest, FastifyReply } from 'fastify';
+import { ISession } from './types';
 
 export const prisma = new PrismaClient();
 
@@ -10,7 +11,7 @@ export interface Context {
     req: TRequest;
     reply: FastifyReply;
     prisma: typeof prisma;
-    session: TRequest['session'];
+    session?: ISession;
 }
 
 export async function createContext(req: TRequest, reply: FastifyReply): Promise<Context> {
