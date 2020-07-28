@@ -14,12 +14,13 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': ['warn', { 'argsIgnorePattern': '^_' }],
         'arrow-body-style': 0,
         'consistent-return': 0,
-        'linebreak-style': ['warn', 'windows'],
+        'import/no-cycle': ['warn', { maxDepth: 1 }],
         'no-alert': 0,
         'no-console': 0,
         'no-param-reassign': ['warn', { 'props': false }],
         'no-tabs': 0,
         'no-multiple-empty-lines': ['warn', { max: 3, maxEOF: 1, maxBOF: 0 }],
+        'linebreak-style': ['warn', 'windows'],
         'object-curly-newline': ['warn', { 'consistent': true }]
     },
 };
