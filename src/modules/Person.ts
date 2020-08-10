@@ -11,6 +11,7 @@ export const Person = objectType({
         t.model.isActive();
         t.model.createdAt();
         t.model.lastSeen();
+        t.model.message();
     },
 });
 
@@ -28,6 +29,9 @@ export const loginQueryField = queryField('login', {
         const data = await prisma.person.findOne({
             where: {
                 username,
+            },
+            include: {
+                message: true,
             },
         });
 
@@ -78,6 +82,9 @@ export const registerMutationField = mutationField('register', {
                 username,
                 salt,
                 hash,
+            },
+            include: {
+                message: true,
             },
         });
 

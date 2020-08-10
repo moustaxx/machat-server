@@ -18,9 +18,11 @@ model Conversation {
 
 model Message {
   content        String
+  authorID       Int?         @map("author_id")
   conversationID Int          @map("conversation_id")
   createdAt      DateTime     @default(now()) @map("created_at")
   id             Int          @default(autoincrement()) @id
+  author         Person?      @relation(fields: [authorID], references: [id])
   conversation   Conversation @relation(fields: [conversationID], references: [id])
 
   @@map(name: "message")
@@ -35,6 +37,7 @@ model Person {
   username  String    @unique
   hash      String
   salt      String
+  message   Message[]
 
   @@map(name: "person")
 }

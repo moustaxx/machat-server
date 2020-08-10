@@ -8,6 +8,8 @@ export const Message = objectType({
         t.model.content();
         t.model.conversation();
         t.model.conversationID();
+        t.model.authorID();
+        t.model.author();
         t.model.createdAt();
     },
 });
