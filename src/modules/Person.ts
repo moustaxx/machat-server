@@ -63,7 +63,7 @@ export const logoutQueryField = queryField('logout', {
     },
 });
 
-export const getUserQueryField = queryField('getUser', {
+export const personQueryField = queryField('person', {
     type: 'Person',
     args: {
         where: arg({ type: 'PersonWhereUniqueInput', required: true }),
@@ -78,7 +78,7 @@ export const getUserQueryField = queryField('getUser', {
     },
 });
 
-export const getSessionOwnerQueryField = queryField('getSessionOwner', {
+export const sessionOwnerQueryField = queryField('sessionOwner', {
     type: 'Person',
     resolve: async (_root, _args, { session }) => {
         if (!session || !session.isLoggedIn || !session.owner) {

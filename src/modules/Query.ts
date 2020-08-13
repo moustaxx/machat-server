@@ -4,7 +4,6 @@ import { objectType } from '@nexus/schema';
 export const Query = objectType({
     name: 'Query',
     definition(t) {
-        t.crud.person();
         t.crud.people();
         t.crud.conversation();
         t.crud.conversations();

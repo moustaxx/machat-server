@@ -520,14 +520,13 @@ input PersonWhereUniqueInput {
 type Query {
   conversation(where: ConversationWhereUniqueInput!): Conversation
   conversations(after: ConversationWhereUniqueInput, before: ConversationWhereUniqueInput, first: Int, last: Int): [Conversation!]!
-  getSessionOwner: Person!
-  getUser(where: PersonWhereUniqueInput!): Person!
   login(password: String!, username: String!): Person!
   logout: Person!
   message(where: MessageWhereUniqueInput!): Message
   messages(after: MessageWhereUniqueInput, before: MessageWhereUniqueInput, first: Int, last: Int): [Message!]!
   people(after: PersonWhereUniqueInput, before: PersonWhereUniqueInput, first: Int, last: Int): [Person!]!
-  person(where: PersonWhereUniqueInput!): Person
+  person(where: PersonWhereUniqueInput!): Person!
+  sessionOwner: Person!
 }
 
 input StringFilter {
