@@ -27,6 +27,10 @@ export const loginQueryField = queryField('login', {
         password: stringArg({ required: true }),
     },
     resolve: async (_, { username, password }, { prisma, session }) => {
+        if (session?.isLoggedIn) {
+            throw new ApolloError('You are already logged in!', 'ALREADY_LOGGED_IN');
+        }
+
         const data = await prisma.person.findOne({ where: { username } });
 
         if (!data) throw new ValidationError('Wrong username or password!');
@@ -36,7 +40,7 @@ export const loginQueryField = queryField('login', {
 
         if (!isValid) throw new ValidationError('Wrong username or password!');
 
-        if (!session) throw Error('No session!');
+        if (!session) throw new ApolloError('No session!', 'NO_SESSION');
         session.isLoggedIn = true;
         session.owner = data;
 
@@ -68,7 +72,7 @@ export const getUserQueryField = queryField('getUser', {
         const data = await prisma.person.findOne({
             where: { ...where as any },
         });
-        if (!data) throw new ApolloError('No data', 'NO_DATA');
+        if (!data) throw new ApolloError('User not found!', 'USER_NOT_FOUND');
 
         return data;
     },
@@ -92,6 +96,10 @@ export const registerMutationField = mutationField('register', {
         password: stringArg({ required: true }),
     },
     resolve: async (_, { email, username, password }, { prisma, session }) => {
+        if (session?.isLoggedIn) {
+            throw new ApolloError('You are already logged in!', 'ALREADY_LOGGED_IN');
+        }
+
         const salt = randomBytes(16).toString('hex');
         const hash = getHash(password, salt);
 
@@ -104,7 +112,7 @@ export const registerMutationField = mutationField('register', {
             },
         });
 
-        if (!session) throw new ApolloError('No session!', 'NO_DATA');
+        if (!session) throw new ApolloError('No session!', 'NO_SESSION');
         session.isLoggedIn = true;
         session.owner = data;
         return data;
