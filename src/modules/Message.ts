@@ -1,5 +1,5 @@
 import { objectType, mutationField, intArg, stringArg } from '@nexus/schema';
-import { ApolloError, UserInputError } from 'apollo-server-errors';
+import { ApolloError, UserInputError, ForbiddenError } from 'apollo-server-errors';
 
 // eslint-disable-next-line import/prefer-default-export
 export const Message = objectType({
@@ -27,6 +27,23 @@ export const createMessageMutationField = mutationField('createMessage', {
         }
 
         if (args.content.length < 1) throw new UserInputError('Message cannot be empty!');
+
+        const getConv = await prisma.person.findOne({
+            select: {
+                conversations: {
+                    select: {
+                        id: true,
+                    },
+                },
+            },
+            where: { id: session.owner.id },
+        });
+        const isParticipated = getConv?.conversations.find((conv) => {
+            return conv.id === args.conversationId;
+        });
+        if (!isParticipated) {
+            throw new ForbiddenError('Forbidden Access');
+        }
 
         const data = await prisma.message.create({
             data: {
