@@ -178,13 +178,6 @@ type Message {
   id: Int!
 }
 
-input MessageCreateInput {
-  author: PersonCreateOneWithoutMessagesInput
-  content: String!
-  conversation: ConversationCreateOneWithoutMessagesInput!
-  createdAt: DateTime
-}
-
 input MessageCreateManyWithoutAuthorInput {
   connect: [MessageWhereUniqueInput!]
   create: [MessageCreateWithoutAuthorInput!]
@@ -322,8 +315,8 @@ input MessageWhereUniqueInput {
 
 type Mutation {
   addPersonToConversation(conversationId: Int!, personId: Int!): Conversation!
+  createMessage(content: String!, conversationId: Int!): Message!
   createOneConversation(data: ConversationCreateInput!): Conversation!
-  createOneMessage(data: MessageCreateInput!): Message!
   deleteOneConversation(where: ConversationWhereUniqueInput!): Conversation
   deleteOneMessage(where: MessageWhereUniqueInput!): Message
   deleteOnePerson(where: PersonWhereUniqueInput!): Person
