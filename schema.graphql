@@ -321,12 +321,14 @@ input MessageWhereUniqueInput {
 }
 
 type Mutation {
+  addPersonToConversation(conversationId: Int!, personId: Int!): Conversation!
   createOneConversation(data: ConversationCreateInput!): Conversation!
   createOneMessage(data: MessageCreateInput!): Message!
   deleteOneConversation(where: ConversationWhereUniqueInput!): Conversation
   deleteOneMessage(where: MessageWhereUniqueInput!): Message
   deleteOnePerson(where: PersonWhereUniqueInput!): Person
   register(email: String!, password: String!, username: String!): Person!
+  removePersonFromConversation(conversationId: Int!, personId: Int!): Conversation!
   updateOneConversation(data: ConversationUpdateInput!, where: ConversationWhereUniqueInput!): Conversation
   updateOneMessage(data: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message
 }
