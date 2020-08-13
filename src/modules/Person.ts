@@ -1,3 +1,4 @@
+import { objectType, queryField, stringArg, mutationField, arg } from '@nexus/schema';
 import { ValidationError, ForbiddenError, ApolloError } from 'apollo-server-errors';
 import { scryptSync, randomBytes } from 'crypto';
 
@@ -10,7 +11,8 @@ export const Person = objectType({
         t.model.isActive();
         t.model.createdAt();
         t.model.lastSeen();
-        t.model.message();
+        t.model.messages();
+        t.model.conversations();
     },
 });
 
@@ -54,6 +56,31 @@ export const logoutQueryField = queryField('logout', {
         reply.setCookie('loggedIn', '0');
 
         return owner;
+    },
+});
+
+export const getUserQueryField = queryField('getUser', {
+    type: 'Person',
+    args: {
+        where: arg({ type: 'PersonWhereUniqueInput', required: true }),
+    },
+    resolve: async (_, { where }, { prisma }) => {
+        const data = await prisma.person.findOne({
+            where: { ...where as any },
+        });
+        if (!data) throw new ApolloError('No data', 'NO_DATA');
+
+        return data;
+    },
+});
+
+export const getSessionOwnerQueryField = queryField('getSessionOwner', {
+    type: 'Person',
+    resolve: async (_root, _args, { session }) => {
+        if (!session || !session.isLoggedIn || !session.owner) {
+            throw new ForbiddenError('You must be logged in to get session owner!');
+        }
+        return session.owner;
     },
 });
 

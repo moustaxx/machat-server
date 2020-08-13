@@ -8,10 +8,11 @@ datasource db {
 }
 
 model Conversation {
-  createdAt DateTime  @default(now()) @map("created_at")
-  id        Int       @default(autoincrement()) @id
-  name      String
-  message   Message[]
+  createdAt    DateTime  @default(now()) @map("created_at")
+  id           Int       @default(autoincrement()) @id
+  name         String
+  messages     Message[]
+  participants Person[]  @relation("ConversationToPerson", references: [id])
 
   @@map(name: "conversation")
 }
@@ -29,15 +30,16 @@ model Message {
 }
 
 model Person {
-  createdAt DateTime  @default(now()) @map("created_at")
-  email     String    @unique
-  id        Int       @default(autoincrement()) @id
-  isActive  Boolean   @default(true) @map("is_active")
-  lastSeen  DateTime? @map("last_seen")
-  username  String    @unique
-  hash      String
-  salt      String
-  message   Message[]
+  createdAt     DateTime       @default(now()) @map("created_at")
+  email         String         @unique
+  id            Int            @default(autoincrement()) @id
+  isActive      Boolean        @default(true) @map("is_active")
+  lastSeen      DateTime?      @map("last_seen")
+  username      String         @unique
+  hash          String
+  salt          String
+  messages      Message[]
+  conversations Conversation[] @relation("ConversationToPerson", references: [id])
 
   @@map(name: "person")
 }

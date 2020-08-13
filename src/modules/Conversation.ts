@@ -6,7 +6,8 @@ export const Conversation = objectType({
     definition(t) {
         t.model.id();
         t.model.name();
-        t.model.message();
+        t.model.messages();
         t.model.createdAt();
+        t.model.participants();
     },
 });

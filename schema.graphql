@@ -2,52 +2,142 @@
 ### Do not make changes to this file directly
 
 
+input BooleanFilter {
+  equals: Boolean
+  not: Boolean
+}
+
 type Conversation {
   createdAt: DateTime!
   id: Int!
-  message(after: MessageWhereUniqueInput, before: MessageWhereUniqueInput, first: Int, last: Int): [Message!]!
+  messages(after: MessageWhereUniqueInput, before: MessageWhereUniqueInput, first: Int, last: Int): [Message!]!
   name: String!
+  participants(after: PersonWhereUniqueInput, before: PersonWhereUniqueInput, first: Int, last: Int): [Person!]!
 }
 
 input ConversationCreateInput {
   createdAt: DateTime
-  message: MessageCreateManyWithoutConversationInput
+  messages: MessageCreateManyWithoutConversationInput
   name: String!
+  participants: PersonCreateManyWithoutConversationsInput
 }
 
-input ConversationCreateOneWithoutMessageInput {
+input ConversationCreateManyWithoutParticipantsInput {
+  connect: [ConversationWhereUniqueInput!]
+  create: [ConversationCreateWithoutParticipantsInput!]
+}
+
+input ConversationCreateOneWithoutMessagesInput {
   connect: ConversationWhereUniqueInput
-  create: ConversationCreateWithoutMessageInput
+  create: ConversationCreateWithoutMessagesInput
 }
 
-input ConversationCreateWithoutMessageInput {
+input ConversationCreateWithoutMessagesInput {
   createdAt: DateTime
   name: String!
+  participants: PersonCreateManyWithoutConversationsInput
+}
+
+input ConversationCreateWithoutParticipantsInput {
+  createdAt: DateTime
+  messages: MessageCreateManyWithoutConversationInput
+  name: String!
+}
+
+input ConversationFilter {
+  every: ConversationWhereInput
+  none: ConversationWhereInput
+  some: ConversationWhereInput
+}
+
+input ConversationScalarWhereInput {
+  AND: [ConversationScalarWhereInput!]
+  createdAt: DateTimeFilter
+  id: IntFilter
+  messages: MessageFilter
+  name: StringFilter
+  NOT: [ConversationScalarWhereInput!]
+  OR: [ConversationScalarWhereInput!]
+  participants: PersonFilter
 }
 
 input ConversationUpdateInput {
   createdAt: DateTime
   id: Int
-  message: MessageUpdateManyWithoutConversationInput
+  messages: MessageUpdateManyWithoutConversationInput
   name: String
+  participants: PersonUpdateManyWithoutConversationsInput
 }
 
-input ConversationUpdateOneRequiredWithoutMessageInput {
-  connect: ConversationWhereUniqueInput
-  create: ConversationCreateWithoutMessageInput
-  update: ConversationUpdateWithoutMessageDataInput
-  upsert: ConversationUpsertWithoutMessageInput
-}
-
-input ConversationUpdateWithoutMessageDataInput {
+input ConversationUpdateManyDataInput {
   createdAt: DateTime
   id: Int
   name: String
 }
 
-input ConversationUpsertWithoutMessageInput {
-  create: ConversationCreateWithoutMessageInput!
-  update: ConversationUpdateWithoutMessageDataInput!
+input ConversationUpdateManyWithoutParticipantsInput {
+  connect: [ConversationWhereUniqueInput!]
+  create: [ConversationCreateWithoutParticipantsInput!]
+  delete: [ConversationWhereUniqueInput!]
+  deleteMany: [ConversationScalarWhereInput!]
+  disconnect: [ConversationWhereUniqueInput!]
+  set: [ConversationWhereUniqueInput!]
+  update: [ConversationUpdateWithWhereUniqueWithoutParticipantsInput!]
+  updateMany: [ConversationUpdateManyWithWhereNestedInput!]
+  upsert: [ConversationUpsertWithWhereUniqueWithoutParticipantsInput!]
+}
+
+input ConversationUpdateManyWithWhereNestedInput {
+  data: ConversationUpdateManyDataInput!
+  where: ConversationScalarWhereInput!
+}
+
+input ConversationUpdateOneRequiredWithoutMessagesInput {
+  connect: ConversationWhereUniqueInput
+  create: ConversationCreateWithoutMessagesInput
+  update: ConversationUpdateWithoutMessagesDataInput
+  upsert: ConversationUpsertWithoutMessagesInput
+}
+
+input ConversationUpdateWithoutMessagesDataInput {
+  createdAt: DateTime
+  id: Int
+  name: String
+  participants: PersonUpdateManyWithoutConversationsInput
+}
+
+input ConversationUpdateWithoutParticipantsDataInput {
+  createdAt: DateTime
+  id: Int
+  messages: MessageUpdateManyWithoutConversationInput
+  name: String
+}
+
+input ConversationUpdateWithWhereUniqueWithoutParticipantsInput {
+  data: ConversationUpdateWithoutParticipantsDataInput!
+  where: ConversationWhereUniqueInput!
+}
+
+input ConversationUpsertWithoutMessagesInput {
+  create: ConversationCreateWithoutMessagesInput!
+  update: ConversationUpdateWithoutMessagesDataInput!
+}
+
+input ConversationUpsertWithWhereUniqueWithoutParticipantsInput {
+  create: ConversationCreateWithoutParticipantsInput!
+  update: ConversationUpdateWithoutParticipantsDataInput!
+  where: ConversationWhereUniqueInput!
+}
+
+input ConversationWhereInput {
+  AND: [ConversationWhereInput!]
+  createdAt: DateTimeFilter
+  id: IntFilter
+  messages: MessageFilter
+  name: StringFilter
+  NOT: [ConversationWhereInput!]
+  OR: [ConversationWhereInput!]
+  participants: PersonFilter
 }
 
 input ConversationWhereUniqueInput {
@@ -89,10 +179,15 @@ type Message {
 }
 
 input MessageCreateInput {
-  author: PersonCreateOneWithoutMessageInput
+  author: PersonCreateOneWithoutMessagesInput
   content: String!
-  conversation: ConversationCreateOneWithoutMessageInput!
+  conversation: ConversationCreateOneWithoutMessagesInput!
   createdAt: DateTime
+}
+
+input MessageCreateManyWithoutAuthorInput {
+  connect: [MessageWhereUniqueInput!]
+  create: [MessageCreateWithoutAuthorInput!]
 }
 
 input MessageCreateManyWithoutConversationInput {
@@ -100,10 +195,22 @@ input MessageCreateManyWithoutConversationInput {
   create: [MessageCreateWithoutConversationInput!]
 }
 
+input MessageCreateWithoutAuthorInput {
+  content: String!
+  conversation: ConversationCreateOneWithoutMessagesInput!
+  createdAt: DateTime
+}
+
 input MessageCreateWithoutConversationInput {
-  author: PersonCreateOneWithoutMessageInput
+  author: PersonCreateOneWithoutMessagesInput
   content: String!
   createdAt: DateTime
+}
+
+input MessageFilter {
+  every: MessageWhereInput
+  none: MessageWhereInput
+  some: MessageWhereInput
 }
 
 input MessageScalarWhereInput {
@@ -118,9 +225,9 @@ input MessageScalarWhereInput {
 }
 
 input MessageUpdateInput {
-  author: PersonUpdateOneWithoutMessageInput
+  author: PersonUpdateOneWithoutMessagesInput
   content: String
-  conversation: ConversationUpdateOneRequiredWithoutMessageInput
+  conversation: ConversationUpdateOneRequiredWithoutMessagesInput
   createdAt: DateTime
   id: Int
 }
@@ -129,6 +236,18 @@ input MessageUpdateManyDataInput {
   content: String
   createdAt: DateTime
   id: Int
+}
+
+input MessageUpdateManyWithoutAuthorInput {
+  connect: [MessageWhereUniqueInput!]
+  create: [MessageCreateWithoutAuthorInput!]
+  delete: [MessageWhereUniqueInput!]
+  deleteMany: [MessageScalarWhereInput!]
+  disconnect: [MessageWhereUniqueInput!]
+  set: [MessageWhereUniqueInput!]
+  update: [MessageUpdateWithWhereUniqueWithoutAuthorInput!]
+  updateMany: [MessageUpdateManyWithWhereNestedInput!]
+  upsert: [MessageUpsertWithWhereUniqueWithoutAuthorInput!]
 }
 
 input MessageUpdateManyWithoutConversationInput {
@@ -148,11 +267,23 @@ input MessageUpdateManyWithWhereNestedInput {
   where: MessageScalarWhereInput!
 }
 
+input MessageUpdateWithoutAuthorDataInput {
+  content: String
+  conversation: ConversationUpdateOneRequiredWithoutMessagesInput
+  createdAt: DateTime
+  id: Int
+}
+
 input MessageUpdateWithoutConversationDataInput {
-  author: PersonUpdateOneWithoutMessageInput
+  author: PersonUpdateOneWithoutMessagesInput
   content: String
   createdAt: DateTime
   id: Int
+}
+
+input MessageUpdateWithWhereUniqueWithoutAuthorInput {
+  data: MessageUpdateWithoutAuthorDataInput!
+  where: MessageWhereUniqueInput!
 }
 
 input MessageUpdateWithWhereUniqueWithoutConversationInput {
@@ -160,10 +291,29 @@ input MessageUpdateWithWhereUniqueWithoutConversationInput {
   where: MessageWhereUniqueInput!
 }
 
+input MessageUpsertWithWhereUniqueWithoutAuthorInput {
+  create: MessageCreateWithoutAuthorInput!
+  update: MessageUpdateWithoutAuthorDataInput!
+  where: MessageWhereUniqueInput!
+}
+
 input MessageUpsertWithWhereUniqueWithoutConversationInput {
   create: MessageCreateWithoutConversationInput!
   update: MessageUpdateWithoutConversationDataInput!
   where: MessageWhereUniqueInput!
+}
+
+input MessageWhereInput {
+  AND: [MessageWhereInput!]
+  author: PersonWhereInput
+  authorID: NullableIntFilter
+  content: StringFilter
+  conversation: ConversationWhereInput
+  conversationID: IntFilter
+  createdAt: DateTimeFilter
+  id: IntFilter
+  NOT: [MessageWhereInput!]
+  OR: [MessageWhereInput!]
 }
 
 input MessageWhereUniqueInput {
@@ -181,6 +331,17 @@ type Mutation {
   updateOneMessage(data: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message
 }
 
+input NullableDateTimeFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: DateTime
+  notIn: [DateTime!]
+}
+
 input NullableIntFilter {
   equals: Int
   gt: Int
@@ -193,21 +354,39 @@ input NullableIntFilter {
 }
 
 type Person {
+  conversations(after: ConversationWhereUniqueInput, before: ConversationWhereUniqueInput, first: Int, last: Int): [Conversation!]!
   createdAt: DateTime!
   email: String!
   id: Int!
   isActive: Boolean!
   lastSeen: DateTime
-  message(after: MessageWhereUniqueInput, before: MessageWhereUniqueInput, first: Int, last: Int): [Message!]!
+  messages(after: MessageWhereUniqueInput, before: MessageWhereUniqueInput, first: Int, last: Int): [Message!]!
   username: String!
 }
 
-input PersonCreateOneWithoutMessageInput {
-  connect: PersonWhereUniqueInput
-  create: PersonCreateWithoutMessageInput
+input PersonCreateManyWithoutConversationsInput {
+  connect: [PersonWhereUniqueInput!]
+  create: [PersonCreateWithoutConversationsInput!]
 }
 
-input PersonCreateWithoutMessageInput {
+input PersonCreateOneWithoutMessagesInput {
+  connect: PersonWhereUniqueInput
+  create: PersonCreateWithoutMessagesInput
+}
+
+input PersonCreateWithoutConversationsInput {
+  createdAt: DateTime
+  email: String!
+  hash: String!
+  isActive: Boolean
+  lastSeen: DateTime
+  messages: MessageCreateManyWithoutAuthorInput
+  salt: String!
+  username: String!
+}
+
+input PersonCreateWithoutMessagesInput {
+  conversations: ConversationCreateManyWithoutParticipantsInput
   createdAt: DateTime
   email: String!
   hash: String!
@@ -217,16 +396,29 @@ input PersonCreateWithoutMessageInput {
   username: String!
 }
 
-input PersonUpdateOneWithoutMessageInput {
-  connect: PersonWhereUniqueInput
-  create: PersonCreateWithoutMessageInput
-  delete: Boolean
-  disconnect: Boolean
-  update: PersonUpdateWithoutMessageDataInput
-  upsert: PersonUpsertWithoutMessageInput
+input PersonFilter {
+  every: PersonWhereInput
+  none: PersonWhereInput
+  some: PersonWhereInput
 }
 
-input PersonUpdateWithoutMessageDataInput {
+input PersonScalarWhereInput {
+  AND: [PersonScalarWhereInput!]
+  conversations: ConversationFilter
+  createdAt: DateTimeFilter
+  email: StringFilter
+  hash: StringFilter
+  id: IntFilter
+  isActive: BooleanFilter
+  lastSeen: NullableDateTimeFilter
+  messages: MessageFilter
+  NOT: [PersonScalarWhereInput!]
+  OR: [PersonScalarWhereInput!]
+  salt: StringFilter
+  username: StringFilter
+}
+
+input PersonUpdateManyDataInput {
   createdAt: DateTime
   email: String
   hash: String
@@ -237,9 +429,86 @@ input PersonUpdateWithoutMessageDataInput {
   username: String
 }
 
-input PersonUpsertWithoutMessageInput {
-  create: PersonCreateWithoutMessageInput!
-  update: PersonUpdateWithoutMessageDataInput!
+input PersonUpdateManyWithoutConversationsInput {
+  connect: [PersonWhereUniqueInput!]
+  create: [PersonCreateWithoutConversationsInput!]
+  delete: [PersonWhereUniqueInput!]
+  deleteMany: [PersonScalarWhereInput!]
+  disconnect: [PersonWhereUniqueInput!]
+  set: [PersonWhereUniqueInput!]
+  update: [PersonUpdateWithWhereUniqueWithoutConversationsInput!]
+  updateMany: [PersonUpdateManyWithWhereNestedInput!]
+  upsert: [PersonUpsertWithWhereUniqueWithoutConversationsInput!]
+}
+
+input PersonUpdateManyWithWhereNestedInput {
+  data: PersonUpdateManyDataInput!
+  where: PersonScalarWhereInput!
+}
+
+input PersonUpdateOneWithoutMessagesInput {
+  connect: PersonWhereUniqueInput
+  create: PersonCreateWithoutMessagesInput
+  delete: Boolean
+  disconnect: Boolean
+  update: PersonUpdateWithoutMessagesDataInput
+  upsert: PersonUpsertWithoutMessagesInput
+}
+
+input PersonUpdateWithoutConversationsDataInput {
+  createdAt: DateTime
+  email: String
+  hash: String
+  id: Int
+  isActive: Boolean
+  lastSeen: DateTime
+  messages: MessageUpdateManyWithoutAuthorInput
+  salt: String
+  username: String
+}
+
+input PersonUpdateWithoutMessagesDataInput {
+  conversations: ConversationUpdateManyWithoutParticipantsInput
+  createdAt: DateTime
+  email: String
+  hash: String
+  id: Int
+  isActive: Boolean
+  lastSeen: DateTime
+  salt: String
+  username: String
+}
+
+input PersonUpdateWithWhereUniqueWithoutConversationsInput {
+  data: PersonUpdateWithoutConversationsDataInput!
+  where: PersonWhereUniqueInput!
+}
+
+input PersonUpsertWithoutMessagesInput {
+  create: PersonCreateWithoutMessagesInput!
+  update: PersonUpdateWithoutMessagesDataInput!
+}
+
+input PersonUpsertWithWhereUniqueWithoutConversationsInput {
+  create: PersonCreateWithoutConversationsInput!
+  update: PersonUpdateWithoutConversationsDataInput!
+  where: PersonWhereUniqueInput!
+}
+
+input PersonWhereInput {
+  AND: [PersonWhereInput!]
+  conversations: ConversationFilter
+  createdAt: DateTimeFilter
+  email: StringFilter
+  hash: StringFilter
+  id: IntFilter
+  isActive: BooleanFilter
+  lastSeen: NullableDateTimeFilter
+  messages: MessageFilter
+  NOT: [PersonWhereInput!]
+  OR: [PersonWhereInput!]
+  salt: StringFilter
+  username: StringFilter
 }
 
 input PersonWhereUniqueInput {
@@ -251,6 +520,8 @@ input PersonWhereUniqueInput {
 type Query {
   conversation(where: ConversationWhereUniqueInput!): Conversation
   conversations(after: ConversationWhereUniqueInput, before: ConversationWhereUniqueInput, first: Int, last: Int): [Conversation!]!
+  getSessionOwner: Person!
+  getUser(where: PersonWhereUniqueInput!): Person!
   login(password: String!, username: String!): Person!
   logout: Person!
   message(where: MessageWhereUniqueInput!): Message
