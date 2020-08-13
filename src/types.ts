@@ -1,4 +1,4 @@
-import { NexusGenFieldTypes } from './generated/nexus';
+import { NexusGenAllTypes } from './generated/nexus';
 
 export interface ISession {
     sessionId: string;
@@ -10,5 +10,5 @@ export interface ISession {
 
     isLoggedIn?: boolean;
     expires?: Date;
-    owner?: NexusGenFieldTypes['Person'];
+    owner?: NexusGenAllTypes['Person'];
 }

@@ -1,5 +1,4 @@
-import { objectType, queryField, stringArg, mutationField } from '@nexus/schema';
-import { ValidationError, ForbiddenError } from 'apollo-server-errors';
+import { ValidationError, ForbiddenError, ApolloError } from 'apollo-server-errors';
 import { scryptSync, randomBytes } from 'crypto';
 
 export const Person = objectType({
@@ -26,14 +25,7 @@ export const loginQueryField = queryField('login', {
         password: stringArg({ required: true }),
     },
     resolve: async (_, { username, password }, { prisma, session }) => {
-        const data = await prisma.person.findOne({
-            where: {
-                username,
-            },
-            include: {
-                message: true,
-            },
-        });
+        const data = await prisma.person.findOne({ where: { username } });
 
         if (!data) throw new ValidationError('Wrong username or password!');
 
@@ -83,12 +75,9 @@ export const registerMutationField = mutationField('register', {
                 salt,
                 hash,
             },
-            include: {
-                message: true,
-            },
         });
 
-        if (!session) throw Error('No session!');
+        if (!session) throw new ApolloError('No session!', 'NO_DATA');
         session.isLoggedIn = true;
         session.owner = data;
         return data;
