@@ -1,5 +1,5 @@
 import { objectType, queryField, stringArg, mutationField, arg } from '@nexus/schema';
-import { ValidationError, ForbiddenError, ApolloError } from 'apollo-server-errors';
+import { ValidationError, ApolloError } from 'apollo-server-errors';
 import { scryptSync, randomBytes } from 'crypto';
 
 export const Person = objectType({
@@ -52,7 +52,7 @@ export const logoutQueryField = queryField('logout', {
     type: 'Person',
     resolve: (_, _args, { session, req, reply }) => {
         if (!session || !session.isLoggedIn || !session.owner) {
-            throw new ForbiddenError('You must be logged in to log out!');
+            throw new ApolloError('You must be logged in!', 'UNAUTHORIZED');
         }
         const { owner } = session;
         req.destroySession((err) => err && console.log);
@@ -82,7 +82,7 @@ export const sessionOwnerQueryField = queryField('sessionOwner', {
     type: 'Person',
     resolve: async (_root, _args, { session }) => {
         if (!session || !session.isLoggedIn || !session.owner) {
-            throw new ForbiddenError('You must be logged in to get session owner!');
+            throw new ApolloError('You must be logged in!', 'UNAUTHORIZED');
         }
         return session.owner;
     },
@@ -92,7 +92,7 @@ export const meQueryField = queryField('me', {
     type: 'Person',
     resolve: async (_root, _args, { prisma, session }) => {
         if (!session || !session.isLoggedIn || !session.owner) {
-            throw new ForbiddenError('You must be logged in!');
+            throw new ApolloError('You must be logged in!', 'UNAUTHORIZED');
         }
 
         const data = await prisma.person.findOne({

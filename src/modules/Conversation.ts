@@ -1,5 +1,5 @@
 import { objectType, mutationField, intArg } from '@nexus/schema';
-import { ForbiddenError, ApolloError } from 'apollo-server-errors';
+import { ApolloError } from 'apollo-server-errors';
 
 // eslint-disable-next-line import/prefer-default-export
 export const Conversation = objectType({
@@ -21,7 +21,7 @@ export const addPersonToConversationMutationField = mutationField('addPersonToCo
     },
     resolve: async (_root, args, { prisma, session }) => {
         if (!session || !session.isLoggedIn || !session.owner) {
-            throw new ForbiddenError('You must be logged in!');
+            throw new ApolloError('You must be logged in!', 'UNAUTHORIZED');
         }
 
         const data = await prisma.conversation.update({
@@ -48,7 +48,7 @@ export const removePersonFromConversationMutationField = mutationField(
         },
         resolve: async (_root, args, { prisma, session }) => {
             if (!session || !session.isLoggedIn || !session.owner) {
-                throw new ForbiddenError('You must be logged in!');
+                throw new ApolloError('You must be logged in!', 'UNAUTHORIZED');
             }
 
             const data = await prisma.conversation.update({
