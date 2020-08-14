@@ -1,5 +1,6 @@
 import { objectType, mutationField, intArg } from '@nexus/schema';
-import { ApolloError } from 'apollo-server-errors';
+import { ApolloError, ForbiddenError } from 'apollo-server-errors';
+import { Context } from '../context';
 
 // eslint-disable-next-line import/prefer-default-export
 export const Conversation = objectType({
@@ -13,6 +14,27 @@ export const Conversation = objectType({
     },
 });
 
+export const checkIsConvParticipated = async (
+    prisma: Context['prisma'],
+    sessionOwner: NonNullable<Context['session']>['owner'],
+    conversationId: number,
+): Promise<boolean> => {
+    const getConv = await prisma.person.findOne({
+        select: {
+            conversations: {
+                select: {
+                    id: true,
+                },
+            },
+        },
+        where: { id: sessionOwner?.id },
+    });
+    const isParticipated = getConv?.conversations.find((conv) => {
+        return conv.id === conversationId;
+    });
+    return !!isParticipated;
+};
+
 export const addPersonToConversationMutationField = mutationField('addPersonToConversation', {
     type: 'Conversation',
     args: {
@@ -23,6 +45,13 @@ export const addPersonToConversationMutationField = mutationField('addPersonToCo
         if (!session || !session.isLoggedIn || !session.owner) {
             throw new ApolloError('You must be logged in!', 'UNAUTHORIZED');
         }
+
+        const isParticipated = await checkIsConvParticipated(
+            prisma,
+            session.owner,
+            args.conversationId,
+        );
+        if (!isParticipated) throw new ForbiddenError('Forbidden Access');
 
         const data = await prisma.conversation.update({
             where: { id: args.conversationId },
@@ -50,6 +79,13 @@ export const removePersonFromConversationMutationField = mutationField(
             if (!session || !session.isLoggedIn || !session.owner) {
                 throw new ApolloError('You must be logged in!', 'UNAUTHORIZED');
             }
+
+            const isParticipated = await checkIsConvParticipated(
+                prisma,
+                session.owner,
+                args.conversationId,
+            );
+            if (!isParticipated) throw new ForbiddenError('Forbidden Access');
 
             const data = await prisma.conversation.update({
                 where: { id: args.conversationId },
