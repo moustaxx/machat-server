@@ -1,8 +1,8 @@
 import { objectType, mutationField, intArg } from '@nexus/schema';
-import { ApolloError, ForbiddenError } from 'apollo-server-errors';
-import { Context } from '../context';
+import { ApolloError } from 'apollo-server-errors';
 
-// eslint-disable-next-line import/prefer-default-export
+import checkIsConvParticipated from '../helpers/checkIsConvParticipated';
+
 export const Conversation = objectType({
     name: 'Conversation',
     definition(t) {
@@ -14,27 +14,6 @@ export const Conversation = objectType({
     },
 });
 
-export const checkIsConvParticipated = async (
-    prisma: Context['prisma'],
-    sessionOwner: NonNullable<Context['session']>['owner'],
-    conversationId: number,
-): Promise<boolean> => {
-    const getConv = await prisma.person.findOne({
-        select: {
-            conversations: {
-                select: {
-                    id: true,
-                },
-            },
-        },
-        where: { id: sessionOwner?.id },
-    });
-    const isParticipated = getConv?.conversations.find((conv) => {
-        return conv.id === conversationId;
-    });
-    return !!isParticipated;
-};
-
 export const addPersonToConversationMutationField = mutationField('addPersonToConversation', {
     type: 'Conversation',
     args: {
@@ -42,16 +21,11 @@ export const addPersonToConversationMutationField = mutationField('addPersonToCo
         conversationId: intArg({ required: true }),
     },
     resolve: async (_root, args, { prisma, session }) => {
-        if (!session || !session.isLoggedIn || !session.owner) {
+        if (!session?.isLoggedIn || !session.owner) {
             throw new ApolloError('You must be logged in!', 'UNAUTHORIZED');
         }
 
-        const isParticipated = await checkIsConvParticipated(
-            prisma,
-            session.owner,
-            args.conversationId,
-        );
-        if (!isParticipated) throw new ForbiddenError('Forbidden Access');
+        await checkIsConvParticipated(prisma, session.owner, args.conversationId);
 
         const data = await prisma.conversation.update({
             where: { id: args.conversationId },
@@ -80,12 +54,7 @@ export const removePersonFromConversationMutationField = mutationField(
                 throw new ApolloError('You must be logged in!', 'UNAUTHORIZED');
             }
 
-            const isParticipated = await checkIsConvParticipated(
-                prisma,
-                session.owner,
-                args.conversationId,
-            );
-            if (!isParticipated) throw new ForbiddenError('Forbidden Access');
+            await checkIsConvParticipated(prisma, session.owner, args.conversationId);
 
             const data = await prisma.conversation.update({
                 where: { id: args.conversationId },

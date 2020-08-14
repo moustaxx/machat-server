@@ -1,9 +1,8 @@
 import { objectType, mutationField, intArg, stringArg } from '@nexus/schema';
-import { ApolloError, UserInputError, ForbiddenError } from 'apollo-server-errors';
+import { ApolloError, UserInputError } from 'apollo-server-errors';
 
-import { checkIsConvParticipated } from './Conversation';
+import checkIsConvParticipated from '../helpers/checkIsConvParticipated';
 
-// eslint-disable-next-line import/prefer-default-export
 export const Message = objectType({
     name: 'Message',
     definition(t) {
@@ -30,12 +29,7 @@ export const createMessageMutationField = mutationField('createMessage', {
 
         if (args.content.length < 1) throw new UserInputError('Message cannot be empty!');
 
-        const isParticipated = await checkIsConvParticipated(
-            prisma,
-            session.owner,
-            args.conversationId,
-        );
-        if (!isParticipated) throw new ForbiddenError('Forbidden Access');
+        await checkIsConvParticipated(prisma, session.owner, args.conversationId);
 
         const data = await prisma.message.create({
             data: {
