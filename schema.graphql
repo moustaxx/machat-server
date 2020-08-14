@@ -326,6 +326,11 @@ type Mutation {
   updateOneMessage(data: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message
 }
 
+input NullableBooleanFilter {
+  equals: Boolean
+  not: Boolean
+}
+
 input NullableDateTimeFilter {
   equals: DateTime
   gt: DateTime
@@ -354,6 +359,7 @@ type Person {
   email: String!
   id: Int!
   isActive: Boolean!
+  isAdmin: Boolean
   lastSeen: DateTime
   messages(after: MessageWhereUniqueInput, before: MessageWhereUniqueInput, first: Int, last: Int): [Message!]!
   username: String!
@@ -374,6 +380,7 @@ input PersonCreateWithoutConversationsInput {
   email: String!
   hash: String!
   isActive: Boolean
+  isAdmin: Boolean
   lastSeen: DateTime
   messages: MessageCreateManyWithoutAuthorInput
   salt: String!
@@ -386,6 +393,7 @@ input PersonCreateWithoutMessagesInput {
   email: String!
   hash: String!
   isActive: Boolean
+  isAdmin: Boolean
   lastSeen: DateTime
   salt: String!
   username: String!
@@ -405,6 +413,7 @@ input PersonScalarWhereInput {
   hash: StringFilter
   id: IntFilter
   isActive: BooleanFilter
+  isAdmin: NullableBooleanFilter
   lastSeen: NullableDateTimeFilter
   messages: MessageFilter
   NOT: [PersonScalarWhereInput!]
@@ -419,6 +428,7 @@ input PersonUpdateManyDataInput {
   hash: String
   id: Int
   isActive: Boolean
+  isAdmin: Boolean
   lastSeen: DateTime
   salt: String
   username: String
@@ -456,6 +466,7 @@ input PersonUpdateWithoutConversationsDataInput {
   hash: String
   id: Int
   isActive: Boolean
+  isAdmin: Boolean
   lastSeen: DateTime
   messages: MessageUpdateManyWithoutAuthorInput
   salt: String
@@ -469,6 +480,7 @@ input PersonUpdateWithoutMessagesDataInput {
   hash: String
   id: Int
   isActive: Boolean
+  isAdmin: Boolean
   lastSeen: DateTime
   salt: String
   username: String
@@ -498,6 +510,7 @@ input PersonWhereInput {
   hash: StringFilter
   id: IntFilter
   isActive: BooleanFilter
+  isAdmin: NullableBooleanFilter
   lastSeen: NullableDateTimeFilter
   messages: MessageFilter
   NOT: [PersonWhereInput!]
