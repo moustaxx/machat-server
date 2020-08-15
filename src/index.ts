@@ -1,4 +1,4 @@
-import fastify, { FastifyRequest } from 'fastify';
+import fastify from 'fastify';
 import fastifyGQL from 'fastify-gql';
 import fastifyCors from 'fastify-cors';
 import fastifyCookie from 'fastify-cookie';
@@ -12,7 +12,9 @@ import { ISession } from './types';
 
 dotenv.config();
 
-const isProduction = process.env.NODE_ENV !== 'development';
+if (!process.env.SESSION_SECRET) throw Error('Session secret must be provided!');
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 const sessionOptions = {
     store: new (pgSession(fastifySession as any))({
@@ -42,9 +44,9 @@ const main = async () => {
 
     await app.register(fastifyCookie);
 
-    await app.register(fastifySession as any, sessionOptions);
+    await app.register(fastifySession, sessionOptions);
 
-    app.addHook('onSend', async (req: FastifyRequest<any, any, any, any>, reply) => {
+    app.addHook('onSend', async (req, reply) => {
         const { session, cookies } = req;
         if (!session) return;
 

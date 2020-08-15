@@ -5,16 +5,14 @@ import { ISession } from './types';
 
 export const prisma = new PrismaClient();
 
-type TRequest = FastifyRequest<any, any, any, any>;
-
 export interface Context {
-    req: TRequest;
+    req: FastifyRequest;
     reply: FastifyReply;
     prisma: typeof prisma;
     session?: ISession;
 }
 
-export async function createContext(req: TRequest, reply: FastifyReply): Promise<Context> {
+export async function createContext(req: FastifyRequest, reply: FastifyReply): Promise<Context> {
     return {
         req,
         reply,

@@ -63,7 +63,6 @@ input ConversationScalarWhereInput {
 
 input ConversationUpdateInput {
   createdAt: DateTime
-  id: Int
   messages: MessageUpdateManyWithoutConversationInput
   name: String
   participants: PersonUpdateManyWithoutConversationsInput
@@ -71,7 +70,6 @@ input ConversationUpdateInput {
 
 input ConversationUpdateManyDataInput {
   createdAt: DateTime
-  id: Int
   name: String
 }
 
@@ -101,14 +99,12 @@ input ConversationUpdateOneRequiredWithoutMessagesInput {
 
 input ConversationUpdateWithoutMessagesDataInput {
   createdAt: DateTime
-  id: Int
   name: String
   participants: PersonUpdateManyWithoutConversationsInput
 }
 
 input ConversationUpdateWithoutParticipantsDataInput {
   createdAt: DateTime
-  id: Int
   messages: MessageUpdateManyWithoutConversationInput
   name: String
 }
@@ -222,13 +218,11 @@ input MessageUpdateInput {
   content: String
   conversation: ConversationUpdateOneRequiredWithoutMessagesInput
   createdAt: DateTime
-  id: Int
 }
 
 input MessageUpdateManyDataInput {
   content: String
   createdAt: DateTime
-  id: Int
 }
 
 input MessageUpdateManyWithoutAuthorInput {
@@ -264,14 +258,12 @@ input MessageUpdateWithoutAuthorDataInput {
   content: String
   conversation: ConversationUpdateOneRequiredWithoutMessagesInput
   createdAt: DateTime
-  id: Int
 }
 
 input MessageUpdateWithoutConversationDataInput {
   author: PersonUpdateOneWithoutMessagesInput
   content: String
   createdAt: DateTime
-  id: Int
 }
 
 input MessageUpdateWithWhereUniqueWithoutAuthorInput {
@@ -426,7 +418,6 @@ input PersonUpdateManyDataInput {
   createdAt: DateTime
   email: String
   hash: String
-  id: Int
   isActive: Boolean
   isAdmin: Boolean
   lastSeen: DateTime
@@ -464,7 +455,6 @@ input PersonUpdateWithoutConversationsDataInput {
   createdAt: DateTime
   email: String
   hash: String
-  id: Int
   isActive: Boolean
   isAdmin: Boolean
   lastSeen: DateTime
@@ -478,7 +468,6 @@ input PersonUpdateWithoutMessagesDataInput {
   createdAt: DateTime
   email: String
   hash: String
-  id: Int
   isActive: Boolean
   isAdmin: Boolean
   lastSeen: DateTime
