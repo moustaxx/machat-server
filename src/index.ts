@@ -24,7 +24,7 @@ const sessionOptions = {
         },
     }),
     cookie: {
-        secure: false,
+        secure: isProduction,
         maxAge: 15552000000, // 6 months
     },
     secret: process.env.SESSION_SECRET,
