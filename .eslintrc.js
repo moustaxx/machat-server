@@ -23,4 +23,21 @@ module.exports = {
         'linebreak-style': ['warn', 'windows'],
         'object-curly-newline': ['warn', { 'consistent': true }]
     },
+    overrides: [
+        {
+            files: ['**/*.test.ts', '**/*.spec.ts'],
+            env: {
+                jest: true
+            },
+            plugins: ['jest'],
+            rules: {
+                'import/no-extraneous-dependencies': 0,
+                'jest/no-disabled-tests': 'warn',
+                'jest/no-focused-tests': 'error',
+                'jest/no-identical-title': 'error',
+                'jest/prefer-to-have-length': 'warn',
+                'jest/valid-expect': 'error'
+            }
+        }
+    ],
 };

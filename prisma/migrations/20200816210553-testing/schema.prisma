@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = "***"
+}
+
+model Conversation {
+  createdAt    DateTime  @default(now()) @map("created_at")
+  id           Int       @default(autoincrement()) @id
+  name         String
+  messages     Message[]
+  participants Person[]  @relation("ConversationToPerson", references: [id])
+
+  @@map(name: "conversation")
+}
+
+model Message {
+  content        String
+  authorID       Int?         @map("author_id")
+  conversationID Int          @map("conversation_id")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  id             Int          @default(autoincrement()) @id
+  author         Person?      @relation(fields: [authorID], references: [id])
+  conversation   Conversation @relation(fields: [conversationID], references: [id])
+
+  @@map(name: "message")
+}
+
+model Person {
+  createdAt     DateTime       @default(now()) @map("created_at")
+  email         String         @unique
+  id            Int            @default(autoincrement()) @id
+  isActive      Boolean        @default(true) @map("is_active")
+  isAdmin       Boolean?       @map("is_admin")
+  lastSeen      DateTime?      @map("last_seen")
+  username      String         @unique
+  hash          String
+  salt          String
+  messages      Message[]
+  conversations Conversation[] @relation("ConversationToPerson", references: [id])
+
+  @@map(name: "person")
+}
+
+model Session {
+  sid    String   @id
+  sess   Json
+  expire DateTime
+
+  @@map(name: "session")
+}

@@ -12,27 +12,10 @@ import { ISession } from './types';
 
 dotenv.config();
 
-if (!process.env.SESSION_SECRET) throw Error('Session secret must be provided!');
-
 const isProduction = process.env.NODE_ENV === 'production';
 
-const sessionOptions = {
-    store: new (pgSession(fastifySession as any))({
-        conObject: {
-            connectionString: process.env.DATABASE_URL,
-            ssl: { rejectUnauthorized: isProduction },
-        },
-    }),
-    cookie: {
-        secure: isProduction,
-        maxAge: 15552000000, // 6 months
-    },
-    secret: process.env.SESSION_SECRET,
-    saveUninitialized: false,
-    resave: false,
-};
-
-const main = async () => {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+const main = async (testing?: boolean) => {
     const app = fastify({ logger: isProduction });
 
     await app.register(fastifyCors, {
@@ -44,7 +27,22 @@ const main = async () => {
 
     await app.register(fastifyCookie);
 
-    await app.register(fastifySession, sessionOptions);
+    if (!process.env.SESSION_SECRET) throw Error('Session secret must be provided!');
+
+    await app.register(fastifySession, {
+        store: new (pgSession(fastifySession as any))({
+            conObject: {
+                connectionString: process.env.DATABASE_URL,
+                ssl: testing ? false : { rejectUnauthorized: isProduction },
+            },
+        }),
+        cookie: {
+            secure: isProduction,
+            maxAge: 15552000000, // 6 months
+        },
+        secret: process.env.SESSION_SECRET,
+        saveUninitialized: false,
+    });
 
     app.addHook('onSend', async (req, reply) => {
         const { session, cookies } = req;
@@ -64,8 +62,12 @@ const main = async () => {
         graphiql: 'playground',
         context: createContext,
     });
-    await app.listen(4000);
-    console.log('🚀 Server ready at: http://localhost:4000/graphql');
+
+    if (!testing) {
+        await app.listen(4000);
+        console.log('🚀 Server ready at: http://localhost:4000/graphql');
+    }
+    return app;
 };
 
-main();
+export default main;
