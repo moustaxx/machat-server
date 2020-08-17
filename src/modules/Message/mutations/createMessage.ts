@@ -1,20 +1,6 @@
-import { objectType, mutationField, intArg, stringArg } from '@nexus/schema';
+import { mutationField, stringArg, intArg } from '@nexus/schema';
 import { ApolloError, UserInputError } from 'apollo-server-errors';
-
-import checkIsConvParticipated from '../helpers/checkIsConvParticipated';
-
-export const Message = objectType({
-    name: 'Message',
-    definition(t) {
-        t.model.id();
-        t.model.content();
-        t.model.conversation();
-        t.model.conversationID();
-        t.model.authorID();
-        t.model.author();
-        t.model.createdAt();
-    },
-});
+import checkIsConvParticipated from '../../../helpers/checkIsConvParticipated';
 
 export const createMessageMutationField = mutationField('createMessage', {
     type: 'Message',
