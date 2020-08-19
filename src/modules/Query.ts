@@ -4,7 +4,6 @@ import { ApolloError, UserInputError } from 'apollo-server-errors';
 import onlyAdminCRUDResolver from '../helpers/onlyAdminCRUDResolver';
 import checkIsConvParticipated from '../helpers/checkIsConvParticipated';
 
-// eslint-disable-next-line import/prefer-default-export
 export const Query = objectType({
     name: 'Query',
     definition(t) {

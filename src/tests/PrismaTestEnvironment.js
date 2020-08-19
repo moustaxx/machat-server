@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { Client } = require('pg');
 const NodeEnvironment = require('jest-environment-node');

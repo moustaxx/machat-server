@@ -2,7 +2,6 @@ import { objectType } from '@nexus/schema';
 
 import onlyAdminCRUDResolver from '../helpers/onlyAdminCRUDResolver';
 
-// eslint-disable-next-line import/prefer-default-export
 export const Mutation = objectType({
     name: 'Mutation',
     definition(t) {

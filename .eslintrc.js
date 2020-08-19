@@ -15,6 +15,7 @@ module.exports = {
         'arrow-body-style': 0,
         'consistent-return': 0,
         'import/no-cycle': ['warn', { maxDepth: 1 }],
+        'import/prefer-default-export': 0,
         'no-alert': 0,
         'no-console': 0,
         'no-param-reassign': ['warn', { 'props': false }],
@@ -25,7 +26,7 @@ module.exports = {
     },
     overrides: [
         {
-            files: ['**/*.test.ts', '**/*.spec.ts'],
+            files: ['**/*.test.ts', '**/*.spec.ts', 'src/tests/*.ts', 'src/tests/*.js'],
             env: {
                 jest: true
             },
