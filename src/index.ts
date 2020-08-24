@@ -7,8 +7,9 @@ import pgSession from 'connect-pg-simple';
 import dotenv from 'dotenv';
 
 import { schema } from './schema';
-import { createContext } from './context';
 import { ISession } from './types';
+import { createContext } from './context';
+import prisma from './prismaClient';
 
 dotenv.config();
 
@@ -30,10 +31,10 @@ const main = async (testing?: boolean) => {
     if (!process.env.SESSION_SECRET) throw Error('Session secret must be provided!');
 
     await app.register(fastifySession, {
-        store: new (pgSession(fastifySession as any))({
+        store: testing ? undefined : new (pgSession(fastifySession as any))({
             conObject: {
                 connectionString: process.env.DATABASE_URL,
-                ssl: testing ? false : { rejectUnauthorized: isProduction },
+                ssl: { rejectUnauthorized: isProduction },
             },
         }),
         cookie: {
@@ -55,6 +56,10 @@ const main = async (testing?: boolean) => {
         if (cookies.loggedIn === undefined || isLoggedIn !== isLoggedInCookie) {
             await reply.setCookie('loggedIn', isLoggedIn ? '1' : '0', { expires });
         }
+    });
+
+    app.addHook('onClose', async () => {
+        await prisma.$disconnect();
     });
 
     await app.register(fastifyGQL, {

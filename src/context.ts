@@ -1,14 +1,12 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { PrismaClient } from '@prisma/client';
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { ISession } from './types';
 
-export const prisma = new PrismaClient();
+import { ISession } from './types';
+import prisma, { TPrisma } from './prismaClient';
 
 export interface Context {
     req: FastifyRequest;
     reply: FastifyReply;
-    prisma: typeof prisma;
+    prisma: TPrisma;
     session?: ISession;
 }
 
