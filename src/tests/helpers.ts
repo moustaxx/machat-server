@@ -93,3 +93,50 @@ export const createRandomUser: TCreateRandomUser = async (prisma, options) => {
         email,
     };
 };
+
+type TRandomUserLogin = (
+    app: FastifyInstance,
+    prisma: PrismaClient,
+    options?: {
+        isAdmin?: boolean;
+    },
+) => Promise<{
+    user: NexusGenRootTypes['Person'];
+    username: string;
+    password: string;
+    cookies: Record<string, string>;
+    cookiesArray: TCookie[];
+}>;
+
+export const randomUserLogin: TRandomUserLogin = async (app, prisma, options) => {
+    const {
+        username,
+        password,
+        user,
+    } = await createRandomUser(prisma, { isAdmin: options?.isAdmin });
+
+    const loginRes = await gqlRequest(app, {
+        query: `
+            query login($username: String!, $password: String!) {
+                login(username: $username, password: $password) {
+                    id
+                }
+            }
+        `,
+        variables: { username, password },
+    });
+
+    const cookiesArray = loginRes.cookies;
+    let cookies: Record<string, string> = {};
+    cookiesArray.forEach((cookie) => {
+        cookies = { ...cookies, [cookie.name]: cookie.value };
+    });
+
+    return {
+        user,
+        username,
+        password,
+        cookies,
+        cookiesArray,
+    };
+};

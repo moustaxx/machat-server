@@ -1,10 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import { FastifyInstance } from 'fastify';
-import { createFastifyGQLTestClient, GQLResponse } from 'fastify-gql-integration-testing';
+import { createFastifyGQLTestClient } from 'fastify-gql-integration-testing';
 
 import main from '../../../..';
-import { createRandomUser, gqlRequest } from '../../../../tests/helpers';
-import { NexusGenRootTypes } from '../../../../generated/nexus';
+import { createRandomUser, randomUserLogin } from '../../../../tests/helpers';
 
 let client: PrismaClient;
 let app: FastifyInstance;
@@ -24,48 +23,14 @@ afterAll(async () => {
 });
 
 it('should log in', async () => {
-    const { username, password, user } = await createRandomUser(client);
-
-    const loginRes = await gqlRequest(app, {
-        query: `
-            query login($username: String!, $password: String!) {
-                login(username: $username, password: $password) {
-                    id
-                }
-            }
-        `,
-        variables: { username, password },
-    });
-
-    const { cookies } = loginRes;
-    const loggedIn = cookies.find((cookie) => cookie.name === 'loggedIn');
-
-    type TLoginJson = GQLResponse<{ login: NexusGenRootTypes['Person'] }>;
-    const loginJson: TLoginJson = await loginRes.json();
+    const { cookiesArray } = await randomUserLogin(app, client);
+    const loggedIn = cookiesArray.find((cookie) => cookie.name === 'loggedIn');
 
     expect(loggedIn?.value).toEqual('1');
-    expect(loginJson.data.login.id).toEqual(user.id);
 });
 
 it('should throw error when already logged in', async () => {
-    const { username, password } = await createRandomUser(client);
-
-    const loginRes = await gqlRequest(app, {
-        query: `
-            query login($username: String!, $password: String!) {
-                login(username: $username, password: $password) {
-                    id
-                }
-            }
-        `,
-        variables: { username, password },
-    });
-
-    const dirtyCookies = loginRes.cookies;
-    let cookies: Record<string, string> = {};
-    dirtyCookies.forEach((cookie) => {
-        cookies = { ...cookies, [cookie.name]: cookie.value };
-    });
+    const { username, password, cookies } = await randomUserLogin(app, client);
 
     const { errors } = await testClient.query(`
         query login($username: String!, $password: String!) {
