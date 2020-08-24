@@ -1,10 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { FastifyInstance } from 'fastify';
-import { createFastifyGQLTestClient } from 'fastify-gql-integration-testing';
+import { createFastifyGQLTestClient, GQLResponse } from 'fastify-gql-integration-testing';
 
 import main from '../../../..';
-import { NexusGenRootTypes } from '../../../../generated/nexus';
 import { createRandomUser, gqlRequest } from '../../../../tests/helpers';
+import { NexusGenRootTypes } from '../../../../generated/nexus';
 
 let client: PrismaClient;
 let app: FastifyInstance;
@@ -26,17 +26,25 @@ afterAll(async () => {
 it('should log in', async () => {
     const { username, password, user } = await createRandomUser(client);
 
-    const { data } = await testClient.query<{ login: NexusGenRootTypes['Person'] }>(`
-        query login($username: String!, $password: String!) {
-            login(username: $username, password: $password) {
-                id
+    const loginRes = await gqlRequest(app, {
+        query: `
+            query login($username: String!, $password: String!) {
+                login(username: $username, password: $password) {
+                    id
+                }
             }
-        }
-    `, {
+        `,
         variables: { username, password },
     });
 
-    expect(data.login.id).toEqual(user.id);
+    const { cookies } = loginRes;
+    const loggedIn = cookies.find((cookie) => cookie.name === 'loggedIn');
+
+    type TLoginJson = GQLResponse<{ login: NexusGenRootTypes['Person'] }>;
+    const loginJson: TLoginJson = await loginRes.json();
+
+    expect(loggedIn?.value).toEqual('1');
+    expect(loginJson.data.login.id).toEqual(user.id);
 });
 
 it('should throw error when already logged in', async () => {
