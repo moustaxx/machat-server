@@ -1,12 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { FastifyInstance } from 'fastify';
 import { createFastifyGQLTestClient, GQLResponse } from 'fastify-gql-integration-testing';
-import { randomBytes } from 'crypto';
 
 import main from '../../../..';
-import { getHash } from '../../helpers/getHash';
 import { NexusGenRootTypes } from '../../../../generated/nexus';
-import { gqlRequest } from '../../../../tests/helpers';
+import { gqlRequest, createRandomUser } from '../../../../tests/helpers';
 
 let client: PrismaClient;
 let app: FastifyInstance;
@@ -39,21 +37,7 @@ it('should throw FORBIDDEN error when quering people without permissions', async
 });
 
 it('should return people list when admin permissions are present', async () => {
-    const username = randomBytes(5).toString('hex');
-    const password = randomBytes(9).toString('hex');
-
-    const salt = randomBytes(16).toString('hex');
-    const hash = getHash(password, salt);
-
-    await client.person.create({
-        data: {
-            email: 'admin@admin.ad',
-            username,
-            salt,
-            hash,
-            isAdmin: true,
-        },
-    });
+    const { username, password } = await createRandomUser(client, { isAdmin: true });
 
     const loginRes = await gqlRequest(app, {
         query: `

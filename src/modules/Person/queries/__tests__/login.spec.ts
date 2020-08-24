@@ -1,11 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { FastifyInstance } from 'fastify';
 import { createFastifyGQLTestClient } from 'fastify-gql-integration-testing';
-import { randomBytes } from 'crypto';
 
 import main from '../../../..';
-import { getHash } from '../../helpers/getHash';
 import { NexusGenRootTypes } from '../../../../generated/nexus';
+import { createRandomUser } from '../../../../tests/helpers';
 
 let client: PrismaClient;
 let app: FastifyInstance;
@@ -25,20 +24,7 @@ afterAll(async () => {
 });
 
 it('should log in', async () => {
-    const username = randomBytes(5).toString('hex');
-    const password = randomBytes(9).toString('hex');
-
-    const salt = randomBytes(16).toString('hex');
-    const hash = getHash(password, salt);
-
-    const user = await client.person.create({
-        data: {
-            email: `${username}@machat.ru`,
-            username,
-            salt,
-            hash,
-        },
-    });
+    const { username, password, user } = await createRandomUser(client);
 
     const { data } = await testClient.query<{ login: NexusGenRootTypes['Person'] }>(`
         query login($username: String!, $password: String!) {
