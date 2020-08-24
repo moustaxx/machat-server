@@ -42,15 +42,24 @@ it('should log out', async () => {
         cookies = { ...cookies, [cookie.name]: cookie.value };
     });
 
-    const logoutQuery = await testClient.query(`
-        query logout {
-            logout {
-                id
+    const logoutRes = await gqlRequest(app, {
+        query: `
+            query logout {
+                logout {
+                    id
+                }
             }
-        }
-    `, { cookies });
+        `,
+        cookies,
+    });
 
-    expect(logoutQuery.data.logout.id).toBe(user.id);
+    const cookiesAfterLogout = logoutRes.cookies;
+    const loggedIn = cookiesAfterLogout.find((cookie) => cookie.name === 'loggedIn');
+
+    const logoutJson = await logoutRes.json();
+
+    expect(loggedIn?.value).toEqual('0');
+    expect(logoutJson.data.logout.id).toBe(user.id);
 });
 
 it('should throw error if not logged in try to log out', async () => {
