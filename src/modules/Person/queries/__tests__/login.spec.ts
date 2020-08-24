@@ -73,3 +73,20 @@ it('should throw error when already logged in', async () => {
     const errorCode = errors && errors[0].extensions?.code;
     expect(errorCode).toEqual('ALREADY_LOGGED_IN');
 });
+
+it('should throw error when wrong password', async () => {
+    const { username } = await createRandomUser(client);
+
+    const { errors } = await testClient.query(`
+        query login($username: String!, $password: String!) {
+            login(username: $username, password: $password) {
+                id
+            }
+        }
+    `, {
+        variables: { username, password: 'wrong_password' },
+    });
+
+    const errorCode = errors && errors[0].extensions?.code;
+    expect(errorCode).toEqual('GRAPHQL_VALIDATION_FAILED');
+});
