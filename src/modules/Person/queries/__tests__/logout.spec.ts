@@ -52,3 +52,16 @@ it('should log out', async () => {
 
     expect(logoutQuery.data.logout.id).toBe(user.id);
 });
+
+it('should throw error if not logged in try to log out', async () => {
+    const { errors } = await testClient.query(`
+        query logout {
+            logout {
+                id
+            }
+        }
+    `);
+
+    const errorCode = errors && errors[0].extensions?.code;
+    expect(errorCode).toEqual('UNAUTHORIZED');
+});
