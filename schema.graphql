@@ -515,7 +515,7 @@ input PersonWhereUniqueInput {
 }
 
 type Query {
-  conversation(where: ConversationWhereUniqueInput!): Conversation
+  conversation(whereId: Int!): Conversation!
   conversations(after: ConversationWhereUniqueInput, before: ConversationWhereUniqueInput, first: Int, last: Int): [Conversation!]!
   login(password: String!, username: String!): Person!
   logout: Person!
