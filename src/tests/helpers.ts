@@ -22,7 +22,7 @@ interface IQueryParams {
         [k: string]: string;
     } ;
     headers?: Record<string, string>;
-    variables?: Record<string, string>;
+    variables?: Record<string, unknown>;
     operationName?: string;
 }
 
