@@ -4,7 +4,7 @@ import { createFastifyGQLTestClient, GQLResponse } from 'fastify-gql-integration
 
 import main from '../../../..';
 import { NexusGenRootTypes } from '../../../../generated/nexus';
-import { gqlRequest, randomUserLogin } from '../../../../tests/helpers';
+import { gqlRequest, createRandomUserAndLogin } from '../../../../tests/helpers';
 
 let client: PrismaClient;
 let app: FastifyInstance;
@@ -37,7 +37,7 @@ it('should throw FORBIDDEN error when quering people without permissions', async
 });
 
 it('should return people list when admin permissions are present d', async () => {
-    const { cookies } = await randomUserLogin(app, client, { isAdmin: true });
+    const { cookies } = await createRandomUserAndLogin(app, client, { isAdmin: true });
 
     const peopleRes = await gqlRequest(app, {
         cookies,

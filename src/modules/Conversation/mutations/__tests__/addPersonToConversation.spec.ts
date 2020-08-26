@@ -4,7 +4,7 @@ import { createFastifyGQLTestClient } from 'fastify-gql-integration-testing';
 import { randomBytes } from 'crypto';
 
 import main from '../../../..';
-import { randomUserLogin, createRandomUser } from '../../../../tests/helpers';
+import { createRandomUserAndLogin, createRandomUser } from '../../../../tests/helpers';
 import { Conversation, Person } from '../../../../../node_modules/.prisma/client';
 
 let client: PrismaClient;
@@ -26,7 +26,7 @@ afterAll(async () => {
 
 it('should add person to conversation', async () => {
     const someUser = await createRandomUser(client);
-    const { user, cookies } = await randomUserLogin(app, client);
+    const { user, cookies } = await createRandomUserAndLogin(app, client);
 
     const conversation = await client.conversation.create({
         data: {
@@ -63,7 +63,7 @@ it('should add person to conversation', async () => {
 
 it('should throw error when not permitted', async () => {
     const someUser = await createRandomUser(client);
-    const { cookies } = await randomUserLogin(app, client);
+    const { cookies } = await createRandomUserAndLogin(app, client);
 
     const conversation = await client.conversation.create({
         data: {

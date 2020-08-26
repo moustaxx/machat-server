@@ -3,7 +3,7 @@ import { FastifyInstance } from 'fastify';
 import { createFastifyGQLTestClient } from 'fastify-gql-integration-testing';
 
 import main from '../../../..';
-import { createRandomUser, randomUserLogin } from '../../../../tests/helpers';
+import { createRandomUser, createRandomUserAndLogin } from '../../../../tests/helpers';
 
 let client: PrismaClient;
 let app: FastifyInstance;
@@ -23,14 +23,14 @@ afterAll(async () => {
 });
 
 it('should log in', async () => {
-    const { cookiesArray } = await randomUserLogin(app, client);
+    const { cookiesArray } = await createRandomUserAndLogin(app, client);
     const loggedIn = cookiesArray.find((cookie) => cookie.name === 'loggedIn');
 
     expect(loggedIn?.value).toEqual('1');
 });
 
 it('should throw error when already logged in', async () => {
-    const { username, password, cookies } = await randomUserLogin(app, client);
+    const { username, password, cookies } = await createRandomUserAndLogin(app, client);
 
     const { errors } = await testClient.query(`
         query login($username: String!, $password: String!) {

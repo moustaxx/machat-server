@@ -4,7 +4,7 @@ import { createFastifyGQLTestClient } from 'fastify-gql-integration-testing';
 import { randomBytes } from 'crypto';
 
 import main from '../../../..';
-import { gqlRequest, randomUserLogin } from '../../../../tests/helpers';
+import { gqlRequest, createRandomUserAndLogin } from '../../../../tests/helpers';
 
 let client: PrismaClient;
 let app: FastifyInstance;
@@ -48,7 +48,7 @@ it('should register', async () => {
 });
 
 it('should throw error when already logged in', async () => {
-    const { username, password, user, cookies } = await randomUserLogin(app, client);
+    const { username, password, user, cookies } = await createRandomUserAndLogin(app, client);
 
     const { errors } = await testClient.mutate(`
         mutation register($email: String!, $username: String!, $password: String!) {

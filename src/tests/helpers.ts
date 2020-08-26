@@ -108,7 +108,7 @@ type TRandomUserLogin = (
     cookiesArray: TCookie[];
 }>;
 
-export const randomUserLogin: TRandomUserLogin = async (app, prisma, options) => {
+export const createRandomUserAndLogin: TRandomUserLogin = async (app, prisma, options) => {
     const {
         username,
         password,

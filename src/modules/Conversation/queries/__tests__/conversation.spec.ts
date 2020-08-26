@@ -5,7 +5,7 @@ import { randomBytes } from 'crypto';
 
 import main from '../../../..';
 import { NexusGenRootTypes } from '../../../../generated/nexus';
-import { gqlRequest, randomUserLogin } from '../../../../tests/helpers';
+import { gqlRequest, createRandomUserAndLogin } from '../../../../tests/helpers';
 
 let client: PrismaClient;
 let app: FastifyInstance;
@@ -25,7 +25,7 @@ afterAll(async () => {
 });
 
 it('should return conversation', async () => {
-    const { cookies, user } = await randomUserLogin(app, client);
+    const { cookies, user } = await createRandomUserAndLogin(app, client);
 
     const conversation = await client.conversation.create({
         data: {
@@ -53,7 +53,7 @@ it('should return conversation', async () => {
 });
 
 it('should throw FORBIDDEN error when not permitted', async () => {
-    const { cookies } = await randomUserLogin(app, client);
+    const { cookies } = await createRandomUserAndLogin(app, client);
 
     const conversation = await client.conversation.create({
         data: {
