@@ -36,7 +36,7 @@ const queryString = `
     }
 `;
 
-it('should add person to conversation', async () => {
+it('should remove person from conversation', async () => {
     const someUser = await createRandomUser(client);
     const { user, cookies } = await createRandomUserAndLogin(app, client);
 
