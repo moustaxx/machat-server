@@ -24,6 +24,14 @@ afterAll(async () => {
     ]);
 });
 
+const queryString = `
+    query conversation($whereId: Int!) {
+        conversation(whereId: $whereId) {
+            id
+        }
+    }
+`;
+
 it('should return conversation', async () => {
     const { cookies, user } = await createRandomUserAndLogin(app, client);
 
@@ -36,13 +44,7 @@ it('should return conversation', async () => {
 
     const conversationRes = await gqlRequest(app, {
         cookies,
-        query: `
-            query conversation($whereId: Int!) {
-                conversation(whereId: $whereId) {
-                    id
-                }
-            }
-        `,
+        query: queryString,
         variables: { whereId: conversation.id },
     });
 
@@ -61,13 +63,7 @@ it('should throw FORBIDDEN error when not permitted', async () => {
         },
     });
 
-    const data = await testClient.query(`
-        query conversation($whereId: Int!) {
-            conversation(whereId: $whereId) {
-                id
-            }
-        }
-    `, {
+    const data = await testClient.query(queryString, {
         cookies,
         variables: { whereId: conversation.id },
     });
@@ -83,13 +79,7 @@ it('should throw error when not authorized', async () => {
         },
     });
 
-    const data = await testClient.query(`
-        query conversation($whereId: Int!) {
-            conversation(whereId: $whereId) {
-                id
-            }
-        }
-    `, {
+    const data = await testClient.query(queryString, {
         variables: { whereId: conversation.id },
     });
 

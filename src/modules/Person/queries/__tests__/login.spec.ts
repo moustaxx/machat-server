@@ -22,6 +22,14 @@ afterAll(async () => {
     ]);
 });
 
+const queryString = `
+    query login($username: String!, $password: String!) {
+        login(username: $username, password: $password) {
+            id
+        }
+    }
+`;
+
 it('should log in', async () => {
     const { cookiesArray } = await createRandomUserAndLogin(app, client);
     const loggedIn = cookiesArray.find((cookie) => cookie.name === 'loggedIn');
@@ -32,13 +40,7 @@ it('should log in', async () => {
 it('should throw error when already logged in', async () => {
     const { username, password, cookies } = await createRandomUserAndLogin(app, client);
 
-    const { errors } = await testClient.query(`
-        query login($username: String!, $password: String!) {
-            login(username: $username, password: $password) {
-                id
-            }
-        }
-    `, {
+    const { errors } = await testClient.query(queryString, {
         cookies,
         variables: { username, password },
     });
@@ -50,13 +52,7 @@ it('should throw error when already logged in', async () => {
 it('should throw error when wrong password', async () => {
     const { username } = await createRandomUser(client);
 
-    const { errors } = await testClient.query(`
-        query login($username: String!, $password: String!) {
-            login(username: $username, password: $password) {
-                id
-            }
-        }
-    `, {
+    const { errors } = await testClient.query(queryString, {
         variables: { username, password: 'wrong_password' },
     });
 

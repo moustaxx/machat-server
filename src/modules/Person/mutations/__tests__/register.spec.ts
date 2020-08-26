@@ -23,19 +23,21 @@ afterAll(async () => {
     ]);
 });
 
+const queryString = `
+    mutation register($email: String!, $username: String!, $password: String!) {
+        register(email: $email, username: $username, password: $password) {
+            id
+        }
+    }
+`;
+
 it('should register', async () => {
     const username = randomBytes(5).toString('hex');
     const password = randomBytes(9).toString('hex');
     const email = `${username}@machat.ru`;
 
     const logoutRes = await gqlRequest(app, {
-        query: `
-            mutation register($email: String!, $username: String!, $password: String!) {
-                register(email: $email, username: $username, password: $password) {
-                    id
-                }
-            }
-        `,
+        query: queryString,
         variables: { email, username, password },
     });
 
@@ -50,13 +52,7 @@ it('should register', async () => {
 it('should throw error when already logged in', async () => {
     const { username, password, user, cookies } = await createRandomUserAndLogin(app, client);
 
-    const { errors } = await testClient.mutate(`
-        mutation register($email: String!, $username: String!, $password: String!) {
-            register(email: $email, username: $username, password: $password) {
-                id
-            }
-        }
-    `, {
+    const { errors } = await testClient.mutate(queryString, {
         cookies,
         variables: { username, password, email: user.email },
     });

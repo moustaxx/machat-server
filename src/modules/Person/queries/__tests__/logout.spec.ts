@@ -22,17 +22,19 @@ afterAll(async () => {
     ]);
 });
 
+const queryString = `
+    query logout {
+        logout {
+            id
+        }
+    }
+`;
+
 it('should log out', async () => {
     const { user, cookies } = await createRandomUserAndLogin(app, client);
 
     const logoutRes = await gqlRequest(app, {
-        query: `
-            query logout {
-                logout {
-                    id
-                }
-            }
-        `,
+        query: queryString,
         cookies,
     });
 
@@ -46,13 +48,7 @@ it('should log out', async () => {
 });
 
 it('should throw error if not logged in try to log out', async () => {
-    const { errors } = await testClient.query(`
-        query logout {
-            logout {
-                id
-            }
-        }
-    `);
+    const { errors } = await testClient.query(queryString);
 
     const errorCode = errors?.[0].extensions?.code;
     expect(errorCode).toEqual('UNAUTHORIZED');

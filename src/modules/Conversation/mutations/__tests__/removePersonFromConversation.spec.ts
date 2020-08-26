@@ -24,6 +24,18 @@ afterAll(async () => {
     ]);
 });
 
+const queryString = `
+    mutation removePersonFromConversation($personId: Int!, $conversationId: Int!) {
+        removePersonFromConversation(personId: $personId, conversationId: $conversationId) {
+            id
+            participants {
+                username
+                id
+            }
+        }
+    }
+`;
+
 it('should add person to conversation', async () => {
     const someUser = await createRandomUser(client);
     const { user, cookies } = await createRandomUserAndLogin(app, client);
@@ -38,17 +50,7 @@ it('should add person to conversation', async () => {
     type TData = { removePersonFromConversation: Conversation & {
         participants: Person[];
     } };
-    const { data } = await testClient.mutate<TData>(`
-        mutation removePersonFromConversation($personId: Int!, $conversationId: Int!) {
-            removePersonFromConversation(personId: $personId, conversationId: $conversationId) {
-                id
-                participants {
-                    username
-                    id
-                }
-            }
-        }
-    `, {
+    const { data } = await testClient.mutate<TData>(queryString, {
         cookies,
         variables: { personId: someUser.user.id, conversationId: conversation.id },
     });
@@ -71,17 +73,7 @@ it('should throw error when not permitted', async () => {
         },
     });
 
-    const { errors } = await testClient.mutate(`
-        mutation removePersonFromConversation($personId: Int!, $conversationId: Int!) {
-            removePersonFromConversation(personId: $personId, conversationId: $conversationId) {
-                id
-                participants {
-                    username
-                    id
-                }
-            }
-        }
-    `, {
+    const { errors } = await testClient.mutate(queryString, {
         cookies,
         variables: { personId: someUser.user.id, conversationId: conversation.id },
     });
@@ -99,17 +91,7 @@ it('should throw error when not authorized', async () => {
         },
     });
 
-    const { errors } = await testClient.mutate(`
-        mutation removePersonFromConversation($personId: Int!, $conversationId: Int!) {
-            removePersonFromConversation(personId: $personId, conversationId: $conversationId) {
-                id
-                participants {
-                    username
-                    id
-                }
-            }
-        }
-    `, {
+    const { errors } = await testClient.mutate(queryString, {
         variables: { personId: someUser.user.id, conversationId: conversation.id },
     });
 

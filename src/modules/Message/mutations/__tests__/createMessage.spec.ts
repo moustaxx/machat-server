@@ -24,6 +24,14 @@ afterAll(async () => {
     ]);
 });
 
+const queryString = `
+    mutation createMessage($content: String!, $conversationId: Int!) {
+        createMessage(content: $content, conversationId: $conversationId) {
+            id
+        }
+    }
+`;
+
 it('should create message', async () => {
     const { user, cookies } = await createRandomUserAndLogin(app, client);
 
@@ -35,13 +43,7 @@ it('should create message', async () => {
     });
 
     type TData = { createMessage: Conversation };
-    const { data } = await testClient.mutate<TData>(`
-        mutation createMessage($content: String!, $conversationId: Int!) {
-            createMessage(content: $content, conversationId: $conversationId) {
-                id
-            }
-        }
-    `, {
+    const { data } = await testClient.mutate<TData>(queryString, {
         cookies,
         variables: {
             content: randomBytes(3).toString('hex'),
@@ -65,13 +67,7 @@ it('should throw error when not permitted', async () => {
         },
     });
 
-    const { errors } = await testClient.mutate(`
-        mutation createMessage($content: String!, $conversationId: Int!) {
-            createMessage(content: $content, conversationId: $conversationId) {
-                id
-            }
-        }
-    `, {
+    const { errors } = await testClient.mutate(queryString, {
         cookies,
         variables: {
             content: randomBytes(3).toString('hex'),
@@ -90,13 +86,7 @@ it('should throw error when not authorized', async () => {
         },
     });
 
-    const { errors } = await testClient.mutate(`
-        mutation createMessage($content: String!, $conversationId: Int!) {
-            createMessage(content: $content, conversationId: $conversationId) {
-                id
-            }
-        }
-    `, {
+    const { errors } = await testClient.mutate(queryString, {
         variables: {
             content: randomBytes(3).toString('hex'),
             conversationId: conversation.id,
@@ -118,13 +108,7 @@ it('should throw error if empty message', async () => {
     });
 
     type TData = { createMessage: Conversation };
-    const { errors } = await testClient.mutate<TData>(`
-        mutation createMessage($content: String!, $conversationId: Int!) {
-            createMessage(content: $content, conversationId: $conversationId) {
-                id
-            }
-        }
-    `, {
+    const { errors } = await testClient.mutate<TData>(queryString, {
         cookies,
         variables: {
             content: '',

@@ -23,14 +23,16 @@ afterAll(async () => {
     ]);
 });
 
-it('should throw FORBIDDEN error when quering people without permissions', async () => {
-    const data = await testClient.query(`
-        query getPeople {
-            people {
-                id
-            }
+const queryString = `
+    query getPeople {
+        people {
+            id
         }
-    `);
+    }
+`;
+
+it('should throw FORBIDDEN error when quering people without permissions', async () => {
+    const data = await testClient.query(queryString);
 
     const errorCode = data.errors?.[0].extensions?.code;
     expect(errorCode).toEqual('FORBIDDEN');
@@ -41,13 +43,7 @@ it('should return people list when admin permissions are present', async () => {
 
     const peopleRes = await gqlRequest(app, {
         cookies,
-        query: `
-            query getPeople {
-                people {
-                    id
-                }
-            }
-        `,
+        query: queryString,
     });
 
     type TPeopleQuery = GQLResponse<{ people: NexusGenRootTypes['Person'][] }>;
