@@ -72,7 +72,7 @@ it('should throw FORBIDDEN error when not permitted', async () => {
         variables: { whereId: conversation.id },
     });
 
-    const errorCode = data.errors && data.errors[0].extensions?.code;
+    const errorCode = data.errors?.[0].extensions?.code;
     expect(errorCode).toEqual('FORBIDDEN');
 });
 
@@ -93,6 +93,6 @@ it('should throw error when not authorized', async () => {
         variables: { whereId: conversation.id },
     });
 
-    const errorCode = data.errors && data.errors[0].extensions?.code;
+    const errorCode = data.errors?.[0].extensions?.code;
     expect(errorCode).toEqual('UNAUTHORIZED');
 });

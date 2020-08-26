@@ -32,11 +32,11 @@ it('should throw FORBIDDEN error when quering people without permissions', async
         }
     `);
 
-    const errorCode = data.errors && data.errors[0].extensions?.code;
+    const errorCode = data.errors?.[0].extensions?.code;
     expect(errorCode).toEqual('FORBIDDEN');
 });
 
-it('should return people list when admin permissions are present d', async () => {
+it('should return people list when admin permissions are present', async () => {
     const { cookies } = await createRandomUserAndLogin(app, client, { isAdmin: true });
 
     const peopleRes = await gqlRequest(app, {

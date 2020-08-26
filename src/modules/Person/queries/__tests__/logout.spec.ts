@@ -54,6 +54,6 @@ it('should throw error if not logged in try to log out', async () => {
         }
     `);
 
-    const errorCode = errors && errors[0].extensions?.code;
+    const errorCode = errors?.[0].extensions?.code;
     expect(errorCode).toEqual('UNAUTHORIZED');
 });

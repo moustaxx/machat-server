@@ -61,6 +61,6 @@ it('should throw error when already logged in', async () => {
         variables: { username, password, email: user.email },
     });
 
-    const errorCode = errors && errors[0].extensions?.code;
+    const errorCode = errors?.[0].extensions?.code;
     expect(errorCode).toEqual('ALREADY_LOGGED_IN');
 });

@@ -43,7 +43,7 @@ it('should throw error when already logged in', async () => {
         variables: { username, password },
     });
 
-    const errorCode = errors && errors[0].extensions?.code;
+    const errorCode = errors?.[0].extensions?.code;
     expect(errorCode).toEqual('ALREADY_LOGGED_IN');
 });
 
@@ -60,6 +60,6 @@ it('should throw error when wrong password', async () => {
         variables: { username, password: 'wrong_password' },
     });
 
-    const errorCode = errors && errors[0].extensions?.code;
+    const errorCode = errors?.[0].extensions?.code;
     expect(errorCode).toEqual('GRAPHQL_VALIDATION_FAILED');
 });
