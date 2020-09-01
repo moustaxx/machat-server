@@ -1,10 +1,10 @@
 import { ForbiddenError } from 'apollo-server-errors';
+import { NexusGenAllTypes } from '../generated/nexus';
+import { TPrisma } from '../prismaClient';
 
-import { Context } from '../context';
-
-const checkIsConvParticipated = async (
-    prisma: Context['prisma'],
-    sessionOwner: NonNullable<Context['session']>['owner'],
+const checkUserHasConvAccess = async (
+    prisma: TPrisma,
+    user: NexusGenAllTypes['Person'],
     conversationId: number,
 ): Promise<void> => {
     const getConv = await prisma.person.findOne({
@@ -15,16 +15,16 @@ const checkIsConvParticipated = async (
                 },
             },
         },
-        where: { id: sessionOwner?.id },
+        where: { id: user?.id },
     });
 
     const isParticipated = !!getConv?.conversations.find((conv) => {
         return conv.id === conversationId;
     });
 
-    if (!sessionOwner?.isAdmin && !isParticipated) {
+    if (!user?.isAdmin && !isParticipated) {
         throw new ForbiddenError('Insufficient permissions');
     }
 };
 
-export default checkIsConvParticipated;
+export default checkUserHasConvAccess;

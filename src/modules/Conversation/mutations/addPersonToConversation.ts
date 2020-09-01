@@ -1,6 +1,6 @@
 import { mutationField, intArg } from '@nexus/schema';
 import { ApolloError } from 'apollo-server-errors';
-import checkIsConvParticipated from '../../../helpers/checkIsConvParticipated';
+import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';
 
 export const addPersonToConversationMutationField = mutationField('addPersonToConversation', {
     type: 'Conversation',
@@ -13,7 +13,7 @@ export const addPersonToConversationMutationField = mutationField('addPersonToCo
             throw new ApolloError('You must be logged in!', 'UNAUTHORIZED');
         }
 
-        await checkIsConvParticipated(prisma, session.owner, args.conversationId);
+        await checkUserHasConvAccess(prisma, session.owner, args.conversationId);
 
         const data = await prisma.conversation.update({
             where: { id: args.conversationId },

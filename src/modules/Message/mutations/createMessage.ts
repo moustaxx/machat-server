@@ -1,6 +1,6 @@
 import { mutationField, stringArg, intArg } from '@nexus/schema';
 import { ApolloError, UserInputError } from 'apollo-server-errors';
-import checkIsConvParticipated from '../../../helpers/checkIsConvParticipated';
+import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';
 
 export const createMessageMutationField = mutationField('createMessage', {
     type: 'Message',
@@ -15,7 +15,7 @@ export const createMessageMutationField = mutationField('createMessage', {
 
         if (args.content.length < 1) throw new UserInputError('Message cannot be empty!');
 
-        await checkIsConvParticipated(prisma, session.owner, args.conversationId);
+        await checkUserHasConvAccess(prisma, session.owner, args.conversationId);
 
         const data = await prisma.message.create({
             data: {
