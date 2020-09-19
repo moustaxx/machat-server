@@ -1,25 +1,27 @@
-import { PrismaClient } from '@prisma/client';
+// import { PrismaClient } from '@prisma/client';
 import { FastifyInstance } from 'fastify';
 import { createFastifyGQLTestClient } from 'fastify-gql-integration-testing';
 
-import main from '../../../..';
-import { gqlRequest, createRandomUserAndLogin } from '../../../../tests/helpers';
+import {
+    gqlRequest,
+    createRandomUserAndLogin,
+    initTestServer,
+    closeTestServer,
+} from '../../../../tests/helpers';
 
-let client: PrismaClient;
+// let prisma: PrismaClient;
 let app: FastifyInstance;
 let testClient: ReturnType<typeof createFastifyGQLTestClient>;
 
 beforeAll(async () => {
-    client = new PrismaClient();
-    app = await main(true);
-    testClient = createFastifyGQLTestClient(app);
+    const testing = await initTestServer();
+    app = testing.app;
+    // prisma = testing.app.prisma;
+    testClient = testing.testClient;
 });
 
 afterAll(async () => {
-    await Promise.allSettled([
-        client.$disconnect(),
-        app.close(),
-    ]);
+    await closeTestServer(app);
 });
 
 const queryString = `
@@ -31,7 +33,7 @@ const queryString = `
 `;
 
 it('should log out', async () => {
-    const { user, cookies } = await createRandomUserAndLogin(app, client);
+    const { user, cookies } = await createRandomUserAndLogin(app);
 
     const logoutRes = await gqlRequest(app, {
         query: queryString,

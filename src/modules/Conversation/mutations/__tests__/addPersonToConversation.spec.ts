@@ -3,25 +3,27 @@ import { FastifyInstance } from 'fastify';
 import { createFastifyGQLTestClient } from 'fastify-gql-integration-testing';
 import { randomBytes } from 'crypto';
 
-import main from '../../../..';
-import { createRandomUserAndLogin, createRandomUser } from '../../../../tests/helpers';
+import {
+    createRandomUserAndLogin,
+    createRandomUser,
+    initTestServer,
+    closeTestServer,
+} from '../../../../tests/helpers';
 import { Conversation, Person } from '../../../../../node_modules/.prisma/client';
 
-let client: PrismaClient;
+let prisma: PrismaClient;
 let app: FastifyInstance;
 let testClient: ReturnType<typeof createFastifyGQLTestClient>;
 
 beforeAll(async () => {
-    client = new PrismaClient();
-    app = await main(true);
-    testClient = createFastifyGQLTestClient(app);
+    const testing = await initTestServer();
+    app = testing.app;
+    prisma = testing.app.prisma;
+    testClient = testing.testClient;
 });
 
 afterAll(async () => {
-    await Promise.allSettled([
-        client.$disconnect(),
-        app.close(),
-    ]);
+    await closeTestServer(app);
 });
 
 const queryString = `
@@ -37,10 +39,10 @@ const queryString = `
 `;
 
 it('should add person to conversation', async () => {
-    const someUser = await createRandomUser(client);
-    const { user, cookies } = await createRandomUserAndLogin(app, client);
+    const someUser = await createRandomUser(prisma);
+    const { user, cookies } = await createRandomUserAndLogin(app);
 
-    const conversation = await client.conversation.create({
+    const conversation = await prisma.conversation.create({
         data: {
             name: randomBytes(8).toString('hex'),
             participants: { connect: { id: user.id } },
@@ -64,10 +66,10 @@ it('should add person to conversation', async () => {
 });
 
 it('should throw error when not permitted', async () => {
-    const someUser = await createRandomUser(client);
-    const { cookies } = await createRandomUserAndLogin(app, client);
+    const someUser = await createRandomUser(prisma);
+    const { cookies } = await createRandomUserAndLogin(app);
 
-    const conversation = await client.conversation.create({
+    const conversation = await prisma.conversation.create({
         data: {
             name: randomBytes(8).toString('hex'),
         },
@@ -83,9 +85,9 @@ it('should throw error when not permitted', async () => {
 });
 
 it('should throw error when not authorized', async () => {
-    const someUser = await createRandomUser(client);
+    const someUser = await createRandomUser(prisma);
 
-    const conversation = await client.conversation.create({
+    const conversation = await prisma.conversation.create({
         data: {
             name: randomBytes(8).toString('hex'),
         },

@@ -1,26 +1,28 @@
-import { PrismaClient } from '@prisma/client';
+// import { PrismaClient } from '@prisma/client';
 import { FastifyInstance } from 'fastify';
 import { createFastifyGQLTestClient, GQLResponse } from 'fastify-gql-integration-testing';
 
-import main from '../../../..';
+import {
+    gqlRequest,
+    createRandomUserAndLogin,
+    initTestServer,
+    closeTestServer,
+} from '../../../../tests/helpers';
 import { NexusGenRootTypes } from '../../../../generated/nexus';
-import { gqlRequest, createRandomUserAndLogin } from '../../../../tests/helpers';
 
-let client: PrismaClient;
+// let prisma: PrismaClient;
 let app: FastifyInstance;
 let testClient: ReturnType<typeof createFastifyGQLTestClient>;
 
 beforeAll(async () => {
-    client = new PrismaClient();
-    app = await main(true);
-    testClient = createFastifyGQLTestClient(app);
+    const testing = await initTestServer();
+    app = testing.app;
+    // prisma = testing.app.prisma;
+    testClient = testing.testClient;
 });
 
 afterAll(async () => {
-    await Promise.allSettled([
-        client.$disconnect(),
-        app.close(),
-    ]);
+    await closeTestServer(app);
 });
 
 const queryString = `
@@ -39,7 +41,7 @@ it('should throw FORBIDDEN error when quering people without permissions', async
 });
 
 it('should return people list when admin permissions are present', async () => {
-    const { cookies } = await createRandomUserAndLogin(app, client, { isAdmin: true });
+    const { cookies } = await createRandomUserAndLogin(app, { isAdmin: true });
 
     const peopleRes = await gqlRequest(app, {
         cookies,

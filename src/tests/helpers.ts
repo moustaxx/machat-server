@@ -3,9 +3,29 @@ import { Response } from 'light-my-request';
 import { randomBytes } from 'crypto';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { PrismaClient } from '@prisma/client';
+import { createFastifyGQLTestClient } from 'fastify-gql-integration-testing';
 
+import main from '..';
 import { getHash } from '../modules/Person/helpers/getHash';
 import { NexusGenRootTypes } from '../generated/nexus';
+
+type TInitTestServerResponse = Promise<{
+    app: FastifyInstance,
+    testClient: ReturnType<typeof createFastifyGQLTestClient>,
+}>;
+
+export const initTestServer = async (): TInitTestServerResponse => {
+    const app = await main(true);
+    const testClient = createFastifyGQLTestClient(app);
+    return { app, testClient };
+};
+
+export const closeTestServer = async (app: FastifyInstance): Promise<void> => {
+    await Promise.allSettled([
+        app.prisma.$disconnect(),
+        app.close(),
+    ]);
+};
 
 export type TCookie = {
     name: string;
@@ -96,7 +116,6 @@ export const createRandomUser: TCreateRandomUser = async (prisma, options) => {
 
 type TRandomUserLogin = (
     app: FastifyInstance,
-    prisma: PrismaClient,
     options?: {
         isAdmin?: boolean;
     },
@@ -108,12 +127,12 @@ type TRandomUserLogin = (
     cookiesArray: TCookie[];
 }>;
 
-export const createRandomUserAndLogin: TRandomUserLogin = async (app, prisma, options) => {
+export const createRandomUserAndLogin: TRandomUserLogin = async (app, options) => {
     const {
         username,
         password,
         user,
-    } = await createRandomUser(prisma, { isAdmin: options?.isAdmin });
+    } = await createRandomUser(app.prisma, { isAdmin: options?.isAdmin });
 
     const loginRes = await gqlRequest(app, {
         query: `

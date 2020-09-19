@@ -2,24 +2,26 @@ import { PrismaClient } from '@prisma/client';
 import { FastifyInstance } from 'fastify';
 import { createFastifyGQLTestClient } from 'fastify-gql-integration-testing';
 
-import main from '../../../..';
-import { createRandomUser, createRandomUserAndLogin } from '../../../../tests/helpers';
+import {
+    createRandomUserAndLogin,
+    createRandomUser,
+    initTestServer,
+    closeTestServer,
+} from '../../../../tests/helpers';
 
-let client: PrismaClient;
+let prisma: PrismaClient;
 let app: FastifyInstance;
 let testClient: ReturnType<typeof createFastifyGQLTestClient>;
 
 beforeAll(async () => {
-    client = new PrismaClient();
-    app = await main(true);
-    testClient = createFastifyGQLTestClient(app);
+    const testing = await initTestServer();
+    app = testing.app;
+    prisma = testing.app.prisma;
+    testClient = testing.testClient;
 });
 
 afterAll(async () => {
-    await Promise.allSettled([
-        client.$disconnect(),
-        app.close(),
-    ]);
+    await closeTestServer(app);
 });
 
 const queryString = `
@@ -31,14 +33,14 @@ const queryString = `
 `;
 
 it('should log in', async () => {
-    const { cookiesArray } = await createRandomUserAndLogin(app, client);
+    const { cookiesArray } = await createRandomUserAndLogin(app);
     const loggedIn = cookiesArray.find((cookie) => cookie.name === 'loggedIn');
 
     expect(loggedIn?.value).toEqual('1');
 });
 
 it('should throw error when already logged in', async () => {
-    const { username, password, cookies } = await createRandomUserAndLogin(app, client);
+    const { username, password, cookies } = await createRandomUserAndLogin(app);
 
     const { errors } = await testClient.query(queryString, {
         cookies,
@@ -50,7 +52,7 @@ it('should throw error when already logged in', async () => {
 });
 
 it('should throw error when wrong password', async () => {
-    const { username } = await createRandomUser(client);
+    const { username } = await createRandomUser(prisma);
 
     const { errors } = await testClient.query(queryString, {
         variables: { username, password: 'wrong_password' },

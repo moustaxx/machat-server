@@ -3,25 +3,27 @@ import { FastifyInstance } from 'fastify';
 import { createFastifyGQLTestClient, GQLResponse } from 'fastify-gql-integration-testing';
 import { randomBytes } from 'crypto';
 
-import main from '../../../..';
 import { NexusGenRootTypes } from '../../../../generated/nexus';
-import { gqlRequest, createRandomUserAndLogin } from '../../../../tests/helpers';
+import {
+    gqlRequest,
+    createRandomUserAndLogin,
+    initTestServer,
+    closeTestServer,
+} from '../../../../tests/helpers';
 
-let client: PrismaClient;
+let prisma: PrismaClient;
 let app: FastifyInstance;
 let testClient: ReturnType<typeof createFastifyGQLTestClient>;
 
 beforeAll(async () => {
-    client = new PrismaClient();
-    app = await main(true);
-    testClient = createFastifyGQLTestClient(app);
+    const testing = await initTestServer();
+    app = testing.app;
+    prisma = testing.app.prisma;
+    testClient = testing.testClient;
 });
 
 afterAll(async () => {
-    await Promise.allSettled([
-        client.$disconnect(),
-        app.close(),
-    ]);
+    await closeTestServer(app);
 });
 
 const queryString = `
@@ -33,9 +35,9 @@ const queryString = `
 `;
 
 it('should return conversation', async () => {
-    const { cookies, user } = await createRandomUserAndLogin(app, client);
+    const { cookies, user } = await createRandomUserAndLogin(app);
 
-    const conversation = await client.conversation.create({
+    const conversation = await prisma.conversation.create({
         data: {
             name: randomBytes(8).toString('hex'),
             participants: { connect: { id: user.id } },
@@ -55,9 +57,9 @@ it('should return conversation', async () => {
 });
 
 it('should throw FORBIDDEN error when not permitted', async () => {
-    const { cookies } = await createRandomUserAndLogin(app, client);
+    const { cookies } = await createRandomUserAndLogin(app);
 
-    const conversation = await client.conversation.create({
+    const conversation = await prisma.conversation.create({
         data: {
             name: randomBytes(8).toString('hex'),
         },
@@ -73,7 +75,7 @@ it('should throw FORBIDDEN error when not permitted', async () => {
 });
 
 it('should throw error when not authorized', async () => {
-    const conversation = await client.conversation.create({
+    const conversation = await prisma.conversation.create({
         data: {
             name: randomBytes(8).toString('hex'),
         },
