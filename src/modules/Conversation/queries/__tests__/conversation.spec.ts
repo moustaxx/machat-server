@@ -1,30 +1,22 @@
-import { PrismaClient } from '@prisma/client';
-import { FastifyInstance } from 'fastify';
 import { randomBytes } from 'crypto';
 
 import { NexusGenRootTypes } from '../../../../generated/nexus';
 import {
-    gqlRequest,
     createRandomUserAndLogin,
     initTestServer,
     closeTestServer,
-    TGqlQuery,
     GQLResponse,
+    TTestUtils,
 } from '../../../../tests/helpers';
 
-let prisma: PrismaClient;
-let app: FastifyInstance;
-let gqlQuery: TGqlQuery;
+let t: TTestUtils;
 
 beforeAll(async () => {
-    const testing = await initTestServer();
-    app = testing.app;
-    prisma = testing.app.prisma;
-    gqlQuery = testing.gqlQuery;
+    t = await initTestServer();
 });
 
 afterAll(async () => {
-    await closeTestServer(app);
+    await closeTestServer(t.app);
 });
 
 const queryString = `
@@ -36,16 +28,16 @@ const queryString = `
 `;
 
 it('should return conversation', async () => {
-    const { cookies, user } = await createRandomUserAndLogin(app);
+    const { cookies, user } = await createRandomUserAndLogin(t.app);
 
-    const conversation = await prisma.conversation.create({
+    const conversation = await t.prisma.conversation.create({
         data: {
             name: randomBytes(8).toString('hex'),
             participants: { connect: { id: user.id } },
         },
     });
 
-    const conversationRes = await gqlRequest(app, {
+    const conversationRes = await t.gqlRequest({
         cookies,
         query: queryString,
         variables: { whereId: conversation.id },
@@ -58,15 +50,15 @@ it('should return conversation', async () => {
 });
 
 it('should throw FORBIDDEN error when not permitted', async () => {
-    const { cookies } = await createRandomUserAndLogin(app);
+    const { cookies } = await createRandomUserAndLogin(t.app);
 
-    const conversation = await prisma.conversation.create({
+    const conversation = await t.prisma.conversation.create({
         data: {
             name: randomBytes(8).toString('hex'),
         },
     });
 
-    const data = await gqlQuery({
+    const data = await t.gqlQuery({
         query: queryString,
         cookies,
         variables: { whereId: conversation.id },
@@ -77,13 +69,13 @@ it('should throw FORBIDDEN error when not permitted', async () => {
 });
 
 it('should throw error when not authorized', async () => {
-    const conversation = await prisma.conversation.create({
+    const conversation = await t.prisma.conversation.create({
         data: {
             name: randomBytes(8).toString('hex'),
         },
     });
 
-    const data = await gqlQuery({
+    const data = await t.gqlQuery({
         query: queryString,
         variables: { whereId: conversation.id },
     });

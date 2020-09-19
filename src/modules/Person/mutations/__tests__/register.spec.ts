@@ -1,22 +1,20 @@
-// import { PrismaClient } from '@prisma/client';
-import { FastifyInstance } from 'fastify';
 import { randomBytes } from 'crypto';
 
-import { gqlRequest, createRandomUserAndLogin, initTestServer, closeTestServer, TGqlQuery } from '../../../../tests/helpers';
+import {
+    createRandomUserAndLogin,
+    initTestServer,
+    closeTestServer,
+    TTestUtils,
+} from '../../../../tests/helpers';
 
-// let prisma: PrismaClient;
-let app: FastifyInstance;
-let gqlQuery: TGqlQuery;
+let t: TTestUtils;
 
 beforeAll(async () => {
-    const testing = await initTestServer();
-    app = testing.app;
-    // prisma = testing.app.prisma;
-    gqlQuery = testing.gqlQuery;
+    t = await initTestServer();
 });
 
 afterAll(async () => {
-    await closeTestServer(app);
+    await closeTestServer(t.app);
 });
 
 const queryString = `
@@ -32,7 +30,7 @@ it('should register', async () => {
     const password = randomBytes(9).toString('hex');
     const email = `${username}@machat.ru`;
 
-    const logoutRes = await gqlRequest(app, {
+    const logoutRes = await t.gqlRequest({
         query: queryString,
         variables: { email, username, password },
     });
@@ -46,9 +44,9 @@ it('should register', async () => {
 });
 
 it('should throw error when already logged in', async () => {
-    const { username, password, user, cookies } = await createRandomUserAndLogin(app);
+    const { username, password, user, cookies } = await createRandomUserAndLogin(t.app);
 
-    const { errors } = await gqlQuery({
+    const { errors } = await t.gqlQuery({
         query: queryString,
         cookies,
         variables: { username, password, email: user.email },

@@ -1,23 +1,21 @@
-import { PrismaClient } from '@prisma/client';
-import { FastifyInstance } from 'fastify';
 import { randomBytes } from 'crypto';
 
-import { closeTestServer, createRandomUserAndLogin, initTestServer, TGqlQuery } from '../../../../tests/helpers';
+import {
+    closeTestServer,
+    createRandomUserAndLogin,
+    initTestServer,
+    TTestUtils,
+} from '../../../../tests/helpers';
 import { Conversation } from '../../../../../node_modules/.prisma/client';
 
-let prisma: PrismaClient;
-let app: FastifyInstance;
-let gqlQuery: TGqlQuery;
+let t: TTestUtils;
 
 beforeAll(async () => {
-    const testing = await initTestServer();
-    app = testing.app;
-    prisma = testing.app.prisma;
-    gqlQuery = testing.gqlQuery;
+    t = await initTestServer();
 });
 
 afterAll(async () => {
-    await closeTestServer(app);
+    await closeTestServer(t.app);
 });
 
 const queryString = `
@@ -29,9 +27,9 @@ const queryString = `
 `;
 
 it('should create message', async () => {
-    const { user, cookies } = await createRandomUserAndLogin(app);
+    const { user, cookies } = await createRandomUserAndLogin(t.app);
 
-    const conversation = await prisma.conversation.create({
+    const conversation = await t.prisma.conversation.create({
         data: {
             name: randomBytes(8).toString('hex'),
             participants: { connect: { id: user.id } },
@@ -39,7 +37,7 @@ it('should create message', async () => {
     });
 
     type TData = { createMessage: Conversation };
-    const { data } = await gqlQuery<TData>({
+    const { data } = await t.gqlQuery<TData>({
         query: queryString,
         cookies,
         variables: {
@@ -48,7 +46,7 @@ it('should create message', async () => {
         },
     });
 
-    const messageInDB = await prisma.conversation.findOne({
+    const messageInDB = await t.prisma.conversation.findOne({
         where: { id: data.createMessage.id },
     });
 
@@ -56,15 +54,15 @@ it('should create message', async () => {
 });
 
 it('should throw error when not permitted', async () => {
-    const { cookies } = await createRandomUserAndLogin(app);
+    const { cookies } = await createRandomUserAndLogin(t.app);
 
-    const conversation = await prisma.conversation.create({
+    const conversation = await t.prisma.conversation.create({
         data: {
             name: randomBytes(8).toString('hex'),
         },
     });
 
-    const { errors } = await gqlQuery({
+    const { errors } = await t.gqlQuery({
         query: queryString,
         cookies,
         variables: {
@@ -78,13 +76,13 @@ it('should throw error when not permitted', async () => {
 });
 
 it('should throw error when not authorized', async () => {
-    const conversation = await prisma.conversation.create({
+    const conversation = await t.prisma.conversation.create({
         data: {
             name: randomBytes(8).toString('hex'),
         },
     });
 
-    const { errors } = await gqlQuery({
+    const { errors } = await t.gqlQuery({
         query: queryString,
         variables: {
             content: randomBytes(3).toString('hex'),
@@ -97,9 +95,9 @@ it('should throw error when not authorized', async () => {
 });
 
 it('should throw error if empty message', async () => {
-    const { user, cookies } = await createRandomUserAndLogin(app);
+    const { user, cookies } = await createRandomUserAndLogin(t.app);
 
-    const conversation = await prisma.conversation.create({
+    const conversation = await t.prisma.conversation.create({
         data: {
             name: randomBytes(8).toString('hex'),
             participants: { connect: { id: user.id } },
@@ -107,7 +105,7 @@ it('should throw error if empty message', async () => {
     });
 
     type TData = { createMessage: Conversation };
-    const { errors } = await gqlQuery<TData>({
+    const { errors } = await t.gqlQuery<TData>({
         query: queryString,
         cookies,
         variables: {

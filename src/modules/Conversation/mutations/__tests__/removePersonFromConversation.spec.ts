@@ -1,5 +1,3 @@
-import { PrismaClient } from '@prisma/client';
-import { FastifyInstance } from 'fastify';
 import { randomBytes } from 'crypto';
 
 import {
@@ -7,23 +5,18 @@ import {
     createRandomUser,
     initTestServer,
     closeTestServer,
-    TGqlQuery,
+    TTestUtils,
 } from '../../../../tests/helpers';
 import { Conversation, Person } from '../../../../../node_modules/.prisma/client';
 
-let prisma: PrismaClient;
-let app: FastifyInstance;
-let gqlQuery: TGqlQuery;
+let t: TTestUtils;
 
 beforeAll(async () => {
-    const testing = await initTestServer();
-    app = testing.app;
-    prisma = testing.app.prisma;
-    gqlQuery = testing.gqlQuery;
+    t = await initTestServer();
 });
 
 afterAll(async () => {
-    await closeTestServer(app);
+    await closeTestServer(t.app);
 });
 
 const queryString = `
@@ -39,10 +32,10 @@ const queryString = `
 `;
 
 it('should remove person from conversation', async () => {
-    const someUser = await createRandomUser(prisma);
-    const { user, cookies } = await createRandomUserAndLogin(app);
+    const someUser = await createRandomUser(t.prisma);
+    const { user, cookies } = await createRandomUserAndLogin(t.app);
 
-    const conversation = await prisma.conversation.create({
+    const conversation = await t.prisma.conversation.create({
         data: {
             name: randomBytes(8).toString('hex'),
             participants: { connect: [{ id: user.id }, { id: someUser.user.id }] },
@@ -52,7 +45,7 @@ it('should remove person from conversation', async () => {
     type TData = { removePersonFromConversation: Conversation & {
         participants: Person[];
     } };
-    const { data } = await gqlQuery<TData>({
+    const { data } = await t.gqlQuery<TData>({
         query: queryString,
         cookies,
         variables: { personId: someUser.user.id, conversationId: conversation.id },
@@ -67,16 +60,16 @@ it('should remove person from conversation', async () => {
 });
 
 it('should throw error when not permitted', async () => {
-    const someUser = await createRandomUser(prisma);
-    const { cookies } = await createRandomUserAndLogin(app);
+    const someUser = await createRandomUser(t.prisma);
+    const { cookies } = await createRandomUserAndLogin(t.app);
 
-    const conversation = await prisma.conversation.create({
+    const conversation = await t.prisma.conversation.create({
         data: {
             name: randomBytes(8).toString('hex'),
         },
     });
 
-    const { errors } = await gqlQuery({
+    const { errors } = await t.gqlQuery({
         query: queryString,
         cookies,
         variables: { personId: someUser.user.id, conversationId: conversation.id },
@@ -87,15 +80,15 @@ it('should throw error when not permitted', async () => {
 });
 
 it('should throw error when not authorized', async () => {
-    const someUser = await createRandomUser(prisma);
+    const someUser = await createRandomUser(t.prisma);
 
-    const conversation = await prisma.conversation.create({
+    const conversation = await t.prisma.conversation.create({
         data: {
             name: randomBytes(8).toString('hex'),
         },
     });
 
-    const { errors } = await gqlQuery({
+    const { errors } = await t.gqlQuery({
         query: queryString,
         variables: { personId: someUser.user.id, conversationId: conversation.id },
     });

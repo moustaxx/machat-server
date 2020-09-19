@@ -175,13 +175,14 @@ export const createRandomUserAndLogin: TRandomUserLogin = async (app, options) =
 export type TGqlQuery = <T>(params: IQueryParams) => Promise<GQLResponse<T>>;
 export type TGqlRequest = (params: IQueryParams) => Promise<TResponse>;
 
-export type TInitTestServerResponse = Promise<{
+export type TTestUtils = {
     app: FastifyInstance,
+    prisma: PrismaClient,
     gqlQuery: TGqlQuery,
     gqlRequest: TGqlRequest,
-}>;
+};
 
-export const initTestServer = async (): TInitTestServerResponse => {
+export const initTestServer = async (): Promise<TTestUtils> => {
     const app = await main(true);
 
     const gqlQuery2: TGqlQuery = (params) => gqlQuery(app, params);
@@ -189,6 +190,7 @@ export const initTestServer = async (): TInitTestServerResponse => {
 
     return {
         app,
+        prisma: app.prisma,
         gqlQuery: gqlQuery2,
         gqlRequest: gqlRequest2,
     };
