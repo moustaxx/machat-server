@@ -1,19 +1,18 @@
 // import { PrismaClient } from '@prisma/client';
 import { FastifyInstance } from 'fastify';
-import { createFastifyGQLTestClient } from 'fastify-gql-integration-testing';
 import { randomBytes } from 'crypto';
 
-import { gqlRequest, createRandomUserAndLogin, initTestServer, closeTestServer } from '../../../../tests/helpers';
+import { gqlRequest, createRandomUserAndLogin, initTestServer, closeTestServer, TGqlQuery } from '../../../../tests/helpers';
 
 // let prisma: PrismaClient;
 let app: FastifyInstance;
-let testClient: ReturnType<typeof createFastifyGQLTestClient>;
+let gqlQuery: TGqlQuery;
 
 beforeAll(async () => {
     const testing = await initTestServer();
     app = testing.app;
     // prisma = testing.app.prisma;
-    testClient = testing.testClient;
+    gqlQuery = testing.gqlQuery;
 });
 
 afterAll(async () => {
@@ -49,7 +48,8 @@ it('should register', async () => {
 it('should throw error when already logged in', async () => {
     const { username, password, user, cookies } = await createRandomUserAndLogin(app);
 
-    const { errors } = await testClient.mutate(queryString, {
+    const { errors } = await gqlQuery({
+        query: queryString,
         cookies,
         variables: { username, password, email: user.email },
     });

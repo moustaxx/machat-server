@@ -1,20 +1,19 @@
 import { PrismaClient } from '@prisma/client';
 import { FastifyInstance } from 'fastify';
-import { createFastifyGQLTestClient } from 'fastify-gql-integration-testing';
 import { randomBytes } from 'crypto';
 
-import { closeTestServer, createRandomUserAndLogin, initTestServer } from '../../../../tests/helpers';
+import { closeTestServer, createRandomUserAndLogin, initTestServer, TGqlQuery } from '../../../../tests/helpers';
 import { Conversation } from '../../../../../node_modules/.prisma/client';
 
 let prisma: PrismaClient;
 let app: FastifyInstance;
-let testClient: ReturnType<typeof createFastifyGQLTestClient>;
+let gqlQuery: TGqlQuery;
 
 beforeAll(async () => {
     const testing = await initTestServer();
     app = testing.app;
     prisma = testing.app.prisma;
-    testClient = testing.testClient;
+    gqlQuery = testing.gqlQuery;
 });
 
 afterAll(async () => {
@@ -40,7 +39,8 @@ it('should create message', async () => {
     });
 
     type TData = { createMessage: Conversation };
-    const { data } = await testClient.mutate<TData>(queryString, {
+    const { data } = await gqlQuery<TData>({
+        query: queryString,
         cookies,
         variables: {
             content: randomBytes(3).toString('hex'),
@@ -64,7 +64,8 @@ it('should throw error when not permitted', async () => {
         },
     });
 
-    const { errors } = await testClient.mutate(queryString, {
+    const { errors } = await gqlQuery({
+        query: queryString,
         cookies,
         variables: {
             content: randomBytes(3).toString('hex'),
@@ -83,7 +84,8 @@ it('should throw error when not authorized', async () => {
         },
     });
 
-    const { errors } = await testClient.mutate(queryString, {
+    const { errors } = await gqlQuery({
+        query: queryString,
         variables: {
             content: randomBytes(3).toString('hex'),
             conversationId: conversation.id,
@@ -105,7 +107,8 @@ it('should throw error if empty message', async () => {
     });
 
     type TData = { createMessage: Conversation };
-    const { errors } = await testClient.mutate<TData>(queryString, {
+    const { errors } = await gqlQuery<TData>({
+        query: queryString,
         cookies,
         variables: {
             content: '',

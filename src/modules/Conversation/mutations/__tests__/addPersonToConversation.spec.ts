@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { FastifyInstance } from 'fastify';
-import { createFastifyGQLTestClient } from 'fastify-gql-integration-testing';
 import { randomBytes } from 'crypto';
 
 import {
@@ -8,18 +7,19 @@ import {
     createRandomUser,
     initTestServer,
     closeTestServer,
+    TGqlQuery,
 } from '../../../../tests/helpers';
 import { Conversation, Person } from '../../../../../node_modules/.prisma/client';
 
 let prisma: PrismaClient;
 let app: FastifyInstance;
-let testClient: ReturnType<typeof createFastifyGQLTestClient>;
+let gqlQuery: TGqlQuery;
 
 beforeAll(async () => {
     const testing = await initTestServer();
     app = testing.app;
     prisma = testing.app.prisma;
-    testClient = testing.testClient;
+    gqlQuery = testing.gqlQuery;
 });
 
 afterAll(async () => {
@@ -52,7 +52,8 @@ it('should add person to conversation', async () => {
     type TData = { addPersonToConversation: Conversation & {
         participants: Person[];
     } };
-    const { data } = await testClient.mutate<TData>(queryString, {
+    const { data } = await gqlQuery<TData>({
+        query: queryString,
         cookies,
         variables: { personId: someUser.user.id, conversationId: conversation.id },
     });
@@ -75,7 +76,8 @@ it('should throw error when not permitted', async () => {
         },
     });
 
-    const { errors } = await testClient.mutate(queryString, {
+    const { errors } = await gqlQuery({
+        query: queryString,
         cookies,
         variables: { personId: someUser.user.id, conversationId: conversation.id },
     });
@@ -93,7 +95,8 @@ it('should throw error when not authorized', async () => {
         },
     });
 
-    const { errors } = await testClient.mutate(queryString, {
+    const { errors } = await gqlQuery({
+        query: queryString,
         variables: { personId: someUser.user.id, conversationId: conversation.id },
     });
 

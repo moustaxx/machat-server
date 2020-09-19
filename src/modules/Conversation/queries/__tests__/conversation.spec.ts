@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { FastifyInstance } from 'fastify';
-import { createFastifyGQLTestClient, GQLResponse } from 'fastify-gql-integration-testing';
 import { randomBytes } from 'crypto';
 
 import { NexusGenRootTypes } from '../../../../generated/nexus';
@@ -9,17 +8,19 @@ import {
     createRandomUserAndLogin,
     initTestServer,
     closeTestServer,
+    TGqlQuery,
+    GQLResponse,
 } from '../../../../tests/helpers';
 
 let prisma: PrismaClient;
 let app: FastifyInstance;
-let testClient: ReturnType<typeof createFastifyGQLTestClient>;
+let gqlQuery: TGqlQuery;
 
 beforeAll(async () => {
     const testing = await initTestServer();
     app = testing.app;
     prisma = testing.app.prisma;
-    testClient = testing.testClient;
+    gqlQuery = testing.gqlQuery;
 });
 
 afterAll(async () => {
@@ -65,7 +66,8 @@ it('should throw FORBIDDEN error when not permitted', async () => {
         },
     });
 
-    const data = await testClient.query(queryString, {
+    const data = await gqlQuery({
+        query: queryString,
         cookies,
         variables: { whereId: conversation.id },
     });
@@ -81,7 +83,8 @@ it('should throw error when not authorized', async () => {
         },
     });
 
-    const data = await testClient.query(queryString, {
+    const data = await gqlQuery({
+        query: queryString,
         variables: { whereId: conversation.id },
     });
 

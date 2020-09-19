@@ -1,24 +1,25 @@
 // import { PrismaClient } from '@prisma/client';
 import { FastifyInstance } from 'fastify';
-import { createFastifyGQLTestClient, GQLResponse } from 'fastify-gql-integration-testing';
 
 import {
     gqlRequest,
     createRandomUserAndLogin,
     initTestServer,
     closeTestServer,
+    TGqlQuery,
+    GQLResponse,
 } from '../../../../tests/helpers';
 import { NexusGenRootTypes } from '../../../../generated/nexus';
 
 // let prisma: PrismaClient;
 let app: FastifyInstance;
-let testClient: ReturnType<typeof createFastifyGQLTestClient>;
+let gqlQuery: TGqlQuery;
 
 beforeAll(async () => {
     const testing = await initTestServer();
     app = testing.app;
     // prisma = testing.app.prisma;
-    testClient = testing.testClient;
+    gqlQuery = testing.gqlQuery;
 });
 
 afterAll(async () => {
@@ -34,7 +35,7 @@ const queryString = `
 `;
 
 it('should throw FORBIDDEN error when quering people without permissions', async () => {
-    const data = await testClient.query(queryString);
+    const data = await gqlQuery({ query: queryString });
 
     const errorCode = data.errors?.[0].extensions?.code;
     expect(errorCode).toEqual('FORBIDDEN');

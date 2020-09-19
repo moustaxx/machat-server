@@ -3,29 +3,11 @@ import { Response } from 'light-my-request';
 import { randomBytes } from 'crypto';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { PrismaClient } from '@prisma/client';
-import { createFastifyGQLTestClient } from 'fastify-gql-integration-testing';
+import { GraphQLError } from 'graphql';
 
 import main from '..';
 import { getHash } from '../modules/Person/helpers/getHash';
 import { NexusGenRootTypes } from '../generated/nexus';
-
-type TInitTestServerResponse = Promise<{
-    app: FastifyInstance,
-    testClient: ReturnType<typeof createFastifyGQLTestClient>,
-}>;
-
-export const initTestServer = async (): TInitTestServerResponse => {
-    const app = await main(true);
-    const testClient = createFastifyGQLTestClient(app);
-    return { app, testClient };
-};
-
-export const closeTestServer = async (app: FastifyInstance): Promise<void> => {
-    await Promise.allSettled([
-        app.prisma.$disconnect(),
-        app.close(),
-    ]);
-};
 
 export type TCookie = {
     name: string;
@@ -72,6 +54,36 @@ export async function gqlRequest(app: FastifyInstance, {
             operationName,
         }),
     }) as Promise<TResponse>;
+}
+
+export declare type GQLResponse<T> = {
+    data: T;
+    errors?: GraphQLError[];
+};
+
+async function gqlQuery<T>(app: FastifyInstance, {
+    url,
+    query,
+    cookies,
+    headers,
+    variables,
+    operationName,
+}: IQueryParams): Promise<GQLResponse<T>> {
+    const res = await app.inject({
+        url: url || '/graphql',
+        method: 'POST',
+        cookies,
+        headers: {
+            'content-type': 'application/json; charset=utf-8',
+            ...headers,
+        },
+        payload: JSON.stringify({
+            query,
+            variables,
+            operationName,
+        }),
+    });
+    return res.json();
 }
 
 type TCreateRandomUser = (
@@ -158,4 +170,33 @@ export const createRandomUserAndLogin: TRandomUserLogin = async (app, options) =
         cookies,
         cookiesArray,
     };
+};
+
+export type TGqlQuery = <T>(params: IQueryParams) => Promise<GQLResponse<T>>;
+export type TGqlRequest = (params: IQueryParams) => Promise<TResponse>;
+
+export type TInitTestServerResponse = Promise<{
+    app: FastifyInstance,
+    gqlQuery: TGqlQuery,
+    gqlRequest: TGqlRequest,
+}>;
+
+export const initTestServer = async (): TInitTestServerResponse => {
+    const app = await main(true);
+
+    const gqlQuery2: TGqlQuery = (params) => gqlQuery(app, params);
+    const gqlRequest2: TGqlRequest = (params) => gqlRequest(app, params);
+
+    return {
+        app,
+        gqlQuery: gqlQuery2,
+        gqlRequest: gqlRequest2,
+    };
+};
+
+export const closeTestServer = async (app: FastifyInstance): Promise<void> => {
+    await Promise.allSettled([
+        app.prisma.$disconnect(),
+        app.close(),
+    ]);
 };

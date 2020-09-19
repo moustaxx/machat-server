@@ -1,23 +1,23 @@
 // import { PrismaClient } from '@prisma/client';
 import { FastifyInstance } from 'fastify';
-import { createFastifyGQLTestClient } from 'fastify-gql-integration-testing';
 
 import {
     gqlRequest,
     createRandomUserAndLogin,
     initTestServer,
     closeTestServer,
+    TGqlQuery,
 } from '../../../../tests/helpers';
 
 // let prisma: PrismaClient;
 let app: FastifyInstance;
-let testClient: ReturnType<typeof createFastifyGQLTestClient>;
+let gqlQuery: TGqlQuery;
 
 beforeAll(async () => {
     const testing = await initTestServer();
     app = testing.app;
     // prisma = testing.app.prisma;
-    testClient = testing.testClient;
+    gqlQuery = testing.gqlQuery;
 });
 
 afterAll(async () => {
@@ -50,7 +50,7 @@ it('should log out', async () => {
 });
 
 it('should throw error if not logged in try to log out', async () => {
-    const { errors } = await testClient.query(queryString);
+    const { errors } = await gqlQuery({ query: queryString });
 
     const errorCode = errors?.[0].extensions?.code;
     expect(errorCode).toEqual('UNAUTHORIZED');

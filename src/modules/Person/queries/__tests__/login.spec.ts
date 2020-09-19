@@ -1,23 +1,23 @@
 import { PrismaClient } from '@prisma/client';
 import { FastifyInstance } from 'fastify';
-import { createFastifyGQLTestClient } from 'fastify-gql-integration-testing';
 
 import {
     createRandomUserAndLogin,
     createRandomUser,
     initTestServer,
     closeTestServer,
+    TGqlQuery,
 } from '../../../../tests/helpers';
 
 let prisma: PrismaClient;
 let app: FastifyInstance;
-let testClient: ReturnType<typeof createFastifyGQLTestClient>;
+let gqlQuery: TGqlQuery;
 
 beforeAll(async () => {
     const testing = await initTestServer();
     app = testing.app;
     prisma = testing.app.prisma;
-    testClient = testing.testClient;
+    gqlQuery = testing.gqlQuery;
 });
 
 afterAll(async () => {
@@ -42,7 +42,8 @@ it('should log in', async () => {
 it('should throw error when already logged in', async () => {
     const { username, password, cookies } = await createRandomUserAndLogin(app);
 
-    const { errors } = await testClient.query(queryString, {
+    const { errors } = await gqlQuery({
+        query: queryString,
         cookies,
         variables: { username, password },
     });
@@ -54,7 +55,8 @@ it('should throw error when already logged in', async () => {
 it('should throw error when wrong password', async () => {
     const { username } = await createRandomUser(prisma);
 
-    const { errors } = await testClient.query(queryString, {
+    const { errors } = await gqlQuery({
+        query: queryString,
         variables: { username, password: 'wrong_password' },
     });
 
