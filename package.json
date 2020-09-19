@@ -18,34 +18,34 @@
     "dependencies": {
         "@nexus/schema": "^0.15.0",
         "apollo-server-errors": "^2.4.2",
-        "connect-pg-simple": "^6.2.0",
+        "connect-pg-simple": "^6.2.1",
         "dotenv": "^8.2.0",
-        "fastify": "^3.2.0",
+        "fastify": "^3.3.0",
         "fastify-cookie": "^4.0.2",
         "fastify-cors": "^4.1.0",
-        "fastify-gql": "^5.3.3",
+        "fastify-gql": "^5.6.0",
         "fastify-session": "^5.0.0",
         "graphql": "^15.3.0",
         "graphql-iso-date": "^3.6.1",
-        "nexus-plugin-prisma": "^0.17.0"
+        "nexus-plugin-prisma": "^0.19.0"
     },
     "devDependencies": {
         "@types/connect-pg-simple": "^4.2.0",
         "@types/graphql-iso-date": "^3.4.0",
-        "@types/jest": "^26.0.10",
-        "@types/node": "^14.0.27",
-        "@typescript-eslint/eslint-plugin": "^3.9.0",
-        "@typescript-eslint/parser": "^3.9.0",
-        "eslint": "^7.6.0",
-        "eslint-config-airbnb-typescript": "^9.0.0",
+        "@types/jest": "^26.0.14",
+        "@types/node": "^14.11.1",
+        "@typescript-eslint/eslint-plugin": "^4.0.1",
+        "@typescript-eslint/parser": "^4.0.1",
+        "eslint": "^7.8.0",
+        "eslint-config-airbnb-typescript": "^10.0.0",
         "eslint-plugin-import": "^2.22.0",
-        "eslint-plugin-jest": "^23.20.0",
+        "eslint-plugin-jest": "^24.0.1",
         "eslint-plugin-jsx-a11y": "^6.3.1",
         "fastify-gql-integration-testing": "^1.0.2",
         "jest": "^26.4.0",
         "ts-jest": "^26.2.0",
-        "ts-node": "^8.10.2",
-        "ts-node-dev": "^1.0.0-pre.57",
-        "typescript": "^3.9.7"
+        "ts-node": "^9.0.0",
+        "ts-node-dev": "^1.0.0-pre.61",
+        "typescript": "^4.0.3"
     }
 }

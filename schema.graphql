@@ -2,9 +2,18 @@
 ### Do not make changes to this file directly
 
 
-input BooleanFilter {
+input BoolFieldUpdateOperationsInput {
+  set: Boolean
+}
+
+input BoolFilter {
   equals: Boolean
-  not: Boolean
+  not: NestedBoolFilter
+}
+
+input BoolNullableFilter {
+  equals: Boolean
+  not: NestedBoolNullableFilter
 }
 
 type Conversation {
@@ -44,33 +53,25 @@ input ConversationCreateWithoutParticipantsInput {
   name: String!
 }
 
-input ConversationFilter {
-  every: ConversationWhereInput
-  none: ConversationWhereInput
-  some: ConversationWhereInput
-}
-
 input ConversationScalarWhereInput {
   AND: [ConversationScalarWhereInput!]
   createdAt: DateTimeFilter
   id: IntFilter
-  messages: MessageFilter
   name: StringFilter
   NOT: [ConversationScalarWhereInput!]
   OR: [ConversationScalarWhereInput!]
-  participants: PersonFilter
 }
 
 input ConversationUpdateInput {
-  createdAt: DateTime
+  createdAt: DateTimeFieldUpdateOperationsInput
   messages: MessageUpdateManyWithoutConversationInput
-  name: String
+  name: StringFieldUpdateOperationsInput
   participants: PersonUpdateManyWithoutConversationsInput
 }
 
 input ConversationUpdateManyDataInput {
-  createdAt: DateTime
-  name: String
+  createdAt: DateTimeFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
 }
 
 input ConversationUpdateManyWithoutParticipantsInput {
@@ -98,15 +99,15 @@ input ConversationUpdateOneRequiredWithoutMessagesInput {
 }
 
 input ConversationUpdateWithoutMessagesDataInput {
-  createdAt: DateTime
-  name: String
+  createdAt: DateTimeFieldUpdateOperationsInput
+  name: StringFieldUpdateOperationsInput
   participants: PersonUpdateManyWithoutConversationsInput
 }
 
 input ConversationUpdateWithoutParticipantsDataInput {
-  createdAt: DateTime
+  createdAt: DateTimeFieldUpdateOperationsInput
   messages: MessageUpdateManyWithoutConversationInput
-  name: String
+  name: StringFieldUpdateOperationsInput
 }
 
 input ConversationUpdateWithWhereUniqueWithoutParticipantsInput {
@@ -125,22 +126,15 @@ input ConversationUpsertWithWhereUniqueWithoutParticipantsInput {
   where: ConversationWhereUniqueInput!
 }
 
-input ConversationWhereInput {
-  AND: [ConversationWhereInput!]
-  createdAt: DateTimeFilter
-  id: IntFilter
-  messages: MessageFilter
-  name: StringFilter
-  NOT: [ConversationWhereInput!]
-  OR: [ConversationWhereInput!]
-  participants: PersonFilter
-}
-
 input ConversationWhereUniqueInput {
   id: Int
 }
 
 scalar DateTime
+
+input DateTimeFieldUpdateOperationsInput {
+  set: DateTime
+}
 
 input DateTimeFilter {
   equals: DateTime
@@ -149,7 +143,18 @@ input DateTimeFilter {
   in: [DateTime!]
   lt: DateTime
   lte: DateTime
-  not: DateTime
+  not: NestedDateTimeFilter
+  notIn: [DateTime!]
+}
+
+input DateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
   notIn: [DateTime!]
 }
 
@@ -160,7 +165,18 @@ input IntFilter {
   in: [Int!]
   lt: Int
   lte: Int
-  not: Int
+  not: NestedIntFilter
+  notIn: [Int!]
+}
+
+input IntNullableFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableFilter
   notIn: [Int!]
 }
 
@@ -196,15 +212,9 @@ input MessageCreateWithoutConversationInput {
   createdAt: DateTime
 }
 
-input MessageFilter {
-  every: MessageWhereInput
-  none: MessageWhereInput
-  some: MessageWhereInput
-}
-
 input MessageScalarWhereInput {
   AND: [MessageScalarWhereInput!]
-  authorID: NullableIntFilter
+  authorID: IntNullableFilter
   content: StringFilter
   conversationID: IntFilter
   createdAt: DateTimeFilter
@@ -215,14 +225,14 @@ input MessageScalarWhereInput {
 
 input MessageUpdateInput {
   author: PersonUpdateOneWithoutMessagesInput
-  content: String
+  content: StringFieldUpdateOperationsInput
   conversation: ConversationUpdateOneRequiredWithoutMessagesInput
-  createdAt: DateTime
+  createdAt: DateTimeFieldUpdateOperationsInput
 }
 
 input MessageUpdateManyDataInput {
-  content: String
-  createdAt: DateTime
+  content: StringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
 }
 
 input MessageUpdateManyWithoutAuthorInput {
@@ -255,15 +265,15 @@ input MessageUpdateManyWithWhereNestedInput {
 }
 
 input MessageUpdateWithoutAuthorDataInput {
-  content: String
+  content: StringFieldUpdateOperationsInput
   conversation: ConversationUpdateOneRequiredWithoutMessagesInput
-  createdAt: DateTime
+  createdAt: DateTimeFieldUpdateOperationsInput
 }
 
 input MessageUpdateWithoutConversationDataInput {
   author: PersonUpdateOneWithoutMessagesInput
-  content: String
-  createdAt: DateTime
+  content: StringFieldUpdateOperationsInput
+  createdAt: DateTimeFieldUpdateOperationsInput
 }
 
 input MessageUpdateWithWhereUniqueWithoutAuthorInput {
@@ -288,19 +298,6 @@ input MessageUpsertWithWhereUniqueWithoutConversationInput {
   where: MessageWhereUniqueInput!
 }
 
-input MessageWhereInput {
-  AND: [MessageWhereInput!]
-  author: PersonWhereInput
-  authorID: NullableIntFilter
-  content: StringFilter
-  conversation: ConversationWhereInput
-  conversationID: IntFilter
-  createdAt: DateTimeFilter
-  id: IntFilter
-  NOT: [MessageWhereInput!]
-  OR: [MessageWhereInput!]
-}
-
 input MessageWhereUniqueInput {
   id: Int
 }
@@ -318,31 +315,80 @@ type Mutation {
   updateOneMessage(data: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message
 }
 
-input NullableBooleanFilter {
+input NestedBoolFilter {
   equals: Boolean
-  not: Boolean
+  not: NestedBoolFilter
 }
 
-input NullableDateTimeFilter {
+input NestedBoolNullableFilter {
+  equals: Boolean
+  not: NestedBoolNullableFilter
+}
+
+input NestedDateTimeFilter {
   equals: DateTime
   gt: DateTime
   gte: DateTime
   in: [DateTime!]
   lt: DateTime
   lte: DateTime
-  not: DateTime
+  not: NestedDateTimeFilter
   notIn: [DateTime!]
 }
 
-input NullableIntFilter {
+input NestedDateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
+  notIn: [DateTime!]
+}
+
+input NestedIntFilter {
   equals: Int
   gt: Int
   gte: Int
   in: [Int!]
   lt: Int
   lte: Int
-  not: Int
+  not: NestedIntFilter
   notIn: [Int!]
+}
+
+input NestedIntNullableFilter {
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NestedIntNullableFilter
+  notIn: [Int!]
+}
+
+input NestedStringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+input NullableBoolFieldUpdateOperationsInput {
+  set: Boolean
+}
+
+input NullableDateTimeFieldUpdateOperationsInput {
+  set: DateTime
 }
 
 type Person {
@@ -391,23 +437,15 @@ input PersonCreateWithoutMessagesInput {
   username: String!
 }
 
-input PersonFilter {
-  every: PersonWhereInput
-  none: PersonWhereInput
-  some: PersonWhereInput
-}
-
 input PersonScalarWhereInput {
   AND: [PersonScalarWhereInput!]
-  conversations: ConversationFilter
   createdAt: DateTimeFilter
   email: StringFilter
   hash: StringFilter
   id: IntFilter
-  isActive: BooleanFilter
-  isAdmin: NullableBooleanFilter
-  lastSeen: NullableDateTimeFilter
-  messages: MessageFilter
+  isActive: BoolFilter
+  isAdmin: BoolNullableFilter
+  lastSeen: DateTimeNullableFilter
   NOT: [PersonScalarWhereInput!]
   OR: [PersonScalarWhereInput!]
   salt: StringFilter
@@ -415,14 +453,14 @@ input PersonScalarWhereInput {
 }
 
 input PersonUpdateManyDataInput {
-  createdAt: DateTime
-  email: String
-  hash: String
-  isActive: Boolean
-  isAdmin: Boolean
-  lastSeen: DateTime
-  salt: String
-  username: String
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  hash: StringFieldUpdateOperationsInput
+  isActive: BoolFieldUpdateOperationsInput
+  isAdmin: NullableBoolFieldUpdateOperationsInput
+  lastSeen: NullableDateTimeFieldUpdateOperationsInput
+  salt: StringFieldUpdateOperationsInput
+  username: StringFieldUpdateOperationsInput
 }
 
 input PersonUpdateManyWithoutConversationsInput {
@@ -452,27 +490,27 @@ input PersonUpdateOneWithoutMessagesInput {
 }
 
 input PersonUpdateWithoutConversationsDataInput {
-  createdAt: DateTime
-  email: String
-  hash: String
-  isActive: Boolean
-  isAdmin: Boolean
-  lastSeen: DateTime
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  hash: StringFieldUpdateOperationsInput
+  isActive: BoolFieldUpdateOperationsInput
+  isAdmin: NullableBoolFieldUpdateOperationsInput
+  lastSeen: NullableDateTimeFieldUpdateOperationsInput
   messages: MessageUpdateManyWithoutAuthorInput
-  salt: String
-  username: String
+  salt: StringFieldUpdateOperationsInput
+  username: StringFieldUpdateOperationsInput
 }
 
 input PersonUpdateWithoutMessagesDataInput {
   conversations: ConversationUpdateManyWithoutParticipantsInput
-  createdAt: DateTime
-  email: String
-  hash: String
-  isActive: Boolean
-  isAdmin: Boolean
-  lastSeen: DateTime
-  salt: String
-  username: String
+  createdAt: DateTimeFieldUpdateOperationsInput
+  email: StringFieldUpdateOperationsInput
+  hash: StringFieldUpdateOperationsInput
+  isActive: BoolFieldUpdateOperationsInput
+  isAdmin: NullableBoolFieldUpdateOperationsInput
+  lastSeen: NullableDateTimeFieldUpdateOperationsInput
+  salt: StringFieldUpdateOperationsInput
+  username: StringFieldUpdateOperationsInput
 }
 
 input PersonUpdateWithWhereUniqueWithoutConversationsInput {
@@ -489,23 +527,6 @@ input PersonUpsertWithWhereUniqueWithoutConversationsInput {
   create: PersonCreateWithoutConversationsInput!
   update: PersonUpdateWithoutConversationsDataInput!
   where: PersonWhereUniqueInput!
-}
-
-input PersonWhereInput {
-  AND: [PersonWhereInput!]
-  conversations: ConversationFilter
-  createdAt: DateTimeFilter
-  email: StringFilter
-  hash: StringFilter
-  id: IntFilter
-  isActive: BooleanFilter
-  isAdmin: NullableBooleanFilter
-  lastSeen: NullableDateTimeFilter
-  messages: MessageFilter
-  NOT: [PersonWhereInput!]
-  OR: [PersonWhereInput!]
-  salt: StringFilter
-  username: StringFilter
 }
 
 input PersonWhereUniqueInput {
@@ -527,6 +548,10 @@ type Query {
   sessionOwner: Person!
 }
 
+input StringFieldUpdateOperationsInput {
+  set: String
+}
+
 input StringFilter {
   contains: String
   endsWith: String
@@ -536,7 +561,7 @@ input StringFilter {
   in: [String!]
   lt: String
   lte: String
-  not: String
+  not: NestedStringFilter
   notIn: [String!]
   startsWith: String
 }
