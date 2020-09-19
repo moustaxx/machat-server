@@ -1,4 +1,12 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { PrismaClient } from '@prisma/client';
 import { NexusGenAllTypes } from './generated/nexus';
+
+declare module 'fastify' {
+    interface FastifyInstance {
+        prisma: PrismaClient;
+    }
+}
 
 export interface ISession {
     sessionId: string;
