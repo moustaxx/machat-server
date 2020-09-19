@@ -1,22 +1,16 @@
 import { randomBytes } from 'crypto';
 
 import { NexusGenRootTypes } from '../../../../generated/nexus';
-import {
-    createRandomUserAndLogin,
-    initTestServer,
-    closeTestServer,
-    GQLResponse,
-    TTestUtils,
-} from '../../../../tests/helpers';
+import { initTestServer, GQLResponse, ITestUtils } from '../../../../tests/helpers';
 
-let t: TTestUtils;
+let t: ITestUtils;
 
 beforeAll(async () => {
     t = await initTestServer();
 });
 
 afterAll(async () => {
-    await closeTestServer(t.app);
+    await t.closeTestServer();
 });
 
 const queryString = `
@@ -28,7 +22,7 @@ const queryString = `
 `;
 
 it('should return conversation', async () => {
-    const { cookies, user } = await createRandomUserAndLogin(t.app);
+    const { cookies, user } = await t.createRandomUserAndLogin();
 
     const conversation = await t.prisma.conversation.create({
         data: {
@@ -50,7 +44,7 @@ it('should return conversation', async () => {
 });
 
 it('should throw FORBIDDEN error when not permitted', async () => {
-    const { cookies } = await createRandomUserAndLogin(t.app);
+    const { cookies } = await t.createRandomUserAndLogin();
 
     const conversation = await t.prisma.conversation.create({
         data: {

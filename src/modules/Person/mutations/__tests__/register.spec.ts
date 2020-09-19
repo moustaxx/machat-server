@@ -1,20 +1,15 @@
 import { randomBytes } from 'crypto';
 
-import {
-    createRandomUserAndLogin,
-    initTestServer,
-    closeTestServer,
-    TTestUtils,
-} from '../../../../tests/helpers';
+import { initTestServer, ITestUtils } from '../../../../tests/helpers';
 
-let t: TTestUtils;
+let t: ITestUtils;
 
 beforeAll(async () => {
     t = await initTestServer();
 });
 
 afterAll(async () => {
-    await closeTestServer(t.app);
+    await t.closeTestServer();
 });
 
 const queryString = `
@@ -44,7 +39,7 @@ it('should register', async () => {
 });
 
 it('should throw error when already logged in', async () => {
-    const { username, password, user, cookies } = await createRandomUserAndLogin(t.app);
+    const { username, password, user, cookies } = await t.createRandomUserAndLogin();
 
     const { errors } = await t.gqlQuery({
         query: queryString,

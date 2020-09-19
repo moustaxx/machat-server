@@ -1,20 +1,14 @@
-import {
-    createRandomUserAndLogin,
-    initTestServer,
-    closeTestServer,
-    GQLResponse,
-    TTestUtils,
-} from '../../../../tests/helpers';
+import { initTestServer, ITestUtils, GQLResponse } from '../../../../tests/helpers';
 import { NexusGenRootTypes } from '../../../../generated/nexus';
 
-let t: TTestUtils;
+let t: ITestUtils;
 
 beforeAll(async () => {
     t = await initTestServer();
 });
 
 afterAll(async () => {
-    await closeTestServer(t.app);
+    await t.closeTestServer();
 });
 
 const queryString = `
@@ -33,7 +27,7 @@ it('should throw FORBIDDEN error when quering people without permissions', async
 });
 
 it('should return people list when admin permissions are present', async () => {
-    const { cookies } = await createRandomUserAndLogin(t.app, { isAdmin: true });
+    const { cookies } = await t.createRandomUserAndLogin({ isAdmin: true });
 
     const peopleRes = await t.gqlRequest({
         cookies,

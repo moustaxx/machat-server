@@ -1,21 +1,16 @@
 import { randomBytes } from 'crypto';
 
-import {
-    closeTestServer,
-    createRandomUserAndLogin,
-    initTestServer,
-    TTestUtils,
-} from '../../../../tests/helpers';
+import { initTestServer, ITestUtils } from '../../../../tests/helpers';
 import { Conversation } from '../../../../../node_modules/.prisma/client';
 
-let t: TTestUtils;
+let t: ITestUtils;
 
 beforeAll(async () => {
     t = await initTestServer();
 });
 
 afterAll(async () => {
-    await closeTestServer(t.app);
+    await t.closeTestServer();
 });
 
 const queryString = `
@@ -27,7 +22,7 @@ const queryString = `
 `;
 
 it('should create message', async () => {
-    const { user, cookies } = await createRandomUserAndLogin(t.app);
+    const { user, cookies } = await t.createRandomUserAndLogin();
 
     const conversation = await t.prisma.conversation.create({
         data: {
@@ -54,7 +49,7 @@ it('should create message', async () => {
 });
 
 it('should throw error when not permitted', async () => {
-    const { cookies } = await createRandomUserAndLogin(t.app);
+    const { cookies } = await t.createRandomUserAndLogin();
 
     const conversation = await t.prisma.conversation.create({
         data: {
@@ -95,7 +90,7 @@ it('should throw error when not authorized', async () => {
 });
 
 it('should throw error if empty message', async () => {
-    const { user, cookies } = await createRandomUserAndLogin(t.app);
+    const { user, cookies } = await t.createRandomUserAndLogin();
 
     const conversation = await t.prisma.conversation.create({
         data: {

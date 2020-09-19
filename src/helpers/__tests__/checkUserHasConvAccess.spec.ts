@@ -3,7 +3,7 @@ import { randomBytes } from 'crypto';
 import { ForbiddenError } from 'apollo-server-errors';
 
 import checkUserHasConvAccess from '../checkUserHasConvAccess';
-import { createRandomUser } from '../../tests/helpers';
+import { createRandomUserSep } from '../../tests/helpers';
 
 let prisma: PrismaClient;
 
@@ -16,7 +16,7 @@ afterAll(async () => {
 });
 
 it('should return that user can access the conversation', async () => {
-    const { user } = await createRandomUser(prisma);
+    const { user } = await createRandomUserSep(prisma);
 
     const conversation = await prisma.conversation.create({
         data: {
@@ -29,7 +29,7 @@ it('should return that user can access the conversation', async () => {
 });
 
 it('should throw error that user cannot access the conversation', async () => {
-    const { user } = await createRandomUser(prisma);
+    const { user } = await createRandomUserSep(prisma);
 
     const conversation = await prisma.conversation.create({
         data: {

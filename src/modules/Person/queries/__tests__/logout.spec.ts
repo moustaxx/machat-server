@@ -1,18 +1,13 @@
-import {
-    createRandomUserAndLogin,
-    initTestServer,
-    closeTestServer,
-    TTestUtils,
-} from '../../../../tests/helpers';
+import { initTestServer, ITestUtils } from '../../../../tests/helpers';
 
-let t: TTestUtils;
+let t: ITestUtils;
 
 beforeAll(async () => {
     t = await initTestServer();
 });
 
 afterAll(async () => {
-    await closeTestServer(t.app);
+    await t.closeTestServer();
 });
 
 const queryString = `
@@ -24,7 +19,7 @@ const queryString = `
 `;
 
 it('should log out', async () => {
-    const { user, cookies } = await createRandomUserAndLogin(t.app);
+    const { user, cookies } = await t.createRandomUserAndLogin();
 
     const logoutRes = await t.gqlRequest({
         query: queryString,

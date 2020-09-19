@@ -1,19 +1,13 @@
-import {
-    createRandomUserAndLogin,
-    createRandomUser,
-    initTestServer,
-    closeTestServer,
-    TTestUtils,
-} from '../../../../tests/helpers';
+import { initTestServer, ITestUtils } from '../../../../tests/helpers';
 
-let t: TTestUtils;
+let t: ITestUtils;
 
 beforeAll(async () => {
     t = await initTestServer();
 });
 
 afterAll(async () => {
-    await closeTestServer(t.app);
+    await t.closeTestServer();
 });
 
 const queryString = `
@@ -25,14 +19,14 @@ const queryString = `
 `;
 
 it('should log in', async () => {
-    const { cookiesArray } = await createRandomUserAndLogin(t.app);
+    const { cookiesArray } = await t.createRandomUserAndLogin();
     const loggedIn = cookiesArray.find((cookie) => cookie.name === 'loggedIn');
 
     expect(loggedIn?.value).toEqual('1');
 });
 
 it('should throw error when already logged in', async () => {
-    const { username, password, cookies } = await createRandomUserAndLogin(t.app);
+    const { username, password, cookies } = await t.createRandomUserAndLogin();
 
     const { errors } = await t.gqlQuery({
         query: queryString,
@@ -45,7 +39,7 @@ it('should throw error when already logged in', async () => {
 });
 
 it('should throw error when wrong password', async () => {
-    const { username } = await createRandomUser(t.prisma);
+    const { username } = await t.createRandomUser();
 
     const { errors } = await t.gqlQuery({
         query: queryString,
