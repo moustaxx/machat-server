@@ -11,6 +11,13 @@ const exec = util.promisify(require('child_process').exec);
 
 const prismaBinary = path.resolve('./node_modules/.bin/prisma');
 
+const execRepeatedOnErr = async (command, i = 0) => {
+    await exec(command).catch(async (err) => {
+        if (i > 3) throw Error(err);
+        await execRepeatedOnErr(command, i + 1);
+    });
+};
+
 class PrismaTestEnvironment extends NodeEnvironment {
     constructor(config) {
         super(config);
@@ -28,8 +35,8 @@ class PrismaTestEnvironment extends NodeEnvironment {
         this.global.process.env.DATABASE_URL = this.databaseUrl;
 
         // Run the migrations to ensure our schema has the required structure
-        await exec(`${prismaBinary} migrate save --experimental --name testing`);
-        await exec(`${prismaBinary} migrate up --create-db --experimental`);
+        await execRepeatedOnErr(`${prismaBinary} migrate save --experimental --name testing`);
+        await execRepeatedOnErr(`${prismaBinary} migrate up --create-db --experimental`);
 
         return super.setup();
     }
