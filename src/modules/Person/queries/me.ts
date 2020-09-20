@@ -12,7 +12,7 @@ export const meQueryField = queryField('me', {
             where: { id: session.owner.id },
         });
 
-        if (!data) throw new ApolloError('No data!', 'NO_DATA');
+        if (!data) throw new ApolloError('User not found!', 'USER_NOT_FOUND');
 
         return data;
     },
