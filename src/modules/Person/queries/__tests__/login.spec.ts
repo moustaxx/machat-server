@@ -45,7 +45,6 @@ it('should throw error when wrong username', async () => {
     });
 
     const errorCode = errors?.[0].extensions?.code;
-    console.log('errorCode:', errorCode);
     expect(errorCode).toEqual('GRAPHQL_VALIDATION_FAILED');
 });
 
