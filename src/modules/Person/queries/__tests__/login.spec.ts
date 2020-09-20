@@ -38,6 +38,17 @@ it('should throw error when already logged in', async () => {
     expect(errorCode).toEqual('ALREADY_LOGGED_IN');
 });
 
+it('should throw error when wrong username', async () => {
+    const { errors } = await t.gqlQuery({
+        query: queryString,
+        variables: { username: 'wrong_username', password: 'password' },
+    });
+
+    const errorCode = errors?.[0].extensions?.code;
+    console.log('errorCode:', errorCode);
+    expect(errorCode).toEqual('GRAPHQL_VALIDATION_FAILED');
+});
+
 it('should throw error when wrong password', async () => {
     const { username } = await t.createRandomUser();
 
