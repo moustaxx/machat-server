@@ -1,7 +1,7 @@
 import { randomBytes } from 'crypto';
 
 import { NexusGenRootTypes } from '../../../../generated/nexus';
-import { initTestServer, GQLResponse, ITestUtils } from '../../../../tests/helpers';
+import { initTestServer, ITestUtils } from '../../../../tests/helpers';
 
 let t: ITestUtils;
 
@@ -31,16 +31,27 @@ it('should return conversation', async () => {
         },
     });
 
-    const conversationRes = await t.gqlRequest({
+    type TData = { conversation: NexusGenRootTypes['Conversation'] };
+    const { data } = await t.gqlQuery<TData>({
         cookies,
         query: queryString,
         variables: { whereId: conversation.id },
     });
 
-    type TData = GQLResponse<{ conversation: NexusGenRootTypes['Conversation'] }>;
-    const { data }: TData = await conversationRes.json();
-
     expect(data.conversation.id).toBeTruthy();
+});
+
+it('should throw NO_DATA error when no data', async () => {
+    const { cookies } = await t.createRandomUserAndLogin({ isAdmin: true });
+
+    const { errors } = await t.gqlQuery({
+        cookies,
+        query: queryString,
+        variables: { whereId: 999 },
+    });
+
+    const errorCode = errors?.[0].extensions?.code;
+    expect(errorCode).toEqual('NO_DATA');
 });
 
 it('should throw FORBIDDEN error when not permitted', async () => {
@@ -52,13 +63,13 @@ it('should throw FORBIDDEN error when not permitted', async () => {
         },
     });
 
-    const data = await t.gqlQuery({
+    const { errors } = await t.gqlQuery({
         query: queryString,
         cookies,
         variables: { whereId: conversation.id },
     });
 
-    const errorCode = data.errors?.[0].extensions?.code;
+    const errorCode = errors?.[0].extensions?.code;
     expect(errorCode).toEqual('FORBIDDEN');
 });
 
@@ -69,11 +80,11 @@ it('should throw error when not authorized', async () => {
         },
     });
 
-    const data = await t.gqlQuery({
+    const { errors } = await t.gqlQuery({
         query: queryString,
         variables: { whereId: conversation.id },
     });
 
-    const errorCode = data.errors?.[0].extensions?.code;
+    const errorCode = errors?.[0].extensions?.code;
     expect(errorCode).toEqual('UNAUTHORIZED');
 });
