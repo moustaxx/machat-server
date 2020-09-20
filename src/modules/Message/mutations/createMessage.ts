@@ -29,8 +29,6 @@ export const createMessageMutationField = mutationField('createMessage', {
             },
         });
 
-        if (!data) throw new ApolloError('No data!', 'NO_DATA');
-
         return data;
     },
 });

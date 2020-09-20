@@ -25,8 +25,6 @@ export const removePersonFromConversationMutationField = mutationField(
                 },
             });
 
-            if (!data) throw new ApolloError('No data!', 'NO_DATA');
-
             return data;
         },
     },
