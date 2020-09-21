@@ -1,6 +1,7 @@
 import { randomBytes } from 'crypto';
+import { NexusGenRootTypes } from '../../../../generated/nexus';
 
-import { initTestServer, ITestUtils } from '../../../../tests/helpers';
+import { GQLResponse, initTestServer, ITestUtils } from '../../../../tests/helpers';
 
 let t: ITestUtils;
 
@@ -21,8 +22,8 @@ const queryString = `
 `;
 
 it('should register', async () => {
-    const username = randomBytes(5).toString('hex');
-    const password = randomBytes(9).toString('hex');
+    const username = randomBytes(4).toString('hex');
+    const password = randomBytes(6).toString('hex');
     const email = `${username}@machat.ru`;
 
     const logoutRes = await t.gqlRequest({
@@ -32,10 +33,53 @@ it('should register', async () => {
 
     const loggedIn = logoutRes.cookies.find((cookie) => cookie.name === 'loggedIn');
 
-    const logoutJson = await logoutRes.json();
+    type TPerson = GQLResponse<{ register: NexusGenRootTypes['Person'] }>;
+    const { data }: TPerson = await logoutRes.json();
 
     expect(loggedIn?.value).toEqual('1');
-    expect(logoutJson.data.register.id).toBeTruthy();
+    expect(data.register.id).toBeTruthy();
+});
+
+it('should throw error when username is too short', async () => {
+    const username = randomBytes(1).toString('hex');
+    const password = randomBytes(6).toString('hex');
+    const email = `${username}@machat.ru`;
+
+    const { errors } = await t.gqlQuery({
+        query: queryString,
+        variables: { username, password, email },
+    });
+
+    const errorCode = errors?.[0].extensions?.code;
+    expect(errorCode).toEqual('GRAPHQL_VALIDATION_FAILED');
+});
+
+it('should throw error when password is too short', async () => {
+    const username = randomBytes(4).toString('hex');
+    const password = randomBytes(1).toString('hex');
+    const email = `${username}@machat.ru`;
+
+    const { errors } = await t.gqlQuery({
+        query: queryString,
+        variables: { username, password, email },
+    });
+
+    const errorCode = errors?.[0].extensions?.code;
+    expect(errorCode).toEqual('GRAPHQL_VALIDATION_FAILED');
+});
+
+it('should throw wrong email error', async () => {
+    const username = randomBytes(4).toString('hex');
+    const password = randomBytes(6).toString('hex');
+    const email = `@${username}mach@t.ru`;
+
+    const { errors } = await t.gqlQuery({
+        query: queryString,
+        variables: { username, password, email },
+    });
+
+    const errorCode = errors?.[0].extensions?.code;
+    expect(errorCode).toEqual('GRAPHQL_VALIDATION_FAILED');
 });
 
 it('should throw error when already logged in', async () => {

@@ -1,8 +1,13 @@
 import { mutationField, stringArg } from '@nexus/schema';
-import { ApolloError } from 'apollo-server-errors';
+import { ApolloError, ValidationError } from 'apollo-server-errors';
 import { randomBytes } from 'crypto';
 
 import { getHash } from '../helpers/getHash';
+
+const checkIsEmail = (email: string) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+};
 
 export const registerMutationField = mutationField('register', {
     type: 'Person',
@@ -15,6 +20,10 @@ export const registerMutationField = mutationField('register', {
         if (session?.isLoggedIn) {
             throw new ApolloError('You are already logged in!', 'ALREADY_LOGGED_IN');
         }
+
+        if (username.length <= 3) throw new ValidationError('Username length must be > 3');
+        if (password.length <= 5) throw new ValidationError('Password length must be > 5');
+        if (!checkIsEmail(email)) throw new ValidationError('Wrong email');
 
         const salt = randomBytes(16).toString('hex');
         const hash = getHash(password, salt);
