@@ -45,7 +45,7 @@ it('should throw error when wrong username', async () => {
     });
 
     const errorCode = errors?.[0].extensions?.code;
-    expect(errorCode).toEqual('GRAPHQL_VALIDATION_FAILED');
+    expect(errorCode).toEqual('WRONG_CREDENTIALS');
 });
 
 it('should throw error when wrong password', async () => {
@@ -57,5 +57,5 @@ it('should throw error when wrong password', async () => {
     });
 
     const errorCode = errors?.[0].extensions?.code;
-    expect(errorCode).toEqual('GRAPHQL_VALIDATION_FAILED');
+    expect(errorCode).toEqual('WRONG_CREDENTIALS');
 });
