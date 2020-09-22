@@ -11,6 +11,30 @@ afterAll(async () => {
     await t.closeTestServer();
 });
 
+const queryStringFull = `
+    query person($whereId: Int!) {
+        person(where: { id: $whereId }) {
+            id
+            username
+            email
+            isActive
+            isAdmin
+            lastSeen
+            createdAt
+            conversations {
+                id
+                name
+            }
+            messages {
+                content
+                author {
+                    username
+                }
+            }
+        }
+    }
+`;
+
 const queryString = `
     query person($whereId: Int!) {
         person(where: { id: $whereId }) {
@@ -25,12 +49,24 @@ it('should return person', async () => {
 
     type TPerson = { person: NexusGenRootTypes['Person'] };
     const { data } = await t.gqlQuery<TPerson>({
-        query: queryString,
+        query: queryStringFull,
         variables: { whereId: user.id },
         cookies,
     });
 
-    expect(data.person.id).toBeTruthy();
+    expect(data).toMatchSnapshot({
+        person: {
+            email: expect.any(String),
+            username: expect.any(String),
+            createdAt: expect.any(String),
+        },
+    });
+
+    expect(data.person).toMatchObject({
+        email: user.email,
+        username: user.username,
+        createdAt: (user.createdAt as Date).toISOString(),
+    });
 });
 
 it('should throw error when not authorized', async () => {
