@@ -20,7 +20,7 @@ const queryString = `
 `;
 
 it('should return me', async () => {
-    const { cookies } = await t.createRandomUserAndLogin();
+    const { cookies, user } = await t.createRandomUserAndLogin();
 
     type TPerson = { me: NexusGenRootTypes['Person'] };
     const { data } = await t.gqlQuery<TPerson>({
@@ -28,7 +28,7 @@ it('should return me', async () => {
         cookies,
     });
 
-    expect(data.me.id).toBeTruthy();
+    expect(data.me.id).toEqual(user.id);
 });
 
 it('should throw error when user not found', async () => {
