@@ -13,6 +13,22 @@ afterAll(async () => {
     await t.closeTestServer();
 });
 
+const queryStringFull = `
+    query conversation($whereId: Int!) {
+        conversation(whereId: $whereId) {
+            id
+            name
+            createdAt
+            participants {
+                id
+            }
+            messages {
+                id
+            }
+        }
+    }
+`;
+
 const queryString = `
     query conversation($whereId: Int!) {
         conversation(whereId: $whereId) {
@@ -24,9 +40,10 @@ const queryString = `
 it('should return conversation', async () => {
     const { cookies, user } = await t.createRandomUserAndLogin();
 
+    const name = randomBytes(8).toString('hex');
     const conversation = await t.prisma.conversation.create({
         data: {
-            name: randomBytes(8).toString('hex'),
+            name,
             participants: { connect: { id: user.id } },
         },
     });
@@ -34,11 +51,18 @@ it('should return conversation', async () => {
     type TData = { conversation: NexusGenRootTypes['Conversation'] };
     const { data } = await t.gqlQuery<TData>({
         cookies,
-        query: queryString,
+        query: queryStringFull,
         variables: { whereId: conversation.id },
     });
 
-    expect(data.conversation.id).toBeTruthy();
+    expect(data).toMatchSnapshot({
+        conversation: {
+            name: expect.any(String),
+            createdAt: expect.any(String),
+        },
+    });
+
+    expect(data.conversation.name).toEqual(name);
 });
 
 it('should throw NO_DATA error when no data', async () => {
