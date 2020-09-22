@@ -47,10 +47,11 @@ it('should add person to conversation', async () => {
 
     const { participants } = data.addPersonToConversation;
 
-    const isParticipated = !!participants.find((participant) => {
-        return participant.id === someUser.user.id;
-    })?.id;
-    expect(isParticipated).toBeTruthy();
+    expect(participants).toEqual(
+        expect.arrayContaining([
+            expect.objectContaining({ id: someUser.user.id }),
+        ]),
+    );
 });
 
 it('should throw error when not permitted', async () => {
@@ -58,9 +59,7 @@ it('should throw error when not permitted', async () => {
     const { cookies } = await t.createRandomUserAndLogin();
 
     const conversation = await t.prisma.conversation.create({
-        data: {
-            name: randomBytes(8).toString('hex'),
-        },
+        data: { name: randomBytes(8).toString('hex') },
     });
 
     const { errors } = await t.gqlQuery({
@@ -77,9 +76,7 @@ it('should throw error when not authorized', async () => {
     const someUser = await t.createRandomUser();
 
     const conversation = await t.prisma.conversation.create({
-        data: {
-            name: randomBytes(8).toString('hex'),
-        },
+        data: { name: randomBytes(8).toString('hex') },
     });
 
     const { errors } = await t.gqlQuery({
