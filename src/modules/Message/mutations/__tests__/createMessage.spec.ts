@@ -45,7 +45,7 @@ it('should create message', async () => {
         where: { id: data.createMessage.id },
     });
 
-    expect(messageInDB?.id).toBeTruthy();
+    expect(messageInDB?.id).toEqual(user.id);
 });
 
 it('should throw error when not permitted', async () => {
