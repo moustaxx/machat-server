@@ -16,7 +16,8 @@ afterAll(async () => {
 const queryString = `
     mutation register($email: String!, $username: String!, $password: String!) {
         register(email: $email, username: $username, password: $password) {
-            id
+            email
+            username
         }
     }
 `;
@@ -37,7 +38,7 @@ it('should register', async () => {
     const { data }: TPerson = await logoutRes.json();
 
     expect(loggedIn?.value).toEqual('1');
-    expect(data.register.id).toBeTruthy();
+    expect(data.register).toMatchObject({ email, username });
 });
 
 it('should throw error when username is too short', async () => {
