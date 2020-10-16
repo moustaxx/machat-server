@@ -1,6 +1,8 @@
 import { mutationField, stringArg, intArg } from '@nexus/schema';
-import { ApolloError, UserInputError } from 'apollo-server-errors';
+import { UserInputError } from 'apollo-server-errors';
+
 import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';
+import isAuthorized from '../../../helpers/isAuthorized';
 
 export const createMessageMutationField = mutationField('createMessage', {
     type: 'Message',
@@ -9,9 +11,7 @@ export const createMessageMutationField = mutationField('createMessage', {
         conversationId: intArg({ required: true }),
     },
     resolve: async (_root, args, { prisma, session }) => {
-        if (!session || !session.isLoggedIn || !session.owner) {
-            throw new ApolloError('You must be logged in!', 'UNAUTHORIZED');
-        }
+        isAuthorized(session);
 
         if (args.content.length < 1) throw new UserInputError('Message cannot be empty!');
 

@@ -1,12 +1,11 @@
 import { queryField } from '@nexus/schema';
-import { ApolloError } from 'apollo-server-errors';
+import isAuthorized from '../../../helpers/isAuthorized';
 
 export const logoutQueryField = queryField('logout', {
     type: 'Person',
     resolve: (_, _args, { session, req, reply }) => {
-        if (!session || !session.isLoggedIn || !session.owner) {
-            throw new ApolloError('You must be logged in!', 'UNAUTHORIZED');
-        }
+        isAuthorized(session);
+
         const { owner } = session;
         req.destroySession((err) => err && console.log);
         req.session = null as any;

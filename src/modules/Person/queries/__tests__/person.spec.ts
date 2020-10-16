@@ -66,15 +66,6 @@ it('should return person', async () => {
     });
 });
 
-it('should throw error when not authorized', async () => {
-    const { errors } = await t.gqlQuery({
-        query: queryString,
-        variables: { whereId: 1 },
-    });
-
-    const errorCode = errors?.[0].extensions?.code;
-    expect(errorCode).toEqual('UNAUTHORIZED');
-});
 
 it('should throw error when user not found', async () => {
     const { cookies } = await t.createRandomUserAndLogin();

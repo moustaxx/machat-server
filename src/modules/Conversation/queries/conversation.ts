@@ -1,6 +1,8 @@
 import { queryField, intArg } from '@nexus/schema';
 import { ApolloError } from 'apollo-server-errors';
+
 import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';
+import isAuthorized from '../../../helpers/isAuthorized';
 
 export const conversationQueryField = queryField('conversation', {
     type: 'Conversation',
@@ -8,9 +10,7 @@ export const conversationQueryField = queryField('conversation', {
         whereId: intArg({ required: true }),
     },
     resolve: async (_root, args, { prisma, session }) => {
-        if (!session || !session.isLoggedIn || !session.owner) {
-            throw new ApolloError('You must be logged in!', 'UNAUTHORIZED');
-        }
+        isAuthorized(session);
 
         await checkUserHasConvAccess(prisma, session.owner, args.whereId);
 

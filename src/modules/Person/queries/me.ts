@@ -1,12 +1,11 @@
 import { queryField } from '@nexus/schema';
 import { ApolloError } from 'apollo-server-errors';
+import isAuthorized from '../../../helpers/isAuthorized';
 
 export const meQueryField = queryField('me', {
     type: 'Person',
     resolve: async (_root, _args, { prisma, session }) => {
-        if (!session || !session.isLoggedIn || !session.owner) {
-            throw new ApolloError('You must be logged in!', 'UNAUTHORIZED');
-        }
+        isAuthorized(session);
 
         const data = await prisma.person.findOne({
             where: { id: session.owner.id },

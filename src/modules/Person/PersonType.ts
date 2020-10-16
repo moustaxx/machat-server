@@ -1,5 +1,4 @@
 import { objectType } from '@nexus/schema';
-import { ApolloError } from 'apollo-server-errors';
 import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 import {
     Conversation,
@@ -8,14 +7,8 @@ import {
 // eslint-disable-next-line import/no-extraneous-dependencies
 } from '@prisma/client';
 
-import { ISession } from '../../types';
 import cursorUtils from '../../helpers/cursor';
-
-function isAuthorized(session?: ISession): asserts session is ISession & Pick<Required<ISession>, 'owner'> {
-    if (!session || !session.isLoggedIn || !session.owner) {
-        throw new ApolloError('You must be logged in!', 'UNAUTHORIZED');
-    }
-}
+import isAuthorized from '../../helpers/isAuthorized';
 
 export const Person = objectType({
     name: 'Person',

@@ -1,6 +1,6 @@
 import { mutationField, intArg } from '@nexus/schema';
-import { ApolloError } from 'apollo-server-errors';
 import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';
+import isAuthorized from '../../../helpers/isAuthorized';
 
 export const removePersonFromConversationMutationField = mutationField(
     'removePersonFromConversation', {
@@ -10,9 +10,7 @@ export const removePersonFromConversationMutationField = mutationField(
             conversationId: intArg({ required: true }),
         },
         resolve: async (_root, args, { prisma, session }) => {
-            if (!session || !session.isLoggedIn || !session.owner) {
-                throw new ApolloError('You must be logged in!', 'UNAUTHORIZED');
-            }
+            isAuthorized(session);
 
             await checkUserHasConvAccess(prisma, session.owner, args.conversationId);
 

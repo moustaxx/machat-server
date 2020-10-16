@@ -96,19 +96,3 @@ it('should throw FORBIDDEN error when not permitted', async () => {
     const errorCode = errors?.[0].extensions?.code;
     expect(errorCode).toEqual('FORBIDDEN');
 });
-
-it('should throw error when not authorized', async () => {
-    const conversation = await t.prisma.conversation.create({
-        data: {
-            name: randomBytes(8).toString('hex'),
-        },
-    });
-
-    const { errors } = await t.gqlQuery({
-        query: queryString,
-        variables: { whereId: conversation.id },
-    });
-
-    const errorCode = errors?.[0].extensions?.code;
-    expect(errorCode).toEqual('UNAUTHORIZED');
-});

@@ -34,10 +34,3 @@ it('should log out', async () => {
     expect(loggedIn?.value).toEqual('0');
     expect(logoutJson.data.logout.id).toBe(user.id);
 });
-
-it('should throw error if not logged in try to log out', async () => {
-    const { errors } = await t.gqlQuery({ query: queryString });
-
-    const errorCode = errors?.[0].extensions?.code;
-    expect(errorCode).toEqual('UNAUTHORIZED');
-});

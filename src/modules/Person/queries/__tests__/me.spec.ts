@@ -44,10 +44,3 @@ it('should throw error when user not found', async () => {
     const errorCode = errors?.[0].extensions?.code;
     expect(errorCode).toEqual('USER_NOT_FOUND');
 });
-
-it('should throw error when not authorized', async () => {
-    const { errors } = await t.gqlQuery({ query: queryString });
-
-    const errorCode = errors?.[0].extensions?.code;
-    expect(errorCode).toEqual('UNAUTHORIZED');
-});
