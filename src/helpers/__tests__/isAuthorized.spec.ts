@@ -17,7 +17,7 @@ const owner: NexusGenAllTypes['Person'] = {
 };
 
 
-it('should pass', async () => {
+it('should pass', () => {
     const session = {
         isLoggedIn: true,
         owner,
@@ -34,7 +34,7 @@ const tryCatchIsAuthorized = (session?: ISession) => {
     }
 };
 
-it('should throw error when isLoggedIn is false', async () => {
+it('should throw error when isLoggedIn is false', () => {
     const session = {
         isLoggedIn: false,
         owner,
@@ -43,7 +43,7 @@ it('should throw error when isLoggedIn is false', async () => {
     tryCatchIsAuthorized(session);
 });
 
-it('should throw error when no owner', async () => {
+it('should throw error when no owner', () => {
     const session = {
         isLoggedIn: true,
     } as any;
@@ -51,6 +51,6 @@ it('should throw error when no owner', async () => {
     tryCatchIsAuthorized(session);
 });
 
-it('should throw error when no session', async () => {
+it('should throw error when no session', () => {
     tryCatchIsAuthorized();
 });
