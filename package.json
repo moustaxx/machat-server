@@ -16,6 +16,7 @@
         "dev": "tsnd --respawn --transpile-only --ignore-watch ./src/generated ./src/start"
     },
     "dependencies": {
+        "@devoxa/prisma-relay-cursor-connection": "^1.1.0",
         "@nexus/schema": "^0.15.0",
         "apollo-server-errors": "^2.4.2",
         "connect-pg-simple": "^6.2.1",

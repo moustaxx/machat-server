@@ -286,6 +286,11 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@devoxa/prisma-relay-cursor-connection@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@devoxa/prisma-relay-cursor-connection/-/prisma-relay-cursor-connection-1.1.0.tgz#c2cef55d5727bae1c1eee40443eb00748bee0d26"
+  integrity sha512-feYdeK7jeMXz/SEkth8RJ1TecPk+m8PKYe9kD15i7c5hqZVXaz7nkqLcYPqQ0LKiqB5qIZOAZB6GPgKi/57yTA==
+
 "@eslint/eslintrc@^0.1.3":
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-0.1.3.tgz#7d1a2b2358552cc04834c0979bd4275362e37085"
