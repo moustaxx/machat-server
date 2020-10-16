@@ -21,14 +21,11 @@ const queryStringFull = `
             isAdmin
             lastSeen
             createdAt
-            conversations {
-                id
-                name
-            }
-            messages {
-                content
-                author {
-                    username
+            conversations(first: 20) {
+                edges {
+                    node {
+                        id
+                    }
                 }
             }
         }

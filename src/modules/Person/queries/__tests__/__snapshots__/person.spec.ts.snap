@@ -3,14 +3,15 @@
 exports[`should return person 1`] = `
 Object {
   "person": Object {
-    "conversations": Array [],
+    "conversations": Object {
+      "edges": Array [],
+    },
     "createdAt": Any<String>,
     "email": Any<String>,
     "id": 2,
     "isActive": true,
     "isAdmin": null,
     "lastSeen": null,
-    "messages": Array [],
     "username": Any<String>,
   },
 }
