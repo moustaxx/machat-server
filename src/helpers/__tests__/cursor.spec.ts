@@ -19,3 +19,11 @@ it('should decode cursor', () => {
     const res = cursorUtils.decodeCursor(encodedCursor);
     expect(res).toEqual(cursor);
 });
+
+it('should throw when model doesn\'t have an id', () => {
+    const getCursor = () => cursorUtils.getCursor({});
+    expect(getCursor).toThrowError('Model doesn\'t have an ID');
+
+    const encodeCursor = () => cursorUtils.encodeCursor({});
+    expect(encodeCursor).toThrowError('Model doesn\'t have an ID');
+});
