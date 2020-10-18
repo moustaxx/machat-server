@@ -1,7 +1,6 @@
 /** @jest-environment node */
 import { ApolloError } from 'apollo-server-errors';
 import { NexusGenAllTypes } from '../../generated/nexus';
-import { ISession } from '../../types';
 import isAuthorized from '../isAuthorized';
 
 const unauthorizedError = new ApolloError('You must be logged in!', 'UNAUTHORIZED');
@@ -26,21 +25,14 @@ it('should pass', () => {
     isAuthorized(session);
 });
 
-const tryCatchIsAuthorized = (session?: ISession) => {
-    try {
-        isAuthorized(session);
-    } catch (error) {
-        expect(error).toEqual(unauthorizedError);
-    }
-};
-
 it('should throw error when isLoggedIn is false', () => {
     const session = {
         isLoggedIn: false,
         owner,
     } as any;
 
-    tryCatchIsAuthorized(session);
+    const fn = () => isAuthorized(session);
+    expect(fn).toThrow(unauthorizedError);
 });
 
 it('should throw error when no owner', () => {
@@ -48,9 +40,11 @@ it('should throw error when no owner', () => {
         isLoggedIn: true,
     } as any;
 
-    tryCatchIsAuthorized(session);
+    const fn = () => isAuthorized(session);
+    expect(fn).toThrow(unauthorizedError);
 });
 
 it('should throw error when no session', () => {
-    tryCatchIsAuthorized();
+    const fn = () => isAuthorized();
+    expect(fn).toThrow(unauthorizedError);
 });
