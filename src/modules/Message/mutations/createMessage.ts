@@ -13,13 +13,14 @@ export const createMessageMutationField = mutationField('createMessage', {
     resolve: async (_root, args, { prisma, session }) => {
         isAuthorized(session);
 
-        if (args.content.length < 1) throw new UserInputError('Message cannot be empty!');
+        const content = args.content.trim();
+        if (content.length < 1) throw new UserInputError('Message cannot be empty!');
 
         await checkUserHasConvAccess(prisma, session.owner, args.conversationId);
 
         const data = await prisma.message.create({
             data: {
-                content: args.content,
+                content,
                 author: {
                     connect: { id: session.owner.id },
                 },

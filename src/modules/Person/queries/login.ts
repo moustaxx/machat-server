@@ -11,13 +11,15 @@ export const loginQueryField = queryField('login', {
         username: stringArg({ required: true }),
         password: stringArg({ required: true }),
     },
-    resolve: async (_, { username, password }, { prisma, session }) => {
+    resolve: async (_, args, { prisma, session }) => {
         if (session?.isLoggedIn) {
             throw new ApolloError('You are already logged in!', 'ALREADY_LOGGED_IN');
         }
 
-        const data = await prisma.person.findOne({ where: { username } });
+        const username = args.username.trim();
+        const { password } = args;
 
+        const data = await prisma.person.findOne({ where: { username } });
         if (!data) throw wrongCredentialsError;
 
         const hashFromInput = getHash(password, data.salt);

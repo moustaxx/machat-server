@@ -16,15 +16,20 @@ export const registerMutationField = mutationField('register', {
         username: stringArg({ required: true }),
         password: stringArg({ required: true }),
     },
-    resolve: async (_, { email, username, password }, { prisma, session }) => {
+    resolve: async (_, args, { prisma, session }) => {
         if (session?.isLoggedIn) {
             throw new ApolloError('You are already logged in!', 'ALREADY_LOGGED_IN');
         }
 
+        const username = args.username.trim();
         if (username.length <= 3) throw new ValidationError('Username length must be > 3');
         if (username.length > 20) throw new ValidationError('Username length must be > 20');
+
+        const { password } = args;
         if (password.length <= 5) throw new ValidationError('Password length must be > 5');
         if (password.length > 100) throw new ValidationError('Password length must be < 100');
+
+        const email = args.email.trim();
         if (!checkIsEmail(email)) throw new ValidationError('Wrong email');
 
         const salt = randomBytes(16).toString('hex');
