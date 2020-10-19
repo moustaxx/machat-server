@@ -29,7 +29,7 @@ const expectValidationError = async (credentials: {
 }) => {
     const { errors } = await t.gqlQuery({
         query: queryString,
-        variables: credentials as any,
+        variables: credentials,
     });
 
     const errorCode = errors?.[0].extensions?.code;

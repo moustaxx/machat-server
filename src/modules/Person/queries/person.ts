@@ -1,5 +1,8 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { PersonWhereUniqueInput } from '@prisma/client';
 import { queryField, arg } from '@nexus/schema';
 import { ApolloError } from 'apollo-server-errors';
+
 import isAuthorized from '../../../helpers/isAuthorized';
 
 export const personQueryField = queryField('person', {
@@ -11,7 +14,7 @@ export const personQueryField = queryField('person', {
         isAuthorized(session);
 
         const data = await prisma.person.findOne({
-            where: { ...where as any },
+            where: where as PersonWhereUniqueInput,
         });
 
         if (!data) throw new ApolloError('User not found!', 'USER_NOT_FOUND');
