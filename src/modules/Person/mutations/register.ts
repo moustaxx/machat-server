@@ -2,12 +2,7 @@ import { mutationField, stringArg } from '@nexus/schema';
 import { ApolloError, ValidationError } from 'apollo-server-errors';
 import { randomBytes } from 'crypto';
 
-import { getHash } from '../helpers/getHash';
-
-const checkIsEmail = (email: string) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(String(email).toLowerCase());
-};
+import isValidEmail from '../helpers/isValidEmail';
 
 export const registerMutationField = mutationField('register', {
     type: 'Person',
@@ -22,15 +17,16 @@ export const registerMutationField = mutationField('register', {
         }
 
         const username = args.username.trim();
+        const email = args.email.trim();
+        const { password } = args;
+
         if (username.length <= 3) throw new ValidationError('Username length must be > 3');
         if (username.length > 20) throw new ValidationError('Username length must be > 20');
 
-        const { password } = args;
         if (password.length <= 5) throw new ValidationError('Password length must be > 5');
         if (password.length > 100) throw new ValidationError('Password length must be < 100');
 
-        const email = args.email.trim();
-        if (!checkIsEmail(email)) throw new ValidationError('Wrong email');
+        if (!isValidEmail(email)) throw new ValidationError('Wrong email');
 
         const salt = randomBytes(16).toString('hex');
         const hash = getHash(password, salt);
