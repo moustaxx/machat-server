@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { randomBytes } from 'crypto';
+import argon2 from 'argon2';
 
 import { NexusGenRootTypes } from '../../generated/nexus';
-import { getHash } from '../../modules/Person/helpers/getHash';
 
 type TRandomUser = {
     username: string;
@@ -29,14 +29,12 @@ export const createRandomUserSep: TCreateRandomUserSep = async (prisma, options)
     const password = randomBytes(9).toString('hex');
     const email = `${username}@machat.ru`;
 
-    const salt = randomBytes(16).toString('hex');
-    const hash = getHash(password, salt);
+    const hash = await argon2.hash(password);
 
     const user = await prisma.person.create({
         data: {
             email,
             username,
-            salt,
             hash,
             isAdmin: options?.isAdmin,
         },

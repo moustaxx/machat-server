@@ -477,7 +477,6 @@ input PersonCreateWithoutConversationsInput {
   isAdmin: Boolean
   lastSeen: DateTime
   messages: MessageCreateManyWithoutAuthorInput
-  salt: String!
   username: String!
 }
 
@@ -489,7 +488,6 @@ input PersonCreateWithoutMessagesInput {
   isActive: Boolean
   isAdmin: Boolean
   lastSeen: DateTime
-  salt: String!
   username: String!
 }
 
@@ -504,7 +502,6 @@ input PersonScalarWhereInput {
   lastSeen: DateTimeNullableFilter
   NOT: [PersonScalarWhereInput!]
   OR: [PersonScalarWhereInput!]
-  salt: StringFilter
   username: StringFilter
 }
 
@@ -515,7 +512,6 @@ input PersonUpdateManyDataInput {
   isActive: BoolFieldUpdateOperationsInput
   isAdmin: NullableBoolFieldUpdateOperationsInput
   lastSeen: NullableDateTimeFieldUpdateOperationsInput
-  salt: StringFieldUpdateOperationsInput
   username: StringFieldUpdateOperationsInput
 }
 
@@ -553,7 +549,6 @@ input PersonUpdateWithoutConversationsDataInput {
   isAdmin: NullableBoolFieldUpdateOperationsInput
   lastSeen: NullableDateTimeFieldUpdateOperationsInput
   messages: MessageUpdateManyWithoutAuthorInput
-  salt: StringFieldUpdateOperationsInput
   username: StringFieldUpdateOperationsInput
 }
 
@@ -565,7 +560,6 @@ input PersonUpdateWithoutMessagesDataInput {
   isActive: BoolFieldUpdateOperationsInput
   isAdmin: NullableBoolFieldUpdateOperationsInput
   lastSeen: NullableDateTimeFieldUpdateOperationsInput
-  salt: StringFieldUpdateOperationsInput
   username: StringFieldUpdateOperationsInput
 }
 

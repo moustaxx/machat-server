@@ -1,6 +1,6 @@
 import { mutationField, stringArg } from '@nexus/schema';
 import { ApolloError, ValidationError } from 'apollo-server-errors';
-import { randomBytes } from 'crypto';
+import argon2 from 'argon2';
 
 import isValidEmail from '../helpers/isValidEmail';
 
@@ -28,14 +28,12 @@ export const registerMutationField = mutationField('register', {
 
         if (!isValidEmail(email)) throw new ValidationError('Wrong email');
 
-        const salt = randomBytes(16).toString('hex');
-        const hash = getHash(password, salt);
+        const hash = await argon2.hash(password);
 
         const data = await prisma.person.create({
             data: {
                 email,
                 username,
-                salt,
                 hash,
             },
         });

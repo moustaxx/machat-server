@@ -1,7 +1,6 @@
 import { queryField, stringArg } from '@nexus/schema';
 import { ApolloError } from 'apollo-server-errors';
-
-import { getHash } from '../helpers/getHash';
+import argon2 from 'argon2';
 
 const wrongCredentialsError = new ApolloError('Wrong username or password!', 'WRONG_CREDENTIALS');
 
@@ -17,15 +16,12 @@ export const loginQueryField = queryField('login', {
         }
 
         const username = args.username.trim();
-        const { password } = args;
 
         const data = await prisma.person.findOne({ where: { username } });
         if (!data) throw wrongCredentialsError;
 
-        const hashFromInput = getHash(password, data.salt);
-        const isValid = data.hash === hashFromInput;
-
-        if (!isValid) throw wrongCredentialsError;
+        const isVerified = await argon2.verify(data.hash, args.password); // TODO
+        if (!isVerified) throw wrongCredentialsError;
 
         if (!session) throw new ApolloError('No session!', 'NO_SESSION');
         session.isLoggedIn = true;

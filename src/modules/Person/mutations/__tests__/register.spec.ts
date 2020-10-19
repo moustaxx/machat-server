@@ -22,18 +22,29 @@ const queryString = `
     }
 `;
 
-const expectValidationError = async (credentials: {
+interface ICredentials {
     username: string;
     password: string;
     email: string;
-}) => {
+}
+
+const expectErrorOnRegister = async (
+    credentials: ICredentials,
+    expectedError: string,
+    cookies?: Record<string, string>,
+) => {
     const { errors } = await t.gqlQuery({
+        cookies,
         query: queryString,
-        variables: credentials,
+        variables: credentials as any,
     });
 
     const errorCode = errors?.[0].extensions?.code;
-    expect(errorCode).toEqual('GRAPHQL_VALIDATION_FAILED');
+    expect(errorCode).toEqual(expectedError);
+};
+
+const expectValidationError = async (credentials: ICredentials) => {
+    expectErrorOnRegister(credentials, 'GRAPHQL_VALIDATION_FAILED');
 };
 
 const generateCredentials = (usernameLength = 4, passwordLength = 6) => {
@@ -88,13 +99,8 @@ it('should throw wrong email error', async () => {
 });
 
 it('should throw error when already logged in', async () => {
-    const { username, password, user, cookies } = await t.createRandomUserAndLogin();
-    const { errors } = await t.gqlQuery({
-        cookies,
-        query: queryString,
-        variables: { username, password, email: user.email },
-    });
+    const { cookies } = await t.createRandomUserAndLogin();
+    const credentials = generateCredentials();
 
-    const errorCode = errors?.[0].extensions?.code;
-    expect(errorCode).toEqual('ALREADY_LOGGED_IN');
+    await expectErrorOnRegister(credentials, 'ALREADY_LOGGED_IN', cookies);
 });
