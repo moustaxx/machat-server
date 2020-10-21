@@ -15,14 +15,14 @@ const checkUserHasConvAccess = async (
                 },
             },
         },
-        where: { id: user?.id },
+        where: { id: user.id },
     });
 
     const isParticipated = !!getConv?.conversations.find((conv) => {
         return conv.id === conversationId;
     });
 
-    if (!user?.isAdmin && !isParticipated) {
+    if (!user.isAdmin && !isParticipated) {
         throw new ForbiddenError('Insufficient permissions');
     }
 };
