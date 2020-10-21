@@ -598,6 +598,11 @@ type Query {
   sessionOwner: Person!
 }
 
+enum QueryMode {
+  default
+  insensitive
+}
+
 input StringFieldUpdateOperationsInput {
   set: String
 }
@@ -611,6 +616,7 @@ input StringFilter {
   in: [String!]
   lt: String
   lte: String
+  mode: QueryMode
   not: NestedStringFilter
   notIn: [String!]
   startsWith: String

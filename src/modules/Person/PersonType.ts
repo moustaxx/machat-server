@@ -4,7 +4,6 @@ import {
     Conversation,
     ConversationWhereInput,
     ConversationWhereUniqueInput,
-// eslint-disable-next-line import/no-extraneous-dependencies
 } from '@prisma/client';
 
 import cursorUtils from '../../helpers/cursor';

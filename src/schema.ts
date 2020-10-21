@@ -12,6 +12,9 @@ export const schema = makeSchema({
         nexusSchemaPrisma({ experimentalCRUD: true }),
         connectionPlugin(),
     ],
+    nonNullDefaults: {
+        output: true,
+    },
     outputs: {
         schema: `${__dirname}/../schema.graphql`,
         typegen: `${__dirname}/generated/nexus.ts`,

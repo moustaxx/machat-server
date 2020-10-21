@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { PersonWhereUniqueInput } from '@prisma/client';
 import { queryField, arg } from '@nexus/schema';
 import { ApolloError } from 'apollo-server-errors';

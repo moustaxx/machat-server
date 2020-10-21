@@ -1,9 +1,9 @@
 import fastify from 'fastify';
-import fastifyGQL from 'fastify-gql';
 import fastifyCors from 'fastify-cors';
 import fastifyCookie from 'fastify-cookie';
 import fastifySession from 'fastify-session';
 import pgSession from 'connect-pg-simple';
+import mercurius from 'mercurius';
 import dotenv from 'dotenv';
 
 import { schema } from './schema';
@@ -62,7 +62,7 @@ const main = async (testing?: boolean) => {
         await prisma.$disconnect();
     });
 
-    await app.register(fastifyGQL, {
+    await app.register(mercurius, {
         schema,
         graphiql: 'playground',
         context: createContext,

@@ -1,7 +1,7 @@
 import { randomBytes } from 'crypto';
+import { Conversation } from '@prisma/client';
 
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
-import { Conversation } from '../../../../../node_modules/.prisma/client';
 
 let t: ITestUtils;
 

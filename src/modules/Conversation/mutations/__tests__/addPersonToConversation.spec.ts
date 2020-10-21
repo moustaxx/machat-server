@@ -1,7 +1,7 @@
 import { randomBytes } from 'crypto';
+import { Conversation, Person } from '@prisma/client';
 
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
-import { Conversation, Person } from '../../../../../node_modules/.prisma/client';
 
 let t: ITestUtils;
 
@@ -36,9 +36,11 @@ it('should add person to conversation', async () => {
         },
     });
 
-    type TData = { addPersonToConversation: Conversation & {
-        participants: Person[];
-    } };
+    type TData = {
+        addPersonToConversation: Conversation & {
+            participants: Person[];
+        }
+    };
     const { data } = await t.gqlQuery<TData>({
         query: queryString,
         cookies,
