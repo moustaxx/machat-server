@@ -1,7 +1,8 @@
 import { mutationField, stringArg } from '@nexus/schema';
-import { ApolloError, ValidationError } from 'apollo-server-errors';
+import { ValidationError } from 'apollo-server-errors';
 import argon2 from 'argon2';
 
+import isAlreadyLoggedIn from '../../../helpers/isAlreadyLoggedIn';
 import isValidEmail from '../helpers/isValidEmail';
 
 export const registerMutationField = mutationField('register', {
@@ -12,9 +13,7 @@ export const registerMutationField = mutationField('register', {
         password: stringArg({ required: true }),
     },
     resolve: async (_, args, { prisma, session }) => {
-        if (session?.isLoggedIn) {
-            throw new ApolloError('You are already logged in!', 'ALREADY_LOGGED_IN');
-        }
+        isAlreadyLoggedIn(session);
 
         const username = args.username.trim();
         const email = args.email.trim();
@@ -38,7 +37,6 @@ export const registerMutationField = mutationField('register', {
             },
         });
 
-        if (!session) throw new ApolloError('No session!', 'NO_SESSION');
         session.isLoggedIn = true;
         session.owner = data;
         return data;
