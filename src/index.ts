@@ -2,6 +2,7 @@ import fastify from 'fastify';
 import fastifyCors from 'fastify-cors';
 import fastifyCookie from 'fastify-cookie';
 import fastifySession from 'fastify-session';
+import AltairFastify from 'altair-fastify-plugin';
 import pgSession from 'connect-pg-simple';
 import mercurius from 'mercurius';
 import dotenv from 'dotenv';
@@ -64,11 +65,12 @@ const main = async (testing?: boolean) => {
 
     await app.register(mercurius, {
         schema,
-        graphiql: 'playground',
         context: createContext,
     });
 
     app.decorate('prisma', prisma);
+
+    if (!isProduction) app.register(AltairFastify);
 
     if (!testing) {
         await app.listen(4000);

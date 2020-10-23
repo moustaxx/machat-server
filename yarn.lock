@@ -939,6 +939,20 @@ ajv@^6.10.0, ajv@^6.10.2, ajv@^6.11.0, ajv@^6.12.2, ajv@^6.12.3, ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
+altair-fastify-plugin@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/altair-fastify-plugin/-/altair-fastify-plugin-2.5.1.tgz#10b09579cc9b6250eeddf45bbe59dc0acb034484"
+  integrity sha512-+asgio8I20WAidoTiPko0tyX/jOcVgl5hXv7hDHRkYNcnvwXDcOXtKEtfhvscoqMo+fDVvY4X2ZnslYXyqUs7Q==
+  dependencies:
+    altair-static "^2.5.1"
+    fastify-plugin "^2.0.1"
+    fastify-static "^3.2.0"
+
+altair-static@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/altair-static/-/altair-static-2.5.1.tgz#a2d9f5d5e2640a5daefcd57a31d878c28c7a67d0"
+  integrity sha512-uhCRbiFH7ihAw3ZNmoTa7x8LFhfwOugf0MskDVDMFbp+94fxlX3V7V091ogIsCBcN7nrBk8nXmjTgCoehj0tlg==
+
 ansi-colors@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-4.1.1.tgz#cbb9ae256bf750af1eab344f229aa27fe94ba348"
@@ -2377,7 +2391,7 @@ fastify-session@^5.2.0:
     fastify-plugin "^2.0.1"
     uid-safe "^2.1.5"
 
-fastify-static@^3.0.0:
+fastify-static@^3.0.0, fastify-static@^3.2.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/fastify-static/-/fastify-static-3.3.0.tgz#33b639f1fa6fde703326a9ef353d6b1469146f46"
   integrity sha512-NaaeGWz25TmCYTGR8z90rhpfCuQqxDJauMC7fUTaswtxkM5CUmGGpwInm5/A55qfn9MbUQbPOWtWwSvhY73xHg==
