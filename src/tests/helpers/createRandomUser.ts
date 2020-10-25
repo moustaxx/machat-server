@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from 'prisma-machat';
 import { randomBytes } from 'crypto';
 import argon2 from 'argon2';
 

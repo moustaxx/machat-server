@@ -9,7 +9,12 @@ export const GQLDate = asNexusMethod(GraphQLDate, 'createdAt');
 export const schema = makeSchema({
     types: [allTypes],
     plugins: [
-        nexusSchemaPrisma({ experimentalCRUD: true }),
+        nexusSchemaPrisma({
+            experimentalCRUD: true,
+            outputs: {
+                typegen: `${__dirname}/generated/typegen-nexus-plugin-prisma.d.ts`,
+            },
+        }),
         connectionPlugin(),
     ],
     nonNullDefaults: {
@@ -17,7 +22,7 @@ export const schema = makeSchema({
     },
     outputs: {
         schema: `${__dirname}/../schema.graphql`,
-        typegen: `${__dirname}/generated/nexus.ts`,
+        typegen: `${__dirname}/generated/nexus.d.ts`,
     },
     typegenAutoConfig: {
         contextType: 'Context.Context',

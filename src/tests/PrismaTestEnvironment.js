@@ -2,16 +2,13 @@
 const NodeEnvironment = require('jest-environment-node');
 const { Client } = require('pg');
 const util = require('util');
-const path = require('path');
 
 const exec = util.promisify(require('child_process').exec);
-
-const prismaBinary = path.resolve('./node_modules/.bin/prisma');
 
 const execRepeatedOnErr = async (command, i = 0) => {
     await exec(command).catch(async (err) => {
         if (i > 3) throw Error(err);
-        await execRepeatedOnErr(command, i + 1);
+        return execRepeatedOnErr(command, i + 1);
     });
 };
 
@@ -27,8 +24,8 @@ class PrismaTestEnvironment extends NodeEnvironment {
         process.env.DATABASE_URL = this.databaseUrl;
         this.global.process.env.DATABASE_URL = this.databaseUrl;
 
-        await execRepeatedOnErr(`${prismaBinary} migrate save --experimental --name testing`);
-        await execRepeatedOnErr(`${prismaBinary} migrate up --create-db --experimental`);
+        await execRepeatedOnErr('prisma migrate save --experimental --name testing');
+        await execRepeatedOnErr('prisma migrate up --create-db --experimental');
 
         return super.setup();
     }

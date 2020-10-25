@@ -1,5 +1,5 @@
 import { randomBytes } from 'crypto';
-import { Conversation } from '@prisma/client';
+import { Conversation } from 'prisma-machat';
 
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
 

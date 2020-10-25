@@ -4,7 +4,7 @@ import {
     Conversation,
     ConversationWhereInput,
     ConversationWhereUniqueInput,
-} from '@prisma/client';
+} from 'prisma-machat';
 
 import cursorUtils from '../../helpers/cursor';
 import isAuthorized from '../../helpers/isAuthorized';

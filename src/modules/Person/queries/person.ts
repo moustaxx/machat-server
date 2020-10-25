@@ -1,4 +1,4 @@
-import { PersonWhereUniqueInput } from '@prisma/client';
+import { PersonWhereUniqueInput } from 'prisma-machat';
 import { queryField, arg } from '@nexus/schema';
 import { ApolloError } from 'apollo-server-errors';
 
