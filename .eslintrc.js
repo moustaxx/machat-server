@@ -8,6 +8,7 @@ module.exports = {
         ecmaVersion: 2020,
         sourceType: 'module',
     },
+    ignorePatterns: ['**/prisma/client', '**/src/generated'],
     rules: {
         '@typescript-eslint/indent': ['warn', 4, { SwitchCase: 1 }],
         '@typescript-eslint/no-explicit-any': 0,
