@@ -3,14 +3,7 @@ declare module 'mercurius/lib/subscriber' {
     import { GraphQLResolveInfo } from 'graphql';
     import { PubSub, MercuriusContext, IFieldResolver } from 'mercurius';
 
-    interface PubSub {
-        subscribe<TResult = any>(
-            topics: string | string[],
-            queue: Record<string, unknown>
-        ): Promise<AsyncIterator<TResult>>;
-    }
-
-    export class SubscriptionContext extends PubSub {
+    export class SubscriptionContext implements PubSub {
         constructor(settings: {
             pubsub: PubSub,
             fastify?: FastifyInstance,
