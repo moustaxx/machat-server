@@ -1,11 +1,4 @@
-import { PrismaClient } from 'prisma-machat';
 import { NexusGenAllTypes } from './generated/nexus';
-
-declare module 'fastify' {
-    interface FastifyInstance {
-        prisma: PrismaClient;
-    }
-}
 
 export interface ISession {
     sessionId: string;
