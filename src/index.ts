@@ -65,6 +65,15 @@ const main = async (testing?: boolean) => {
 
     await app.register(mercurius, {
         schema,
+        subscription: {
+            verifyClient({ req }, next) {
+                const { sessionId } = app.parseCookie<{ sessionId: string }>(req.headers.cookie);
+
+                if (sessionId) app.decryptSession(sessionId, req, () => next(true));
+                else next(false);
+            },
+            context: (_con, req) => createContext(req, null as any),
+        },
         context: createContext,
     });
 
@@ -76,6 +85,9 @@ const main = async (testing?: boolean) => {
         await app.listen(4000);
         console.log('🚀 Server ready at: http://localhost:4000/graphql');
     }
+
+    // console.log('app:', app.graphql.pubsub); // subskrybuj tym
+    // console.log('app:', { ...app.graphql.schema._typeMap.Subscription }); // subskrybuj tym
     return app;
 };
 
