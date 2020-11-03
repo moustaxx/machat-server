@@ -1,5 +1,5 @@
 import { randomBytes } from 'crypto';
-import { Conversation } from 'prisma-machat';
+import { Message } from 'prisma-machat';
 
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
 
@@ -31,7 +31,7 @@ it('should create message', async () => {
         },
     });
 
-    type TData = { createMessage: Conversation };
+    type TData = { createMessage: Message };
     const { data } = await t.gqlQuery<TData>({
         query: queryString,
         cookies,
@@ -80,7 +80,7 @@ it('should throw error if empty message', async () => {
         },
     });
 
-    type TData = { createMessage: Conversation };
+    type TData = { createMessage: Message };
     const { errors } = await t.gqlQuery<TData>({
         query: queryString,
         cookies,
