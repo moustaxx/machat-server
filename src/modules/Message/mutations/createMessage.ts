@@ -10,7 +10,7 @@ export const createMessageMutationField = mutationField('createMessage', {
         content: stringArg({ required: true }),
         conversationId: intArg({ required: true }),
     },
-    resolve: async (_root, args, { prisma, session }) => {
+    resolve: async (_root, args, { prisma, session, pubsub }) => {
         isAuthorized(session);
 
         const content = args.content.trim();
@@ -28,6 +28,11 @@ export const createMessageMutationField = mutationField('createMessage', {
                     connect: { id: args.conversationId },
                 },
             },
+        });
+
+        await pubsub.publish({
+            topic: 'NEW_MESSAGES',
+            payload: data,
         });
 
         return data;

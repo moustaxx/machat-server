@@ -5,11 +5,11 @@ import { initTestServer, ITestUtils } from '../../../../tests/helpers';
 
 let t: ITestUtils;
 
-beforeAll(async () => {
+beforeEach(async () => {
     t = await initTestServer();
 });
 
-afterAll(async () => {
+afterEach(async () => {
     await t.closeTestServer();
 });
 
@@ -20,6 +20,43 @@ const queryString = `
         }
     }
 `;
+
+it('should publish a message', async () => {
+    const { user, cookies } = await t.createRandomUserAndLogin();
+
+    const conversation = await t.prisma.conversation.create({
+        data: {
+            name: randomBytes(8).toString('hex'),
+            participants: { connect: { id: user.id } },
+        },
+    });
+
+    let resolve: undefined | ((msg: Message) => void);
+    const waitForPublish = new Promise<Message>((res) => {
+        resolve = res;
+    });
+
+    await t.app.graphql.pubsub.subscribe('NEW_MESSAGES', {
+        push: (value: Message) => {
+            if (!resolve) throw Error('Resolve is not defined');
+            resolve(value);
+        },
+    });
+
+    type TCreateMessage = { createMessage: Message };
+    const { data } = await t.gqlQuery<TCreateMessage>({
+        query: queryString,
+        cookies,
+        variables: {
+            content: randomBytes(3).toString('hex'),
+            conversationId: conversation.id,
+        },
+    });
+
+    expect(resolve).toBeDefined();
+    const message = await waitForPublish;
+    expect(message.id).toEqual(data.createMessage.id);
+});
 
 it('should create message', async () => {
     const { user, cookies } = await t.createRandomUserAndLogin();
