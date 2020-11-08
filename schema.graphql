@@ -621,3 +621,7 @@ input StringFilter {
   notIn: [String!]
   startsWith: String
 }
+
+type Subscription {
+  newMessages(conversationId: Int!): Message!
+}
