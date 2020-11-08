@@ -1,7 +1,7 @@
-import { randomBytes } from 'crypto';
 import { initTestServer, ITestUtils } from '../../../tests/helpers';
 import { NexusGenRootTypes } from '../../../generated/nexus';
 import cursorUtils from '../../../helpers/cursor';
+import randomString from '../../../tests/helpers/randomString';
 
 let t: ITestUtils;
 
@@ -36,7 +36,7 @@ type TPerson = {
 
 const makeConv = (...ids: number[]) => t.prisma.conversation.create({
     data: {
-        name: randomBytes(8).toString('hex'),
+        name: randomString(8),
         participants: {
             connect: ids.map((id) => ({ id })),
         },

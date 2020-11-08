@@ -1,7 +1,7 @@
-import { randomBytes } from 'crypto';
 import { Conversation, Person } from 'prisma-machat';
 
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
+import randomString from '../../../../tests/helpers/randomString';
 
 let t: ITestUtils;
 
@@ -31,7 +31,7 @@ it('should remove person from conversation', async () => {
 
     const conversation = await t.prisma.conversation.create({
         data: {
-            name: randomBytes(8).toString('hex'),
+            name: randomString(8),
             participants: { connect: [{ id: user.id }, { id: someUser.user.id }] },
         },
     });
@@ -61,7 +61,7 @@ it('should throw error when not permitted', async () => {
     const { cookies } = await t.createRandomUserAndLogin();
 
     const conversation = await t.prisma.conversation.create({
-        data: { name: randomBytes(8).toString('hex') },
+        data: { name: randomString(8) },
     });
 
     const { errors } = await t.gqlQuery({

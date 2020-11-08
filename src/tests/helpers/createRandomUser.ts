@@ -1,8 +1,8 @@
 import { PrismaClient } from 'prisma-machat';
-import { randomBytes } from 'crypto';
 import argon2 from 'argon2';
 
 import { NexusGenRootTypes } from '../../generated/nexus';
+import randomString from './randomString';
 
 type TRandomUser = {
     username: string;
@@ -25,8 +25,8 @@ type TCreateRandomUserSep = (
 ) => Promise<TRandomUser>;
 
 export const createRandomUserSep: TCreateRandomUserSep = async (prisma, options) => {
-    const username = randomBytes(5).toString('hex');
-    const password = randomBytes(9).toString('hex');
+    const username = randomString(6);
+    const password = randomString(8);
     const email = `${username}@machat.ru`;
 
     const hash = await argon2.hash(password);

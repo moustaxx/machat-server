@@ -1,5 +1,4 @@
 import { promisify } from 'util';
-import { randomBytes } from 'crypto';
 import { Message } from '@prisma/client';
 import { SubscriptionContext } from 'mercurius/lib/subscriber';
 
@@ -8,6 +7,7 @@ import { schema } from '../../../../schema';
 import prisma from '../../../../prismaClient';
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
 import { ISession } from '../../../../types';
+import randomString from '../../../../tests/helpers/randomString';
 
 const setTimeoutPromise = promisify(setTimeout);
 
@@ -37,7 +37,7 @@ afterAll(async () => {
 
 const createConversation = (participantId: number) => t.prisma.conversation.create({
     data: {
-        name: randomBytes(8).toString('hex'),
+        name: randomString(8),
         participants: { connect: { id: participantId } },
     },
 });

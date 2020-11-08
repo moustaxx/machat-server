@@ -1,7 +1,7 @@
-import { randomBytes } from 'crypto';
 import { NexusGenRootTypes } from '../../../../generated/nexus';
 
 import { GQLResponse, initTestServer, ITestUtils } from '../../../../tests/helpers';
+import randomString from '../../../../tests/helpers/randomString';
 
 let t: ITestUtils;
 
@@ -47,9 +47,9 @@ const expectValidationError = async (credentials: ICredentials) => {
     expectErrorOnRegister(credentials, 'GRAPHQL_VALIDATION_FAILED');
 };
 
-const generateCredentials = (usernameLength = 4, passwordLength = 6) => {
-    const username = randomBytes(usernameLength).toString('hex');
-    const password = randomBytes(passwordLength).toString('hex');
+const generateCredentials = (usernameLength = 6, passwordLength = 8) => {
+    const username = randomString(usernameLength);
+    const password = randomString(passwordLength);
     const email = `${username}@machat.ru`;
 
     return { username, password, email };
@@ -73,22 +73,22 @@ it('should register', async () => {
 });
 
 it('should throw error when username is too short', async () => {
-    const credentials = generateCredentials(1, 6);
+    const credentials = generateCredentials(2, 8);
     await expectValidationError(credentials);
 });
 
 it('should throw error when username is too long', async () => {
-    const credentials = generateCredentials(15, 6);
+    const credentials = generateCredentials(30, 8);
     await expectValidationError(credentials);
 });
 
 it('should throw error when password is too short', async () => {
-    const credentials = generateCredentials(4, 1);
+    const credentials = generateCredentials(8, 2);
     await expectValidationError(credentials);
 });
 
 it('should throw error when password is too long', async () => {
-    const credentials = generateCredentials(4, 55);
+    const credentials = generateCredentials(8, 110);
     await expectValidationError(credentials);
 });
 

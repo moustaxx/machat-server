@@ -1,5 +1,5 @@
 /** @jest-environment node */
-import { randomBytes } from 'crypto';
+import randomString from '../../../../tests/helpers/randomString';
 import isValidEmail from '../isValidEmail';
 
 it('should pass', async () => {
@@ -20,7 +20,7 @@ it('should return false when wrong email', async () => {
 
 
 it('should return false when email is too long', async () => {
-    const text = randomBytes(40).toString('hex');
+    const text = randomString(80);
     const email = `${text}@machat.ru`;
 
     expect(isValidEmail(email)).toBeFalsy();

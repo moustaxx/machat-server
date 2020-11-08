@@ -1,7 +1,7 @@
-import { randomBytes } from 'crypto';
 import { Message } from 'prisma-machat';
 
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
+import randomString from '../../../../tests/helpers/randomString';
 
 let t: ITestUtils;
 
@@ -26,7 +26,7 @@ it('should publish a message', async () => {
 
     const conversation = await t.prisma.conversation.create({
         data: {
-            name: randomBytes(8).toString('hex'),
+            name: randomString(8),
             participants: { connect: { id: user.id } },
         },
     });
@@ -48,7 +48,7 @@ it('should publish a message', async () => {
         query: queryString,
         cookies,
         variables: {
-            content: randomBytes(3).toString('hex'),
+            content: randomString(6),
             conversationId: conversation.id,
         },
     });
@@ -63,7 +63,7 @@ it('should create message', async () => {
 
     const conversation = await t.prisma.conversation.create({
         data: {
-            name: randomBytes(8).toString('hex'),
+            name: randomString(8),
             participants: { connect: { id: user.id } },
         },
     });
@@ -73,7 +73,7 @@ it('should create message', async () => {
         query: queryString,
         cookies,
         variables: {
-            content: randomBytes(3).toString('hex'),
+            content: randomString(6),
             conversationId: conversation.id,
         },
     });
@@ -90,7 +90,7 @@ it('should throw error when not permitted', async () => {
 
     const conversation = await t.prisma.conversation.create({
         data: {
-            name: randomBytes(8).toString('hex'),
+            name: randomString(8),
         },
     });
 
@@ -98,7 +98,7 @@ it('should throw error when not permitted', async () => {
         query: queryString,
         cookies,
         variables: {
-            content: randomBytes(3).toString('hex'),
+            content: randomString(6),
             conversationId: conversation.id,
         },
     });
@@ -112,7 +112,7 @@ it('should throw error if empty message', async () => {
 
     const conversation = await t.prisma.conversation.create({
         data: {
-            name: randomBytes(8).toString('hex'),
+            name: randomString(8),
             participants: { connect: { id: user.id } },
         },
     });

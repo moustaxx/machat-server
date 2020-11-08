@@ -1,7 +1,6 @@
-import { randomBytes } from 'crypto';
-
 import { NexusGenRootTypes } from '../../../../generated/nexus';
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
+import randomString from '../../../../tests/helpers/randomString';
 
 let t: ITestUtils;
 
@@ -40,7 +39,7 @@ const queryString = `
 it('should return conversation', async () => {
     const { cookies, user } = await t.createRandomUserAndLogin();
 
-    const name = randomBytes(8).toString('hex');
+    const name = randomString(8);
     const conversation = await t.prisma.conversation.create({
         data: {
             name,
@@ -83,7 +82,7 @@ it('should throw FORBIDDEN error when not permitted', async () => {
 
     const conversation = await t.prisma.conversation.create({
         data: {
-            name: randomBytes(8).toString('hex'),
+            name: randomString(8),
         },
     });
 

@@ -1,7 +1,7 @@
 import { PrismaClient } from 'prisma-machat';
-import { randomBytes } from 'crypto';
 import { ForbiddenError } from 'apollo-server-errors';
 
+import randomString from '../../tests/helpers/randomString';
 import checkUserHasConvAccess from '../checkUserHasConvAccess';
 import { createRandomUserSep } from '../../tests/helpers';
 
@@ -20,7 +20,7 @@ it('should return that user can access the conversation', async () => {
 
     const conversation = await prisma.conversation.create({
         data: {
-            name: randomBytes(8).toString('hex'),
+            name: randomString(8),
             participants: { connect: { id: user.id } },
         },
     });
@@ -33,7 +33,7 @@ it('should throw error that user cannot access the conversation', async () => {
 
     const conversation = await prisma.conversation.create({
         data: {
-            name: randomBytes(8).toString('hex'),
+            name: randomString(8),
         },
     });
 
