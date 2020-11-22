@@ -13,7 +13,8 @@
         "postinstall": "yarn generate",
         "test": "jest",
         "lint": "eslint --ignore-path .gitignore --cache --ext .ts,.tsx ./src",
-        "dev": "tsnd --respawn --transpile-only --ignore-watch ./src/generated --cache-directory ./.yarn/.cache/tsnd ./src/start"
+        "dev": "tsnd --respawn --transpile-only --ignore-watch ./src/generated --cache-directory ./.yarn/.cache/tsnd ./src/start",
+        "debug": "tsnd --inspect --respawn --transpile-only --ignore-watch ./src/generated --cache-directory ./.yarn/.cache/tsnd ./src/start"
     },
     "dependencies": {
         "@devoxa/prisma-relay-cursor-connection": "^1.1.0",
