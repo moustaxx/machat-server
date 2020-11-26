@@ -11,11 +11,6 @@ input BoolFilter {
   not: NestedBoolFilter
 }
 
-input BoolNullableFilter {
-  equals: Boolean
-  not: NestedBoolNullableFilter
-}
-
 type Conversation {
   createdAt: DateTime!
   id: Int!
@@ -373,11 +368,6 @@ input NestedBoolFilter {
   not: NestedBoolFilter
 }
 
-input NestedBoolNullableFilter {
-  equals: Boolean
-  not: NestedBoolNullableFilter
-}
-
 input NestedDateTimeFilter {
   equals: DateTime
   gt: DateTime
@@ -436,10 +426,6 @@ input NestedStringFilter {
   startsWith: String
 }
 
-input NullableBoolFieldUpdateOperationsInput {
-  set: Boolean
-}
-
 input NullableDateTimeFieldUpdateOperationsInput {
   set: DateTime
 }
@@ -487,7 +473,7 @@ type Person {
   email: String!
   id: Int!
   isActive: Boolean!
-  isAdmin: Boolean
+  isAdmin: Boolean!
   lastSeen: DateTime
   username: String!
 }
@@ -543,7 +529,7 @@ input PersonScalarWhereInput {
   hash: StringFilter
   id: IntFilter
   isActive: BoolFilter
-  isAdmin: BoolNullableFilter
+  isAdmin: BoolFilter
   lastSeen: DateTimeNullableFilter
   NOT: [PersonScalarWhereInput!]
   OR: [PersonScalarWhereInput!]
@@ -555,7 +541,7 @@ input PersonUpdateManyMutationInput {
   email: StringFieldUpdateOperationsInput
   hash: StringFieldUpdateOperationsInput
   isActive: BoolFieldUpdateOperationsInput
-  isAdmin: NullableBoolFieldUpdateOperationsInput
+  isAdmin: BoolFieldUpdateOperationsInput
   lastSeen: NullableDateTimeFieldUpdateOperationsInput
   username: StringFieldUpdateOperationsInput
 }
@@ -593,7 +579,7 @@ input PersonUpdateWithoutConversationsInput {
   email: StringFieldUpdateOperationsInput
   hash: StringFieldUpdateOperationsInput
   isActive: BoolFieldUpdateOperationsInput
-  isAdmin: NullableBoolFieldUpdateOperationsInput
+  isAdmin: BoolFieldUpdateOperationsInput
   lastSeen: NullableDateTimeFieldUpdateOperationsInput
   messages: MessageUpdateManyWithoutAuthorInput
   username: StringFieldUpdateOperationsInput
@@ -605,7 +591,7 @@ input PersonUpdateWithoutMessagesInput {
   email: StringFieldUpdateOperationsInput
   hash: StringFieldUpdateOperationsInput
   isActive: BoolFieldUpdateOperationsInput
-  isAdmin: NullableBoolFieldUpdateOperationsInput
+  isAdmin: BoolFieldUpdateOperationsInput
   lastSeen: NullableDateTimeFieldUpdateOperationsInput
   username: StringFieldUpdateOperationsInput
 }
