@@ -86,8 +86,6 @@ const main = async (testing?: boolean) => {
         console.log('🚀 Server ready at: http://localhost:4000/graphql');
     }
 
-    // console.log('app:', app.graphql.pubsub); // subskrybuj tym
-    // console.log('app:', { ...app.graphql.schema._typeMap.Subscription }); // subskrybuj tym
     return app;
 };
 

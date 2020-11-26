@@ -1,4 +1,4 @@
-import { mutationField, stringArg } from '@nexus/schema';
+import { mutationField, nonNull, stringArg } from '@nexus/schema';
 import { ValidationError } from 'apollo-server-errors';
 import argon2 from 'argon2';
 
@@ -8,9 +8,9 @@ import isValidEmail from '../helpers/isValidEmail';
 export const registerMutationField = mutationField('register', {
     type: 'Person',
     args: {
-        email: stringArg({ required: true }),
-        username: stringArg({ required: true }),
-        password: stringArg({ required: true }),
+        email: nonNull(stringArg()),
+        username: nonNull(stringArg()),
+        password: nonNull(stringArg()),
     },
     resolve: async (_, args, { prisma, session }) => {
         isAlreadyLoggedIn(session);

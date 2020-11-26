@@ -1,5 +1,5 @@
 import { PersonWhereUniqueInput } from 'prisma-machat';
-import { queryField, arg } from '@nexus/schema';
+import { queryField, arg, nonNull } from '@nexus/schema';
 import { ApolloError } from 'apollo-server-errors';
 
 import isAuthorized from '../../../helpers/isAuthorized';
@@ -7,12 +7,12 @@ import isAuthorized from '../../../helpers/isAuthorized';
 export const personQueryField = queryField('person', {
     type: 'Person',
     args: {
-        where: arg({ type: 'PersonWhereUniqueInput', required: true }),
+        where: nonNull(arg({ type: 'PersonWhereUniqueInput' })),
     },
     resolve: async (_, { where }, { prisma, session }) => {
         isAuthorized(session);
 
-        const data = await prisma.person.findOne({
+        const data = await prisma.person.findUnique({
             where: where as PersonWhereUniqueInput,
         });
 

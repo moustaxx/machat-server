@@ -1,4 +1,4 @@
-import { mutationField, stringArg, intArg } from '@nexus/schema';
+import { mutationField, stringArg, intArg, nonNull } from '@nexus/schema';
 import { UserInputError } from 'apollo-server-errors';
 
 import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';
@@ -7,8 +7,8 @@ import isAuthorized from '../../../helpers/isAuthorized';
 export const createMessageMutationField = mutationField('createMessage', {
     type: 'Message',
     args: {
-        content: stringArg({ required: true }),
-        conversationId: intArg({ required: true }),
+        content: nonNull(stringArg()),
+        conversationId: nonNull(intArg()),
     },
     resolve: async (_root, args, { prisma, session, pubsub }) => {
         isAuthorized(session);

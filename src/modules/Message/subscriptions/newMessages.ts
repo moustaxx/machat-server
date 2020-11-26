@@ -1,4 +1,4 @@
-import { intArg, subscriptionField } from '@nexus/schema';
+import { intArg, nonNull, subscriptionField } from '@nexus/schema';
 import { Message } from '@prisma/client';
 import { withFilter } from 'mercurius';
 
@@ -8,9 +8,9 @@ import isAuthorized from '../../../helpers/isAuthorized';
 export const newMessages = subscriptionField('newMessages', {
     type: 'Message',
     args: {
-        conversationId: intArg({ required: true }),
+        conversationId: nonNull(intArg()),
     },
-    resolve: (payload) => payload,
+    resolve: (payload: Message) => payload,
     subscribe: withFilter(
         async (_root, args, { prisma, session, pubsub }) => {
             isAuthorized(session);

@@ -78,7 +78,7 @@ it('should create message', async () => {
         },
     });
 
-    const messageInDB = await t.prisma.conversation.findOne({
+    const messageInDB = await t.prisma.conversation.findUnique({
         where: { id: data.createMessage.id },
     });
 

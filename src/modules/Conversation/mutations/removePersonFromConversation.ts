@@ -1,4 +1,4 @@
-import { mutationField, intArg } from '@nexus/schema';
+import { mutationField, intArg, nonNull } from '@nexus/schema';
 import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';
 import isAuthorized from '../../../helpers/isAuthorized';
 
@@ -6,8 +6,8 @@ export const removePersonFromConversationMutationField = mutationField(
     'removePersonFromConversation', {
         type: 'Conversation',
         args: {
-            personId: intArg({ required: true }),
-            conversationId: intArg({ required: true }),
+            personId: nonNull(intArg()),
+            conversationId: nonNull(intArg()),
         },
         resolve: async (_root, args, { prisma, session }) => {
             isAuthorized(session);

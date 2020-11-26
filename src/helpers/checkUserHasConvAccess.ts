@@ -7,7 +7,7 @@ const checkUserHasConvAccess = async (
     user: NexusGenAllTypes['Person'],
     conversationId: number,
 ): Promise<void> => {
-    const getConv = await prisma.person.findOne({
+    const getConv = await prisma.person.findUnique({
         select: {
             conversations: {
                 select: {

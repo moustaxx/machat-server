@@ -7,7 +7,7 @@ export const meQueryField = queryField('me', {
     resolve: async (_root, _args, { prisma, session }) => {
         isAuthorized(session);
 
-        const data = await prisma.person.findOne({
+        const data = await prisma.person.findUnique({
             where: { id: session.owner.id },
         });
 
