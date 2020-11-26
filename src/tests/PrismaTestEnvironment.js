@@ -24,8 +24,7 @@ class PrismaTestEnvironment extends NodeEnvironment {
         process.env.DATABASE_URL = this.databaseUrl;
         this.global.process.env.DATABASE_URL = this.databaseUrl;
 
-        await execRepeatedOnErr('prisma migrate save --experimental --name testing');
-        await execRepeatedOnErr('prisma migrate up --create-db --experimental');
+        await execRepeatedOnErr('prisma db push --preview-feature');
 
         return super.setup();
     }
