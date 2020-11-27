@@ -32,6 +32,7 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
 
     await app.register(fastifySession, {
         store: testing ? undefined : new (pgSession(fastifySession as any))({
+            tableName: 'Session',
             conObject: {
                 connectionString: process.env.DATABASE_URL,
                 ssl: { rejectUnauthorized: isProduction },

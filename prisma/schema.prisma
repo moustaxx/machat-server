@@ -14,8 +14,6 @@ model Conversation {
   name         String
   messages     Message[]
   participants Person[]  @relation("ConversationToPerson", references: [id])
-
-  @@map(name: "conversation")
 }
 
 model Message {
@@ -26,8 +24,6 @@ model Message {
   id             Int          @default(autoincrement()) @id
   author         Person?      @relation(fields: [authorID], references: [id])
   conversation   Conversation @relation(fields: [conversationID], references: [id])
-
-  @@map(name: "message")
 }
 
 model Person {
@@ -41,14 +37,10 @@ model Person {
   hash          String
   messages      Message[]
   conversations Conversation[] @relation("ConversationToPerson", references: [id])
-
-  @@map(name: "person")
 }
 
 model Session {
   sid    String   @id
   sess   Json
   expire DateTime
-
-  @@map(name: "session")
 }
