@@ -1,4 +1,4 @@
-import fastify from 'fastify';
+import fastify, { FastifyInstance } from 'fastify';
 import fastifyCors from 'fastify-cors';
 import fastifyCookie from 'fastify-cookie';
 import fastifySession from 'fastify-session';
@@ -16,8 +16,7 @@ dotenv.config();
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const main = async (testing?: boolean) => {
+const main = async (testing?: boolean): Promise<FastifyInstance> => {
     const app = fastify({ logger: isProduction });
 
     await app.register(fastifyCors, {
