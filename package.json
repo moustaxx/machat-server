@@ -31,7 +31,7 @@
         "fastify-session": "^5.2.1",
         "graphql": "^15.4.0",
         "graphql-iso-date": "^3.6.1",
-        "mercurius": "^6.4.0",
+        "mercurius": "^6.5.0",
         "nexus-plugin-prisma": "^0.25.0",
         "prisma-machat": "link:./prisma/client"
     },

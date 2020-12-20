@@ -3640,19 +3640,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"http-errors@npm:^1.7.3":
-  version: 1.8.0
-  resolution: "http-errors@npm:1.8.0"
-  dependencies:
-    depd: ~1.1.2
-    inherits: 2.0.4
-    setprototypeof: 1.2.0
-    statuses: ">= 1.5.0 < 2"
-    toidentifier: 1.0.0
-  checksum: 95ad78508b2929923dac83edd7ce513db87c4214df83a6664559810566da73d9a6892ffdcd76738d9ab9d33172b4c7e304436a4031d471569a7344396fea0ecb
-  languageName: node
-  linkType: hard
-
 "http-errors@npm:~1.7.2":
   version: 1.7.3
   resolution: "http-errors@npm:1.7.3"
@@ -5051,7 +5038,7 @@ __metadata:
     jest: ^26.6.3
     jest-environment-node: ^26.6.2
     light-my-request: ^4.3.0
-    mercurius: ^6.4.0
+    mercurius: ^6.5.0
     nexus-plugin-prisma: ^0.25.0
     pg: ^8.5.1
     prisma-machat: "link:./prisma/client"
@@ -5128,18 +5115,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mercurius@npm:^6.4.0":
-  version: 6.4.0
-  resolution: "mercurius@npm:6.4.0"
+"mercurius@npm:^6.5.0":
+  version: 6.5.0
+  resolution: "mercurius@npm:6.5.0"
   dependencies:
     end-of-stream: ^1.4.4
     events.on: ^1.0.1
+    fastify-error: ^0.2.0
     fastify-plugin: ^2.0.1
     fastify-static: ^3.0.0
     fastify-websocket: ^2.0.5
     graphql: ^15.0.0
     graphql-jit: ^0.4.0
-    http-errors: ^1.7.3
     mqemitter: ^4.0.0
     p-map: ^4.0.0
     promise.allsettled: ^1.0.2
@@ -5147,7 +5134,7 @@ __metadata:
     single-user-cache: ^0.3.0
     tiny-lru: ^7.0.2
     ws: ^7.2.1
-  checksum: 10006f80e6483b6d70fa61a40ca1aaa1e63195c89056a68aff8e77247825289cb4d7a6a570b6cd3a248c95a88cb4d68bb76a7fd191a26273baed559502974764
+  checksum: 5be68614bd5d8369f6c44269aec657c048b3653c9c12012d1bf73fe9c005e03cbc0c0a0631e0bd8743f41a78078ffe7d229e731faf77cd84a89b859b5c40a8c8
   languageName: node
   linkType: hard
 
@@ -6887,13 +6874,6 @@ __metadata:
   version: 1.1.1
   resolution: "setprototypeof@npm:1.1.1"
   checksum: 0efed4da5aec7535828ac07c3b560f0a54257a4a7d5390ffabe5530a083974aef577651507974215edb92a51efa142f22fb3242e24d630ba6adcbfc9e7f1ff2b
-  languageName: node
-  linkType: hard
-
-"setprototypeof@npm:1.2.0":
-  version: 1.2.0
-  resolution: "setprototypeof@npm:1.2.0"
-  checksum: 72691439857719aa33ec11ebc97960347f0f96e75c2fe65d0f2ca5c9c44fb1aa026e2ae528959624ed3ae3820fe06bfb1aded306402c5c941afd3dfdf47f79d0
   languageName: node
   linkType: hard
 
