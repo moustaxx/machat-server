@@ -9,11 +9,13 @@ declare module 'mercurius/lib/subscriber' {
             fastify?: FastifyInstance,
         });
 
-        subscribe<TResult = any>(topics: string | string[]): Promise<AsyncIterator<TResult>>;
+        subscribe<TResult = any>(
+            topics: string | string[]
+        ): Promise<Readable & AsyncIterator<TResult>>;
         subscribe<TResult = any>(
             topics: string | string[],
             queue: Record<string, unknown>
-        ): Promise<AsyncIterator<TResult>>;
+        ): Promise<Readable & AsyncIterator<TResult>>;
 
         publish<TResult = any>(
             event: { topic: string; payload: TResult },
