@@ -44,7 +44,7 @@ const expectErrorOnRegister = async (
 };
 
 const expectValidationError = async (credentials: ICredentials) => {
-    expectErrorOnRegister(credentials, 'GRAPHQL_VALIDATION_FAILED');
+    await expectErrorOnRegister(credentials, 'GRAPHQL_VALIDATION_FAILED');
 };
 
 const generateCredentials = (usernameLength = 6, passwordLength = 8) => {
