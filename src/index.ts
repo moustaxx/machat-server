@@ -81,9 +81,8 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
 
     app.decorate('prisma', prisma);
 
-    if (!isProduction) app.register(AltairFastify);
-
     if (!testing) {
+        if (!isProduction) await app.register(AltairFastify);
         await app.listen(4000);
         console.log('🚀 Server ready at: http://localhost:4000/graphql');
     }
