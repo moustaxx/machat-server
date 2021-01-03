@@ -1,5 +1,5 @@
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
-import { NexusGenRootTypes } from '../../../../generated/nexus';
+import { NexusGenFieldTypes } from '../../../../generated/nexus';
 
 let t: ITestUtils;
 
@@ -44,7 +44,7 @@ it('should return person', async () => {
     const { cookies } = await t.createRandomUserAndLogin({ isAdmin: true });
     const { user } = await t.createRandomUser();
 
-    type TPerson = { person: NexusGenRootTypes['Person'] };
+    type TPerson = { person: NexusGenFieldTypes['Person'] };
     const { data } = await t.gqlQuery<TPerson>({
         query: queryStringFull,
         variables: { whereId: user.id },

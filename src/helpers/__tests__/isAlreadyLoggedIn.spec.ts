@@ -1,17 +1,17 @@
 /** @jest-environment node */
 import { ApolloError } from 'apollo-server-errors';
-import { NexusGenAllTypes } from '../../generated/nexus';
+import { NexusGenFieldTypes } from '../../generated/nexus';
 import isAlreadyLoggedIn from '../isAlreadyLoggedIn';
 
 const alreadyLoggedInError = new ApolloError('You are already logged in!', 'ALREADY_LOGGED_IN');
 const noSessionError = new ApolloError('No session!', 'NO_SESSION');
 
-const owner: NexusGenAllTypes['Person'] = {
+const owner: Omit<NexusGenFieldTypes['Person'], 'conversations'> = {
     id: 1,
     username: 'test',
     email: 'test@machat.ru',
-    createdAt: Date.now(),
-    lastSeen: Date.now(),
+    createdAt: new Date(),
+    lastSeen: new Date(),
     isActive: true,
     isAdmin: false,
 };

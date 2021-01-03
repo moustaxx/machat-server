@@ -10,7 +10,7 @@ Object {
     "email": Any<String>,
     "id": 2,
     "isActive": true,
-    "isAdmin": null,
+    "isAdmin": false,
     "lastSeen": null,
     "username": Any<String>,
   },
