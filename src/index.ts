@@ -11,6 +11,7 @@ import { schema } from './schema';
 import { ISession } from './types';
 import { createContext } from './context';
 import prisma from './prismaClient';
+import { pubsub } from './PubSub';
 
 dotenv.config();
 
@@ -66,6 +67,7 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
     await app.register(mercurius, {
         schema,
         subscription: {
+            pubsub,
             verifyClient({ req }, next) {
                 const { sessionId } = app.parseCookie<{ sessionId: string }>(req.headers.cookie);
 
