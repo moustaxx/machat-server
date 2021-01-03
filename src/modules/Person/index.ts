@@ -5,3 +5,4 @@ export * from './queries/me';
 export * from './queries/person';
 export * from './queries/sessionOwner';
 export * from './mutations/register';
+export * from './subscriptions/personActiveStatus';

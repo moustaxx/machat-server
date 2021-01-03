@@ -18,7 +18,7 @@ type TArgs = {
 type TSubscribe = (
     root: any,
     args: TArgs,
-    ctx: Omit<Context, 'req' | 'reply' | 'app'>,
+    ctx: Omit<Context, 'req' | 'reply' | 'app' | 'personActiveStatus'>,
 ) => Promise<AsyncGenerator<Message, Message>>;
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

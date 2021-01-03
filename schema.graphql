@@ -504,7 +504,6 @@ input PersonCreateWithoutConversationsInput {
   createdAt: DateTime
   email: String!
   hash: String!
-  isActive: Boolean
   isAdmin: Boolean
   lastSeen: DateTime
   messages: MessageCreateManyWithoutAuthorInput
@@ -516,7 +515,6 @@ input PersonCreateWithoutMessagesInput {
   createdAt: DateTime
   email: String!
   hash: String!
-  isActive: Boolean
   isAdmin: Boolean
   lastSeen: DateTime
   username: String!
@@ -528,7 +526,6 @@ input PersonScalarWhereInput {
   email: StringFilter
   hash: StringFilter
   id: IntFilter
-  isActive: BoolFilter
   isAdmin: BoolFilter
   lastSeen: DateTimeNullableFilter
   NOT: [PersonScalarWhereInput!]
@@ -540,7 +537,6 @@ input PersonUpdateManyMutationInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   hash: StringFieldUpdateOperationsInput
-  isActive: BoolFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   lastSeen: NullableDateTimeFieldUpdateOperationsInput
   username: StringFieldUpdateOperationsInput
@@ -578,7 +574,6 @@ input PersonUpdateWithoutConversationsInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   hash: StringFieldUpdateOperationsInput
-  isActive: BoolFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   lastSeen: NullableDateTimeFieldUpdateOperationsInput
   messages: MessageUpdateManyWithoutAuthorInput
@@ -590,7 +585,6 @@ input PersonUpdateWithoutMessagesInput {
   createdAt: DateTimeFieldUpdateOperationsInput
   email: StringFieldUpdateOperationsInput
   hash: StringFieldUpdateOperationsInput
-  isActive: BoolFieldUpdateOperationsInput
   isAdmin: BoolFieldUpdateOperationsInput
   lastSeen: NullableDateTimeFieldUpdateOperationsInput
   username: StringFieldUpdateOperationsInput
@@ -657,4 +651,5 @@ input StringFilter {
 
 type Subscription {
   newMessages(conversationId: Int!): Message!
+  personActiveStatus(userId: Int!): Boolean!
 }

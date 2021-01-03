@@ -15,10 +15,15 @@ export const Person = objectType({
         t.model.id();
         t.model.username();
         t.model.email();
-        t.model.isActive();
         t.model.isAdmin();
         t.model.createdAt();
         t.model.lastSeen();
+        t.boolean('isActive', {
+            resolve: (_root, _args, { session, personActiveStatus }) => {
+                isAuthorized(session);
+                return personActiveStatus.get(session.owner.id);
+            },
+        });
         t.connectionField('conversations', {
             type: 'Conversation',
             resolve: (root, args, { session, prisma }) => {
