@@ -49,6 +49,11 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
         saveUninitialized: false,
     });
 
+    app.addHook('onRequest', (req, reply, done) => {
+        req.personActiveStatus = personActiveStatus;
+        done();
+    });
+
     app.addHook('onSend', async (req, reply) => {
         const { session, cookies } = req;
         if (!session) return;
@@ -83,7 +88,7 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
     });
 
     app.decorate('prisma', prisma);
-    app.decorateRequest('personActiveStatus', personActiveStatus);
+    app.decorateRequest('personActiveStatus', null);
 
     if (!testing) {
         if (!isProduction) await app.register(AltairFastify);
