@@ -839,15 +839,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/graphql-iso-date@npm:^3.4.0":
-  version: 3.4.0
-  resolution: "@types/graphql-iso-date@npm:3.4.0"
-  dependencies:
-    graphql: ^15.1.0
-  checksum: eae94821787354e53f440c28565a221d2d78622c48996426d8761075c4d3f90e02c6c8b9f00139de22f9a551dc2cfb366c6c7c577035eb1dd5edf01530b7b4b5
-  languageName: node
-  linkType: hard
-
 "@types/istanbul-lib-coverage@npm:*, @types/istanbul-lib-coverage@npm:^2.0.0, @types/istanbul-lib-coverage@npm:^2.0.1":
   version: 2.0.3
   resolution: "@types/istanbul-lib-coverage@npm:2.0.3"
@@ -3540,15 +3531,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql-iso-date@npm:^3.6.1":
-  version: 3.6.1
-  resolution: "graphql-iso-date@npm:3.6.1"
-  peerDependencies:
-    graphql: ^0.5.0 || ^0.6.0 || ^0.7.0 || ^0.8.0-b || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0
-  checksum: d33245ccaba87665589bf2907159de9e024bfd516ccc905631b68010ff69afbcbd09103d38481569862e4c168f6db0f9df614968295ca41c996c7d7fd2679817
-  languageName: node
-  linkType: hard
-
 "graphql-jit@npm:^0.4.0":
   version: 0.4.3
   resolution: "graphql-jit@npm:0.4.3"
@@ -3565,7 +3547,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql@npm:^15.1.0, graphql@npm:^15.4.0":
+"graphql-scalars@npm:^1.7.0":
+  version: 1.7.0
+  resolution: "graphql-scalars@npm:1.7.0"
+  dependencies:
+    tslib: ~2.0.3
+  peerDependencies:
+    graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
+  checksum: dff7f088f7e5de62f88f0ee55e89b64b85cc917c8da09f862a595829b5b5126c199cd27630b540c991167fa0f87f90a6b935984d0da1e15505f65ccea3d2c2e5
+  languageName: node
+  linkType: hard
+
+"graphql@npm:^15.4.0":
   version: 15.4.0
   resolution: "graphql@npm:15.4.0"
   checksum: 1a307dcfe2646e1e8323d03e8cd24554ba9f7369863bf0b020f2e4b39bff3504dc7d6dcad19cb96899f0825eda4c688819911f0c270e84f1bb0954fe3ac16a31
@@ -5076,7 +5069,6 @@ __metadata:
     "@prisma/cli": ^2.13.1
     "@prisma/client": ^2.13.1
     "@types/connect-pg-simple": ^4.2.2
-    "@types/graphql-iso-date": ^3.4.0
     "@types/jest": ^26.0.19
     "@types/node": ^14.14.19
     "@typescript-eslint/eslint-plugin": ^4.11.1
@@ -5095,7 +5087,7 @@ __metadata:
     fastify-cors: ^5.1.0
     fastify-session: ^5.2.1
     graphql: ^15.4.0
-    graphql-iso-date: ^3.6.1
+    graphql-scalars: ^1.7.0
     jest: ^26.6.3
     jest-environment-node: ^26.6.2
     light-my-request: ^4.4.1
@@ -7749,7 +7741,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.3":
+"tslib@npm:^2.0.3, tslib@npm:~2.0.3":
   version: 2.0.3
   resolution: "tslib@npm:2.0.3"
   checksum: 447bfca5deaa157806c3f77eaba74d05dd0b38b014e47ce79d98b5c77ce7d91b00a687ba13ca1b5a74d35ca1098ac7a072c0a97fad06f0266612f2a03a6c8e8f

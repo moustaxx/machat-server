@@ -1,13 +1,14 @@
 import { nexusSchemaPrisma } from 'nexus-plugin-prisma/schema';
 import { makeSchema, asNexusMethod, connectionPlugin } from 'nexus';
-import { GraphQLDate } from 'graphql-iso-date';
+import { DateTimeResolver } from 'graphql-scalars';
 
 import * as allTypes from './modules';
 
-export const GQLDate = asNexusMethod(GraphQLDate, 'createdAt');
-
 export const schema = makeSchema({
-    types: [allTypes],
+    types: [
+        allTypes,
+        asNexusMethod(DateTimeResolver, 'date', 'Date'),
+    ],
     plugins: [
         nexusSchemaPrisma({
             experimentalCRUD: true,
@@ -26,8 +27,7 @@ export const schema = makeSchema({
     },
     contextType: {
         module: require.resolve('./context'),
-        alias: 'Context',
-        export: 'Context.Context',
+        export: 'Context',
     },
     sourceTypes: {
         modules: [
