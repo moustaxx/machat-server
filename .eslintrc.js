@@ -10,9 +10,11 @@ module.exports = {
     },
     ignorePatterns: ['**/prisma/client', '**/src/generated'],
     rules: {
+        '@typescript-eslint/comma-dangle': 0,
         '@typescript-eslint/indent': ['warn', 4, { SwitchCase: 1 }],
         '@typescript-eslint/no-explicit-any': 0,
-        '@typescript-eslint/comma-dangle': 0,
+        '@typescript-eslint/no-floating-promises': 'error',
+        '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: false }],
         '@typescript-eslint/no-unused-vars': ['warn', { 'argsIgnorePattern': '^_' }],
         'arrow-body-style': 0,
         'consistent-return': 0,
@@ -24,6 +26,7 @@ module.exports = {
         'no-param-reassign': ['warn', { 'props': false }],
         'no-tabs': 0,
         'no-multiple-empty-lines': ['warn', { max: 3, maxEOF: 1, maxBOF: 0 }],
+        'no-void': ['error', { allowAsStatement: true }],
         'linebreak-style': ['warn', 'windows'],
         'object-curly-newline': ['warn', { 'consistent': true }]
     },
