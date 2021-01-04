@@ -3082,7 +3082,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastify-session@npm:^5.2.1":
+fastify-session@^5.2.1:
   version: 5.2.1
   resolution: "fastify-session@npm:5.2.1"
   dependencies:
@@ -3090,6 +3090,17 @@ __metadata:
     fastify-plugin: ^3.0.0
     uid-safe: ^2.1.5
   checksum: 8beddcb4ecfcd68ca92918e6d0a804ec92c9f33e66c025a1da56531351ed7874af8674b946961599fa3e3d9c83cb8915987d6eca9e3baf8743b1315de3e768a9
+  languageName: node
+  linkType: hard
+
+"fastify-session@patch:fastify-session@^5.2.1#./.yarn/patches/fastify-session_fix-FastifyDeprecation.diff::locator=machat-prisma%40workspace%3A.":
+  version: 5.2.1
+  resolution: "fastify-session@patch:fastify-session@npm%3A5.2.1#./.yarn/patches/fastify-session_fix-FastifyDeprecation.diff::version=5.2.1&hash=64dac6&locator=machat-prisma%40workspace%3A."
+  dependencies:
+    cookie-signature: ^1.1.0
+    fastify-plugin: ^3.0.0
+    uid-safe: ^2.1.5
+  checksum: 7e127112c76ec4aba4cbef51845f6a11e97fd90876225cefa491d1096231990a03b86b0c84569e5eed962ec2f329a71b6a59260e1385536a2d41de33fd0f6cc0
   languageName: node
   linkType: hard
 
@@ -5085,7 +5096,7 @@ __metadata:
     fastify: ^3.9.2
     fastify-cookie: ^5.1.0
     fastify-cors: ^5.1.0
-    fastify-session: ^5.2.1
+    fastify-session: "patch:fastify-session@^5.2.1#./.yarn/patches/fastify-session_fix-FastifyDeprecation.diff"
     graphql: ^15.4.0
     graphql-scalars: ^1.7.0
     jest: ^26.6.3

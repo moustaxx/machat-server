@@ -27,7 +27,7 @@
         "fastify": "^3.9.2",
         "fastify-cookie": "^5.1.0",
         "fastify-cors": "^5.1.0",
-        "fastify-session": "^5.2.1",
+        "fastify-session": "patch:fastify-session@^5.2.1#./.yarn/patches/fastify-session_fix-FastifyDeprecation.diff",
         "graphql": "^15.4.0",
         "graphql-scalars": "^1.7.0",
         "mercurius": "^6.9.0",
