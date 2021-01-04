@@ -12,6 +12,7 @@ import { ISession } from './types';
 import { createContext } from './context';
 import prisma from './prismaClient';
 import { pubsub } from './PubSub';
+import PersonActiveStatus from './PersonActiveStatus';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 const main = async (testing?: boolean): Promise<FastifyInstance> => {
     const app = fastify({ logger: isProduction });
+    const personActiveStatus = new PersonActiveStatus();
 
     await app.register(fastifyCors, {
         credentials: true,
@@ -62,6 +64,7 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
 
     app.addHook('onClose', async () => {
         await prisma.$disconnect();
+        personActiveStatus.clearSchedule();
     });
 
     await app.register(mercurius, {
@@ -80,6 +83,7 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
     });
 
     app.decorate('prisma', prisma);
+    app.decorateRequest('personActiveStatus', personActiveStatus);
 
     if (!testing) {
         if (!isProduction) await app.register(AltairFastify);

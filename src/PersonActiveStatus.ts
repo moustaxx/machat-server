@@ -22,6 +22,10 @@ export default class PersonActiveStatus {
         this.timerMap.set(id, timer);
     };
 
+    public clearSchedule = (): void => {
+        this.timerMap.forEach((timer) => clearTimeout(timer));
+    };
+
     public get = (id: TID): boolean => !!this.data.get(id);
 
     public set = (id: TID, active: boolean): void => {
@@ -37,5 +41,3 @@ export default class PersonActiveStatus {
         });
     };
 }
-
-export const personActiveStatus = new PersonActiveStatus();

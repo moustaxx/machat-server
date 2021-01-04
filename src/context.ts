@@ -3,7 +3,7 @@ import { MercuriusContext } from 'mercurius';
 
 import { ISession } from './types';
 import prisma, { TPrisma } from './prismaClient';
-import PersonActiveStatus, { personActiveStatus } from './PersonActiveStatus';
+import PersonActiveStatus from './PersonActiveStatus';
 
 export interface Context extends MercuriusContext {
     req: FastifyRequest;
@@ -20,13 +20,13 @@ export async function createContext(
 ): Promise<Omit<Context, keyof MercuriusContext>> {
     const session = req.session as ISession;
     const ownerID = session.owner?.id;
-    if (ownerID) personActiveStatus.set(ownerID, true);
+    if (ownerID) req.personActiveStatus.set(ownerID, true);
 
     return {
         req,
         reply,
         prisma,
         session,
-        personActiveStatus,
+        personActiveStatus: req.personActiveStatus,
     };
 }
