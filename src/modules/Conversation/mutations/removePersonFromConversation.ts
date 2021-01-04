@@ -1,4 +1,4 @@
-import { mutationField, intArg, nonNull } from '@nexus/schema';
+import { mutationField, intArg, nonNull } from 'nexus';
 import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';
 import isAuthorized from '../../../helpers/isAuthorized';
 

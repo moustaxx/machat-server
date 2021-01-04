@@ -1,4 +1,4 @@
-import { intArg, nonNull, subscriptionField } from '@nexus/schema';
+import { intArg, nonNull, subscriptionField } from 'nexus';
 import { Message } from '@prisma/client';
 import { withFilter } from 'mercurius';
 

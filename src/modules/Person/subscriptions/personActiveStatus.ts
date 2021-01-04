@@ -1,4 +1,4 @@
-import { nonNull, intArg, subscriptionField } from '@nexus/schema';
+import { nonNull, intArg, subscriptionField } from 'nexus';
 import { withFilter } from 'mercurius';
 
 import isAuthorized from '../../../helpers/isAuthorized';

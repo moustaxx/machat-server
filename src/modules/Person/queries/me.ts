@@ -1,4 +1,4 @@
-import { queryField } from '@nexus/schema';
+import { queryField } from 'nexus';
 import { ApolloError } from 'apollo-server-errors';
 import isAuthorized from '../../../helpers/isAuthorized';
 

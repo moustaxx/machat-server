@@ -1,4 +1,4 @@
-import { mutationField, stringArg, intArg, nonNull } from '@nexus/schema';
+import { mutationField, stringArg, intArg, nonNull } from 'nexus';
 import { UserInputError } from 'apollo-server-errors';
 
 import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';

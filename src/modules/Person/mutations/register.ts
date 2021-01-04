@@ -1,4 +1,4 @@
-import { mutationField, nonNull, stringArg } from '@nexus/schema';
+import { mutationField, nonNull, stringArg } from 'nexus';
 import { ValidationError } from 'apollo-server-errors';
 import argon2 from 'argon2';
 

@@ -1,4 +1,4 @@
-import { queryField } from '@nexus/schema';
+import { queryField } from 'nexus';
 import isAuthorized from '../../../helpers/isAuthorized';
 
 export const sessionOwnerQueryField = queryField('sessionOwner', {

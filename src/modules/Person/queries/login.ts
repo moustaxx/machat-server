@@ -1,4 +1,4 @@
-import { nonNull, queryField, stringArg } from '@nexus/schema';
+import { nonNull, queryField, stringArg } from 'nexus';
 import { ApolloError } from 'apollo-server-errors';
 import argon2 from 'argon2';
 

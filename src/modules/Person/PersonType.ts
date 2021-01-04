@@ -1,4 +1,4 @@
-import { objectType } from '@nexus/schema';
+import { objectType } from 'nexus';
 import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 import {
     Conversation,

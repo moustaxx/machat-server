@@ -1,4 +1,4 @@
-import { queryField, intArg, nonNull } from '@nexus/schema';
+import { queryField, intArg, nonNull } from 'nexus';
 import { ApolloError } from 'apollo-server-errors';
 
 import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';

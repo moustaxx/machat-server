@@ -1,5 +1,5 @@
 import { PersonWhereUniqueInput } from 'prisma-machat';
-import { queryField, arg, nonNull } from '@nexus/schema';
+import { queryField, arg, nonNull } from 'nexus';
 import { ApolloError } from 'apollo-server-errors';
 
 import isAuthorized from '../../../helpers/isAuthorized';
