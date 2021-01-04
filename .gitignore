@@ -9,7 +9,6 @@
 
 #output
 dist/
-src/generated/
 prisma/client
 
 # misc
