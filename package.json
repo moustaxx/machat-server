@@ -16,6 +16,11 @@
         "dev": "tsnd --respawn --transpile-only --ignore-watch ./src/generated --cache-directory ./.yarn/.cache/tsnd ./src/start",
         "debug": "tsnd --inspect --respawn --transpile-only --ignore-watch ./src/generated --cache-directory ./.yarn/.cache/tsnd ./src/start"
     },
+    "resolutions": {
+        "eslint-config-airbnb-typescript/@typescript-eslint/parser": "^4.11.1",
+        "eslint-config-airbnb-typescript/eslint-config-airbnb": "*",
+        "eslint-config-airbnb-typescript/eslint-config-airbnb-base": "*"
+    },
     "dependencies": {
         "@devoxa/prisma-relay-cursor-connection": "^1.1.0",
         "@prisma/client": "^2.13.1",
