@@ -9,11 +9,12 @@ datasource db {
 }
 
 model Conversation {
-  createdAt    DateTime  @default(now()) @map("created_at")
-  id           Int       @id @default(autoincrement())
+  createdAt    DateTime   @default(now()) @map("created_at")
+  id           Int        @id @default(autoincrement())
   name         String
   messages     Message[]
-  participants Person[]  @relation("ConversationToPerson", references: [id])
+  lastRead     LastRead[]
+  participants Person[]   @relation("ConversationToPerson", references: [id])
 }
 
 model Message {
@@ -35,7 +36,18 @@ model Person {
   username      String         @unique
   hash          String
   messages      Message[]
+  lastRead      LastRead[]
   conversations Conversation[] @relation("ConversationToPerson", references: [id])
+}
+
+model LastRead {
+  lastRead       DateTime     @map("last_read")
+  personID       Int          @map("person_id")
+  conversationID Int          @map("conversation_id")
+  person         Person       @relation(fields: [personID], references: [id])
+  conversation   Conversation @relation(fields: [conversationID], references: [id])
+
+  @@unique([personID, conversationID])
 }
 
 model Session {

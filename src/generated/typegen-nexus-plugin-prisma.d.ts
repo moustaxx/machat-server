@@ -17,6 +17,7 @@ interface PrismaModels {
   Conversation: Prisma.Conversation
   Message: Prisma.Message
   Person: Prisma.Person
+  LastRead: Prisma.LastRead
   Session: Prisma.Session
 }
 
@@ -24,7 +25,7 @@ interface PrismaModels {
 interface NexusPrismaInputs {
   Query: {
     conversations: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'createdAt' | 'id' | 'name' | 'messages' | 'participants'
+      filtering: 'AND' | 'OR' | 'NOT' | 'createdAt' | 'id' | 'name' | 'messages' | 'lastRead' | 'participants'
       ordering: 'createdAt' | 'id' | 'name'
     }
     messages: {
@@ -32,8 +33,12 @@ interface NexusPrismaInputs {
       ordering: 'content' | 'authorID' | 'conversationID' | 'createdAt' | 'id'
     }
     people: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'createdAt' | 'email' | 'id' | 'isAdmin' | 'lastSeen' | 'username' | 'hash' | 'messages' | 'conversations'
+      filtering: 'AND' | 'OR' | 'NOT' | 'createdAt' | 'email' | 'id' | 'isAdmin' | 'lastSeen' | 'username' | 'hash' | 'messages' | 'lastRead' | 'conversations'
       ordering: 'createdAt' | 'email' | 'id' | 'isAdmin' | 'lastSeen' | 'username' | 'hash'
+    }
+    lastReads: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'lastRead' | 'personID' | 'conversationID' | 'person' | 'conversation'
+      ordering: 'lastRead' | 'personID' | 'conversationID'
     }
     sessions: {
       filtering: 'AND' | 'OR' | 'NOT' | 'sid' | 'sess' | 'expire'
@@ -45,8 +50,12 @@ interface NexusPrismaInputs {
       filtering: 'AND' | 'OR' | 'NOT' | 'content' | 'authorID' | 'conversationID' | 'createdAt' | 'id' | 'author' | 'conversation'
       ordering: 'content' | 'authorID' | 'conversationID' | 'createdAt' | 'id'
     }
+    lastRead: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'lastRead' | 'personID' | 'conversationID' | 'person' | 'conversation'
+      ordering: 'lastRead' | 'personID' | 'conversationID'
+    }
     participants: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'createdAt' | 'email' | 'id' | 'isAdmin' | 'lastSeen' | 'username' | 'hash' | 'messages' | 'conversations'
+      filtering: 'AND' | 'OR' | 'NOT' | 'createdAt' | 'email' | 'id' | 'isAdmin' | 'lastSeen' | 'username' | 'hash' | 'messages' | 'lastRead' | 'conversations'
       ordering: 'createdAt' | 'email' | 'id' | 'isAdmin' | 'lastSeen' | 'username' | 'hash'
     }
   }
@@ -58,10 +67,17 @@ interface NexusPrismaInputs {
       filtering: 'AND' | 'OR' | 'NOT' | 'content' | 'authorID' | 'conversationID' | 'createdAt' | 'id' | 'author' | 'conversation'
       ordering: 'content' | 'authorID' | 'conversationID' | 'createdAt' | 'id'
     }
+    lastRead: {
+      filtering: 'AND' | 'OR' | 'NOT' | 'lastRead' | 'personID' | 'conversationID' | 'person' | 'conversation'
+      ordering: 'lastRead' | 'personID' | 'conversationID'
+    }
     conversations: {
-      filtering: 'AND' | 'OR' | 'NOT' | 'createdAt' | 'id' | 'name' | 'messages' | 'participants'
+      filtering: 'AND' | 'OR' | 'NOT' | 'createdAt' | 'id' | 'name' | 'messages' | 'lastRead' | 'participants'
       ordering: 'createdAt' | 'id' | 'name'
     }
+  }
+  LastRead: {
+
   }
   Session: {
 
@@ -77,6 +93,8 @@ interface NexusPrismaOutputs {
     messages: 'Message'
     person: 'Person'
     people: 'Person'
+    lastRead: 'LastRead'
+    lastReads: 'LastRead'
     session: 'Session'
     sessions: 'Session'
   },
@@ -99,6 +117,12 @@ interface NexusPrismaOutputs {
     deleteOnePerson: 'Person'
     deleteManyPerson: 'BatchPayload'
     upsertOnePerson: 'Person'
+    createOneLastRead: 'LastRead'
+    updateOneLastRead: 'LastRead'
+    updateManyLastRead: 'BatchPayload'
+    deleteOneLastRead: 'LastRead'
+    deleteManyLastRead: 'BatchPayload'
+    upsertOneLastRead: 'LastRead'
     createOneSession: 'Session'
     updateOneSession: 'Session'
     updateManySession: 'BatchPayload'
@@ -111,6 +135,7 @@ interface NexusPrismaOutputs {
     id: 'Int'
     name: 'String'
     messages: 'Message'
+    lastRead: 'LastRead'
     participants: 'Person'
   }
   Message: {
@@ -131,7 +156,15 @@ interface NexusPrismaOutputs {
     username: 'String'
     hash: 'String'
     messages: 'Message'
+    lastRead: 'LastRead'
     conversations: 'Conversation'
+  }
+  LastRead: {
+    lastRead: 'DateTime'
+    personID: 'Int'
+    conversationID: 'Int'
+    person: 'Person'
+    conversation: 'Conversation'
   }
   Session: {
     sid: 'String'
@@ -145,6 +178,7 @@ interface NexusPrismaMethods {
   Conversation: Typegen.NexusPrismaFields<'Conversation'>
   Message: Typegen.NexusPrismaFields<'Message'>
   Person: Typegen.NexusPrismaFields<'Person'>
+  LastRead: Typegen.NexusPrismaFields<'LastRead'>
   Session: Typegen.NexusPrismaFields<'Session'>
   Query: Typegen.NexusPrismaFields<'Query'>
   Mutation: Typegen.NexusPrismaFields<'Mutation'>
