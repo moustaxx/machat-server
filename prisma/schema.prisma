@@ -10,7 +10,7 @@ datasource db {
 
 model Conversation {
   createdAt    DateTime  @default(now()) @map("created_at")
-  id           Int       @default(autoincrement()) @id
+  id           Int       @id @default(autoincrement())
   name         String
   messages     Message[]
   participants Person[]  @relation("ConversationToPerson", references: [id])
@@ -21,7 +21,7 @@ model Message {
   authorID       Int?         @map("author_id")
   conversationID Int          @map("conversation_id")
   createdAt      DateTime     @default(now()) @map("created_at")
-  id             Int          @default(autoincrement()) @id
+  id             Int          @id @default(autoincrement())
   author         Person?      @relation(fields: [authorID], references: [id])
   conversation   Conversation @relation(fields: [conversationID], references: [id])
 }
@@ -29,7 +29,7 @@ model Message {
 model Person {
   createdAt     DateTime       @default(now()) @map("created_at")
   email         String         @unique
-  id            Int            @default(autoincrement()) @id
+  id            Int            @id @default(autoincrement())
   isAdmin       Boolean        @default(false) @map("is_admin")
   lastSeen      DateTime?      @map("last_seen")
   username      String         @unique
