@@ -5,9 +5,9 @@ __metadata:
   version: 4
   cacheKey: 7
 
-".prisma@link:./prisma::locator=machat-prisma@workspace:.":
+".prisma@link:./prisma::locator=machat-server@workspace:.":
   version: 0.0.0-use.local
-  resolution: ".prisma@link:./prisma::locator=machat-prisma@workspace:."
+  resolution: ".prisma@link:./prisma::locator=machat-server@workspace:."
   languageName: node
   linkType: soft
 
@@ -3040,9 +3040,9 @@ fastify-session@^5.2.1:
   languageName: node
   linkType: hard
 
-"fastify-session@patch:fastify-session@^5.2.1#./.yarn/patches/fastify-session_fix-FastifyDeprecation.diff::locator=machat-prisma%40workspace%3A.":
+"fastify-session@patch:fastify-session@^5.2.1#./.yarn/patches/fastify-session_fix-FastifyDeprecation.diff::locator=machat-server%40workspace%3A.":
   version: 5.2.1
-  resolution: "fastify-session@patch:fastify-session@npm%3A5.2.1#./.yarn/patches/fastify-session_fix-FastifyDeprecation.diff::version=5.2.1&hash=64dac6&locator=machat-prisma%40workspace%3A."
+  resolution: "fastify-session@patch:fastify-session@npm%3A5.2.1#./.yarn/patches/fastify-session_fix-FastifyDeprecation.diff::version=5.2.1&hash=64dac6&locator=machat-server%40workspace%3A."
   dependencies:
     cookie-signature: ^1.1.0
     fastify-plugin: ^3.0.0
@@ -5030,9 +5030,9 @@ fastify-session@^5.2.1:
   languageName: node
   linkType: hard
 
-"machat-prisma@workspace:.":
+"machat-server@workspace:.":
   version: 0.0.0-use.local
-  resolution: "machat-prisma@workspace:."
+  resolution: "machat-server@workspace:."
   dependencies:
     "@devoxa/prisma-relay-cursor-connection": ^1.1.0
     "@prisma/cli": ^2.13.1
@@ -6246,9 +6246,9 @@ fastify-session@^5.2.1:
   languageName: node
   linkType: hard
 
-"prisma-machat@link:./prisma/client::locator=machat-prisma%40workspace%3A.":
+"prisma-machat@link:./prisma/client::locator=machat-server%40workspace%3A.":
   version: 0.0.0-use.local
-  resolution: "prisma-machat@link:./prisma/client::locator=machat-prisma%40workspace%3A."
+  resolution: "prisma-machat@link:./prisma/client::locator=machat-server%40workspace%3A."
   languageName: node
   linkType: soft
 
