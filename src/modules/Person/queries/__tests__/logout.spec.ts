@@ -1,3 +1,4 @@
+import { Person } from '@prisma/client';
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
 
 let t: ITestUtils;
@@ -29,8 +30,9 @@ it('should log out', async () => {
     const cookiesAfterLogout = logoutRes.cookies;
     const loggedIn = cookiesAfterLogout.find((cookie) => cookie.name === 'loggedIn');
 
-    const logoutJson = await logoutRes.json();
+    type TData = { data: { logout: Person } };
+    const { data } = await logoutRes.json<Promise<TData>>();
 
     expect(loggedIn?.value).toEqual('0');
-    expect(logoutJson.data.logout.id).toBe(user.id);
+    expect(data.logout.id).toBe(user.id);
 });
