@@ -2,7 +2,6 @@ import fastify, { FastifyInstance } from 'fastify';
 import fastifyCors from 'fastify-cors';
 import fastifyCookie from 'fastify-cookie';
 import fastifySession from 'fastify-session';
-import AltairFastify from 'altair-fastify-plugin';
 import pgSession from 'connect-pg-simple';
 import mercurius from 'mercurius';
 import dotenv from 'dotenv';
@@ -78,6 +77,7 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
 
     await app.register(mercurius, {
         schema,
+        graphiql: 'playground',
         subscription: {
             pubsub,
             verifyClient({ req }, next) {
@@ -95,7 +95,6 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
     app.decorateRequest('personActiveStatus', null);
 
     if (!testing) {
-        if (!isProduction) await app.register(AltairFastify);
         await app.listen(4000);
         console.log('🚀 Server ready at: http://localhost:4000/graphql');
     }
