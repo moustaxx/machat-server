@@ -55,7 +55,11 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
     });
 
     app.addHook('onSend', async (req, reply) => {
-        const { session, cookies } = req;
+        type TReq = Omit<typeof req, 'session' | 'cookies'> & {
+            session?: typeof req.session;
+            cookies: { [cookieName: string]: string | undefined };
+        };
+        const { session, cookies } = req as TReq;
         if (!session) return;
 
         const { isLoggedIn, expires } = session as ISession;
