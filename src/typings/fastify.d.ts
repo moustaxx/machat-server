@@ -1,8 +1,8 @@
 import 'fastify';
+import { PrismaClient } from '@prisma/client';
 
 declare module 'fastify' {
     import { IncomingMessage } from 'http';
-    import { PrismaClient } from 'prisma-machat';
     import PersonActiveStatus from '../PersonActiveStatus';
 
     type TCookies = Record<string, string>;
