@@ -43,7 +43,7 @@ it('should mark conversation as read', async () => {
         },
     });
 
-    type TData = { markConvAsRead: Omit<LastRead, 'lastRead'> & { lastRead: string; }; };
+    type TData = { markConvAsRead: Omit<LastRead, 'lastRead'> & { lastRead: string } };
     const { data } = await t.gqlQuery<TData>({
         query: queryString,
         cookies,

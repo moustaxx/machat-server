@@ -62,7 +62,7 @@ it('should return person', async () => {
     expect(data.person).toMatchObject({
         email: user.email,
         username: user.username,
-        createdAt: (user.createdAt as Date).toISOString(),
+        createdAt: user.createdAt.toISOString(),
     });
 });
 

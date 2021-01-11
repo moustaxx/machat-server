@@ -27,16 +27,16 @@ const closeTestServerSep = async (app: FastifyInstance): Promise<void> => {
 export const initTestServer = async (): Promise<ITestUtils> => {
     const app = await main(true);
 
-    const gqlQuery: TGqlQuery = (params) => gqlQuerySep(app, params);
-    const gqlRequest: TGqlRequest = (params) => gqlRequestSep(app, params);
-    const createRandomUser: TCreateRandomUser = (options) => {
+    const gqlQuery: TGqlQuery = async (params) => gqlQuerySep(app, params);
+    const gqlRequest: TGqlRequest = async (params) => gqlRequestSep(app, params);
+    const createRandomUser: TCreateRandomUser = async (options) => {
         return createRandomUserSep(app.prisma, options);
     };
-    const createRandomUserAndLogin: TRandomUserLogin = (options) => {
+    const createRandomUserAndLogin: TRandomUserLogin = async (options) => {
         return createRandomUserAndLoginSep(app, options);
     };
 
-    const closeTestServer = (): Promise<void> => closeTestServerSep(app);
+    const closeTestServer = async (): Promise<void> => closeTestServerSep(app);
 
     return {
         prisma: app.prisma,

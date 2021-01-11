@@ -14,7 +14,9 @@ const cursorUtils = {
         if (!id) throw new Error('Model doesn\'t have an ID');
         return Buffer.from(JSON.stringify({ id })).toString('base64');
     },
-    decodeCursor: (cursor: string): Cursor => JSON.parse(Buffer.from(cursor, 'base64').toString('ascii')),
+    decodeCursor: (cursor: string): Cursor => {
+        return JSON.parse(Buffer.from(cursor, 'base64').toString('ascii')) as Cursor;
+    },
 };
 
 export default cursorUtils;

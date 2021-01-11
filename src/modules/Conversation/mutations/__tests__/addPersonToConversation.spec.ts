@@ -39,7 +39,7 @@ it('should add person to conversation', async () => {
     type TData = {
         addPersonToConversation: Conversation & {
             participants: Person[];
-        }
+        };
     };
     const { data } = await t.gqlQuery<TData>({
         query: queryString,

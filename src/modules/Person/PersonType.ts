@@ -26,7 +26,7 @@ export const Person = objectType({
         });
         t.connectionField('conversations', {
             type: 'Conversation',
-            resolve: (root, args, { session, prisma }) => {
+            resolve: async (root, args, { session, prisma }) => {
                 isAuthorized(session);
 
                 const myID = session.owner.id;
@@ -51,8 +51,8 @@ export const Person = objectType({
                     ],
                 };
                 return findManyCursorConnection<Conversation, ConversationWhereUniqueInput>(
-                    (convArgs) => prisma.conversation.findMany({ ...convArgs, where }),
-                    () => prisma.conversation.count({ where }),
+                    async (convArgs) => prisma.conversation.findMany({ ...convArgs, where }),
+                    async () => prisma.conversation.count({ where }),
                     args,
                     cursorUtils,
                 );

@@ -30,8 +30,8 @@ const queryString = `
 
 type TPerson = {
     person: NexusGenRootTypes['Person'] & {
-        conversations: NexusGenRootTypes['ConversationConnection']
-    }
+        conversations: NexusGenRootTypes['ConversationConnection'];
+    };
 };
 
 const makeConv = (...ids: number[]) => t.prisma.conversation.create({
@@ -44,7 +44,7 @@ const makeConv = (...ids: number[]) => t.prisma.conversation.create({
     include: { participants: true },
 });
 
-const makePeople = () => Promise.all([
+const makePeople = async () => Promise.all([
     t.createRandomUserAndLogin(),
     t.createRandomUser(),
 ]);

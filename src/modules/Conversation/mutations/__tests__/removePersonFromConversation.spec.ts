@@ -39,7 +39,7 @@ it('should remove person from conversation', async () => {
     type TData = {
         removePersonFromConversation: Conversation & {
             participants: Person[];
-        }
+        };
     };
     const { data } = await t.gqlQuery<TData>({
         query: queryString,

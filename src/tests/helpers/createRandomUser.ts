@@ -20,7 +20,7 @@ export type TCreateRandomUser = (
 type TCreateRandomUserSep = (
     prisma: PrismaClient,
     options?: {
-        isAdmin?: boolean,
+        isAdmin?: boolean;
     },
 ) => Promise<TRandomUser>;
 

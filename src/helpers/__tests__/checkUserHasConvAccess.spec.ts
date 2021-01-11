@@ -7,7 +7,7 @@ import { createRandomUserSep } from '../../tests/helpers';
 
 let prisma: PrismaClient;
 
-beforeAll(async () => {
+beforeAll(() => {
     prisma = new PrismaClient();
 });
 

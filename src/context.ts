@@ -28,7 +28,7 @@ export interface WSContext extends Omit<TMyContext, 'reply'> {
     };
 }
 
-export async function createContext(
+export function createContext(
     req: FastifyRequest,
     reply: FastifyReply,
 ): TMyContext {

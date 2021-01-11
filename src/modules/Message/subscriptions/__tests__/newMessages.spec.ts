@@ -22,7 +22,6 @@ type TSubscribe = (
     ctx: Pick<WSContext, 'prisma' | 'pubsub' | 'session'>,
 ) => Promise<AsyncGenerator<Message, Message>>;
 
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const { newMessages } = schema.getSubscriptionType()!.getFields();
 const subscribe: TSubscribe = newMessages.subscribe as any;
 

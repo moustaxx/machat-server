@@ -25,7 +25,7 @@ declare module 'mercurius/lib/subscriber' {
         TPayload = any,
         TSource = any,
         TContext = MercuriusContext,
-        TArgs = Record<string, any>
+        TArgs = Record<string, any>,
     >(
         subscribeFn: IFieldResolver<TSource, TContext, TArgs>,
         filterFn: (
@@ -33,7 +33,7 @@ declare module 'mercurius/lib/subscriber' {
             args: TArgs,
             context: TContext,
             info: GraphQLResolveInfo & {
-                mergeInfo: any
+                mergeInfo: any;
             }
         ) => boolean | Promise<boolean>
     ) => (
@@ -41,7 +41,7 @@ declare module 'mercurius/lib/subscriber' {
         args: TArgs,
         context: TContext,
         info: GraphQLResolveInfo & {
-            mergeInfo: any
+            mergeInfo: any;
         }
     ) => AsyncGenerator<TPayload>;
 }

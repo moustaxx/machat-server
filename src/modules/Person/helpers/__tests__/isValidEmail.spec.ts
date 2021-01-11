@@ -2,7 +2,7 @@
 import randomString from '../../../../tests/helpers/randomString';
 import isValidEmail from '../isValidEmail';
 
-it('should pass', async () => {
+it('should pass', () => {
     const email = 'user@machat.ru';
     const email2 = 'user.dot@machat.chat.ru';
 
@@ -10,7 +10,7 @@ it('should pass', async () => {
     expect(isValidEmail(email2)).toBeTruthy();
 });
 
-it('should return false when wrong email', async () => {
+it('should return false when wrong email', () => {
     const email = '@usermach@t.ru';
     const email2 = 'user';
 
@@ -19,7 +19,7 @@ it('should return false when wrong email', async () => {
 });
 
 
-it('should return false when email is too long', async () => {
+it('should return false when email is too long', () => {
     const text = randomString(80);
     const email = `${text}@machat.ru`;
 
