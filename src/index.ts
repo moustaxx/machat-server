@@ -48,11 +48,6 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
         saveUninitialized: false,
     });
 
-    app.addHook('onRequest', (req, reply, done) => {
-        req.personActiveStatus = personActiveStatus;
-        done();
-    });
-
     app.addHook('onSend', async (req, reply) => {
         type TReq = Omit<typeof req, 'session' | 'cookies'> & {
             session?: typeof req.session;
@@ -86,13 +81,12 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
                 if (sessionId) app.decryptSession(sessionId, req, () => next(true));
                 else next(false);
             },
-            context: (_con, req) => createContext(req, null as any),
+            context: (_con, req) => createContext(req, null as any, { personActiveStatus }),
         },
-        context: createContext,
+        context: (req, reply) => createContext(req, reply, { personActiveStatus }),
     });
 
     app.decorate('prisma', prisma);
-    app.decorateRequest('personActiveStatus', null);
 
     if (!testing) {
         await app.listen(4000);

@@ -31,16 +31,20 @@ export interface WSContext extends Omit<TMyContext, 'reply'> {
 export function createContext(
     req: FastifyRequest,
     reply: FastifyReply,
+    options: {
+        personActiveStatus: PersonActiveStatus;
+    },
 ): TMyContext {
+    const { personActiveStatus } = options;
     const session = req.session as ISession;
     const ownerID = session.owner?.id;
-    if (ownerID) req.personActiveStatus.set(ownerID, true);
+    if (ownerID) personActiveStatus.set(ownerID, true);
 
     return {
         req,
         reply,
         prisma,
         session,
-        personActiveStatus: req.personActiveStatus,
+        personActiveStatus,
     };
 }
