@@ -3,24 +3,21 @@ declare module 'mercurius/lib/subscriber' {
     import { GraphQLResolveInfo } from 'graphql';
     import { PubSub, MercuriusContext, IFieldResolver } from 'mercurius';
 
-    export class SubscriptionContext implements PubSub {
+    export class SubscriptionContext<PS = PubSub> {
         constructor(settings: {
-            pubsub: PubSub,
-            fastify?: FastifyInstance,
+            pubsub: PS;
+            fastify?: FastifyInstance;
         });
 
         subscribe<TResult = any>(
             topics: string | string[]
         ): Promise<Readable & AsyncIterator<TResult>>;
-        subscribe<TResult = any>(
-            topics: string | string[],
-            queue: Record<string, unknown>
-        ): Promise<Readable & AsyncIterator<TResult>>;
 
         publish<TResult = any>(
             event: { topic: string; payload: TResult },
-            callback?: () => void
-        ): void;
+        ): Promise<void>;
+
+        close(): void;
     }
 
     // TODO: Wait for a new release and remove

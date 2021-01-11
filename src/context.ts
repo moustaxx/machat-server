@@ -1,23 +1,37 @@
-import { FastifyRequest, FastifyReply } from 'fastify';
-import { MercuriusContext } from 'mercurius';
+import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify';
+import { SubscriptionContext } from 'mercurius/lib/subscriber';
 
 import { ISession } from './types';
 import prisma, { TPrisma } from './prismaClient';
 import PersonActiveStatus from './PersonActiveStatus';
+import PubSub from './PubSub';
 
-export interface Context extends MercuriusContext {
+interface TMyContext {
     req: FastifyRequest;
-    /**  Not available inside `subscription` context */
     reply: FastifyReply;
     prisma: TPrisma;
     session?: ISession;
     personActiveStatus: PersonActiveStatus;
 }
 
+export interface Context extends TMyContext {
+    app: FastifyInstance;
+    pubsub: PubSub;
+}
+
+export interface WSContext extends Omit<TMyContext, 'reply'> {
+    pubsub: SubscriptionContext;
+    /** Fix type when needed */
+    lruGatewayResolvers: any;
+    reply: {
+        request: { headers: {} };
+    };
+}
+
 export async function createContext(
     req: FastifyRequest,
     reply: FastifyReply,
-): Promise<Omit<Context, keyof MercuriusContext>> {
+): TMyContext {
     const session = req.session as ISession;
     const ownerID = session.owner?.id;
     if (ownerID) req.personActiveStatus.set(ownerID, true);

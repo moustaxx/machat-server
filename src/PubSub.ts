@@ -4,7 +4,9 @@ import { Readable } from 'stream';
 export default class PubSub {
     private emitter = new EventEmitter();
 
-    public async subscribe(topic: string, queue: Readable): Promise<void> {
+    /** Do not use directly - try to use a `SubscriptionContext` method instead */
+    // eslint-disable-next-line @typescript-eslint/require-await
+    public async subscribe(topic: string, queue: Readable) {
         const listener = (payload: unknown) => queue.push(payload);
 
         const close = () => {
@@ -16,8 +18,9 @@ export default class PubSub {
         queue.close = close;
     }
 
-    public publish(event: { topic: string; payload: any; }): void {
+    public publish(event: { topic: string; payload: any }, callback?: () => void) {
         this.emitter.emit(event.topic, event.payload);
+        callback?.();
     }
 }
 

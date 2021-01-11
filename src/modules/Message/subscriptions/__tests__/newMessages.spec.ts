@@ -2,12 +2,13 @@ import { promisify } from 'util';
 import { Message } from '@prisma/client';
 import { SubscriptionContext } from 'mercurius/lib/subscriber';
 
-import { Context } from '../../../../context';
+import { WSContext } from '../../../../context';
 import { schema } from '../../../../schema';
 import prisma from '../../../../prismaClient';
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
 import { ISession } from '../../../../types';
 import randomString from '../../../../tests/helpers/randomString';
+import PubSub from '../../../../PubSub';
 
 const setTimeoutPromise = promisify(setTimeout);
 
@@ -18,7 +19,7 @@ type TArgs = {
 type TSubscribe = (
     root: any,
     args: TArgs,
-    ctx: Omit<Context, 'req' | 'reply' | 'app' | 'personActiveStatus'>,
+    ctx: Pick<WSContext, 'prisma' | 'pubsub' | 'session'>,
 ) => Promise<AsyncGenerator<Message, Message>>;
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -46,7 +47,7 @@ it('should work', async () => {
     const { user } = await t.createRandomUser();
     const conversation = await createConversation(user.id);
 
-    const { pubsub } = t.app.graphql;
+    const pubsub = t.app.graphql.pubsub as any as PubSub;
     const subscription = await subscribe(
         {},
         { conversationId: conversation.id },
@@ -66,7 +67,7 @@ it('should work', async () => {
     const payload: Partial<Message> = {
         conversationID: conversation.id,
     };
-    await pubsub.publish({ topic: 'NEW_MESSAGES', payload });
+    pubsub.publish({ topic: 'NEW_MESSAGES', payload });
 
     const { value } = await yieldedResult;
     expect(value).toEqual(payload);
@@ -77,7 +78,7 @@ it('should throw UNAUTHORIZED on subscription init when not logged in', async ()
     const { user } = await t.createRandomUser();
     const conversation = await createConversation(user.id);
 
-    const { pubsub } = t.app.graphql;
+    const pubsub = t.app.graphql.pubsub as any as PubSub;
 
     const subscription = await subscribe(
         {},
@@ -102,7 +103,7 @@ it('should throw FORBIDDEN on subscription init when user has not access to conv
 
     const conversation = await createConversation(user.id);
 
-    const { pubsub } = t.app.graphql;
+    const pubsub = t.app.graphql.pubsub as any as PubSub;
 
     const subscription = await subscribe(
         {},
@@ -124,7 +125,7 @@ it('should not yield after auth rights change', async () => {
     const { user } = await t.createRandomUser();
     const conversation = await createConversation(user.id);
 
-    const { pubsub } = t.app.graphql;
+    const pubsub = t.app.graphql.pubsub as any as PubSub;
     const subscription = await subscribe(
         {},
         { conversationId: conversation.id },
@@ -144,7 +145,7 @@ it('should not yield after auth rights change', async () => {
     const payload: Partial<Message> = {
         conversationID: conversation.id,
     };
-    await pubsub.publish({ topic: 'NEW_MESSAGES', payload });
+    pubsub.publish({ topic: 'NEW_MESSAGES', payload });
 
     const { value } = await yieldedResult1;
     expect(value).toEqual(payload);
@@ -157,7 +158,7 @@ it('should not yield after auth rights change', async () => {
     const pendingSubscription = subscription.next();
     await setTimeoutPromise(100); // wait for iterator settle
 
-    await pubsub.publish({ topic: 'NEW_MESSAGES', payload });
+    pubsub.publish({ topic: 'NEW_MESSAGES', payload });
 
     const yieldedResult2 = await Promise.race([pendingSubscription, setTimeoutPromise(1000)]);
     expect(yieldedResult2).toEqual(undefined);
@@ -167,7 +168,7 @@ it('should not yield when wrong args', async () => {
     const { user } = await t.createRandomUser();
     const conversation = await createConversation(user.id);
 
-    const { pubsub } = t.app.graphql;
+    const pubsub = t.app.graphql.pubsub as any as PubSub;
     const subscription = await subscribe(
         {},
         { conversationId: conversation.id },
@@ -188,7 +189,7 @@ it('should not yield when wrong args', async () => {
         conversationID: 999,
     };
 
-    await pubsub.publish({ topic: 'NEW_MESSAGES', payload });
+    pubsub.publish({ topic: 'NEW_MESSAGES', payload });
 
     const yieldResult = await Promise.race([pendingSubscription, setTimeoutPromise(1000)]);
     expect(yieldResult).toEqual(undefined);

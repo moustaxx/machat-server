@@ -30,7 +30,7 @@ export const createMessageMutationField = mutationField('createMessage', {
             },
         });
 
-        await pubsub.publish({
+        pubsub.publish({
             topic: 'NEW_MESSAGES',
             payload: data,
         });

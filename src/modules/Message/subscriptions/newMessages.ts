@@ -4,6 +4,7 @@ import { withFilter } from 'mercurius';
 
 import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';
 import isAuthorized from '../../../helpers/isAuthorized';
+import { WSContext } from '../../../context';
 
 export const newMessages = subscriptionField('newMessages', {
     type: 'Message',
@@ -12,7 +13,8 @@ export const newMessages = subscriptionField('newMessages', {
     },
     resolve: (payload: Message) => payload,
     subscribe: withFilter(
-        async (_root, args, { prisma, session, pubsub }) => {
+        async (_root, args, ctxFix) => {
+            const { prisma, session, pubsub } = ctxFix as any as WSContext;
             isAuthorized(session);
             await checkUserHasConvAccess(prisma, session.owner, args.conversationId);
 
