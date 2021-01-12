@@ -1,4 +1,4 @@
-import { nonNull, queryField, stringArg } from 'nexus';
+import { nonNull, mutationField, stringArg } from 'nexus';
 import { ApolloError } from 'apollo-server-errors';
 import argon2 from 'argon2';
 
@@ -6,7 +6,7 @@ import isAlreadyLoggedIn from '../../../helpers/isAlreadyLoggedIn';
 
 const wrongCredentialsError = new ApolloError('Wrong username or password!', 'WRONG_CREDENTIALS');
 
-export const loginQueryField = queryField('login', {
+export const loginMutationField = mutationField('login', {
     type: 'Person',
     args: {
         username: nonNull(stringArg()),

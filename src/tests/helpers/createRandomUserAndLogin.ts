@@ -35,7 +35,7 @@ export const createRandomUserAndLoginSep: TRandomUserLoginSep = async (app, opti
 
     const loginRes = await gqlRequestSep(app, {
         query: `
-            query login($username: String!, $password: String!) {
+            mutation login($username: String!, $password: String!) {
                 login(username: $username, password: $password) {
                     id
                 }

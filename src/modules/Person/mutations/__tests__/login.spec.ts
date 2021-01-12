@@ -11,7 +11,7 @@ afterAll(async () => {
 });
 
 const queryString = `
-    query login($username: String!, $password: String!) {
+    mutation login($username: String!, $password: String!) {
         login(username: $username, password: $password) {
             id
         }

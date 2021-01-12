@@ -792,6 +792,8 @@ export interface NexusGenFieldTypes {
     deleteOneConversation: NexusGenRootTypes['Conversation'] | null; // Conversation
     deleteOneMessage: NexusGenRootTypes['Message'] | null; // Message
     deleteOnePerson: NexusGenRootTypes['Person'] | null; // Person
+    login: NexusGenRootTypes['Person']; // Person!
+    logout: NexusGenRootTypes['Person']; // Person!
     markConvAsRead: NexusGenRootTypes['LastRead']; // LastRead!
     register: NexusGenRootTypes['Person']; // Person!
     removePersonFromConversation: NexusGenRootTypes['Conversation']; // Conversation!
@@ -817,8 +819,6 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     conversation: NexusGenRootTypes['Conversation']; // Conversation!
     conversations: NexusGenRootTypes['Conversation'][]; // [Conversation!]!
-    login: NexusGenRootTypes['Person']; // Person!
-    logout: NexusGenRootTypes['Person']; // Person!
     me: NexusGenRootTypes['Person']; // Person!
     message: NexusGenRootTypes['Message'] | null; // Message
     messages: NexusGenRootTypes['Message'][]; // [Message!]!
@@ -871,6 +871,8 @@ export interface NexusGenFieldTypeNames {
     deleteOneConversation: 'Conversation'
     deleteOneMessage: 'Message'
     deleteOnePerson: 'Person'
+    login: 'Person'
+    logout: 'Person'
     markConvAsRead: 'LastRead'
     register: 'Person'
     removePersonFromConversation: 'Conversation'
@@ -896,8 +898,6 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     conversation: 'Conversation'
     conversations: 'Conversation'
-    login: 'Person'
-    logout: 'Person'
     me: 'Person'
     message: 'Message'
     messages: 'Message'
@@ -947,6 +947,10 @@ export interface NexusGenArgTypes {
     deleteOnePerson: { // args
       where: NexusGenInputs['PersonWhereUniqueInput']; // PersonWhereUniqueInput!
     }
+    login: { // args
+      password: string; // String!
+      username: string; // String!
+    }
     markConvAsRead: { // args
       conversationId: number; // Int!
     }
@@ -985,10 +989,6 @@ export interface NexusGenArgTypes {
       before?: NexusGenInputs['ConversationWhereUniqueInput'] | null; // ConversationWhereUniqueInput
       first?: number | null; // Int
       last?: number | null; // Int
-    }
-    login: { // args
-      password: string; // String!
-      username: string; // String!
     }
     message: { // args
       where: NexusGenInputs['MessageWhereUniqueInput']; // MessageWhereUniqueInput!

@@ -529,6 +529,8 @@ type Mutation {
   deleteOneConversation(where: ConversationWhereUniqueInput!): Conversation
   deleteOneMessage(where: MessageWhereUniqueInput!): Message
   deleteOnePerson(where: PersonWhereUniqueInput!): Person
+  login(password: String!, username: String!): Person!
+  logout: Person!
   markConvAsRead(conversationId: Int!): LastRead!
   register(email: String!, password: String!, username: String!): Person!
   removePersonFromConversation(conversationId: Int!, personId: Int!): Conversation!
@@ -843,8 +845,6 @@ input PersonWhereUniqueInput {
 type Query {
   conversation(whereId: Int!): Conversation!
   conversations(after: ConversationWhereUniqueInput, before: ConversationWhereUniqueInput, first: Int, last: Int): [Conversation!]!
-  login(password: String!, username: String!): Person!
-  logout: Person!
   me: Person!
   message(where: MessageWhereUniqueInput!): Message
   messages(after: MessageWhereUniqueInput, before: MessageWhereUniqueInput, first: Int, last: Int): [Message!]!

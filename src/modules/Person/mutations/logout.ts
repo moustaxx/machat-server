@@ -1,7 +1,7 @@
-import { queryField } from 'nexus';
+import { mutationField } from 'nexus';
 import isAuthorized from '../../../helpers/isAuthorized';
 
-export const logoutQueryField = queryField('logout', {
+export const logoutMutationField = mutationField('logout', {
     type: 'Person',
     resolve: (_, _args, { session, req, reply }) => {
         isAuthorized(session);
