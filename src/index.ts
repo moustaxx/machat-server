@@ -76,7 +76,10 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
         subscription: {
             pubsub,
             verifyClient({ req }, next) {
-                if (!req.headers.cookie) next(false);
+                if (!req.headers.cookie) {
+                    next(false);
+                    return;
+                }
                 const { sessionId } = app.parseCookie<{ sessionId: string }>(req.headers.cookie);
 
                 if (sessionId) app.decryptSession(sessionId, req, () => next(true));
