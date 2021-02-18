@@ -1,4 +1,4 @@
-import { PersonWhereUniqueInput } from 'prisma-machat';
+import { Prisma } from 'prisma-machat';
 import { queryField, arg, nonNull } from 'nexus';
 import { ApolloError } from 'apollo-server-errors';
 
@@ -13,7 +13,7 @@ export const personQueryField = queryField('person', {
         isAuthorized(session);
 
         const data = await prisma.person.findUnique({
-            where: where as PersonWhereUniqueInput,
+            where: where as Prisma.PersonWhereUniqueInput,
         });
 
         if (!data) throw new ApolloError('User not found!', 'USER_NOT_FOUND');

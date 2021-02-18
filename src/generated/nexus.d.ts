@@ -52,63 +52,63 @@ export interface NexusGenInputs {
   }
   ConversationCreateInput: { // input type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    lastRead?: NexusGenInputs['LastReadCreateManyWithoutConversationInput'] | null; // LastReadCreateManyWithoutConversationInput
-    messages?: NexusGenInputs['MessageCreateManyWithoutConversationInput'] | null; // MessageCreateManyWithoutConversationInput
+    lastRead?: NexusGenInputs['LastReadCreateNestedManyWithoutConversationInput'] | null; // LastReadCreateNestedManyWithoutConversationInput
+    messages?: NexusGenInputs['MessageCreateNestedManyWithoutConversationInput'] | null; // MessageCreateNestedManyWithoutConversationInput
     name: string; // String!
-    participants?: NexusGenInputs['PersonCreateManyWithoutConversationsInput'] | null; // PersonCreateManyWithoutConversationsInput
+    participants?: NexusGenInputs['PersonCreateNestedManyWithoutConversationsInput'] | null; // PersonCreateNestedManyWithoutConversationsInput
   }
-  ConversationCreateManyWithoutParticipantsInput: { // input type
+  ConversationCreateNestedManyWithoutParticipantsInput: { // input type
     connect?: NexusGenInputs['ConversationWhereUniqueInput'][] | null; // [ConversationWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['ConversationCreateOrConnectWithoutparticipantsInput'][] | null; // [ConversationCreateOrConnectWithoutparticipantsInput!]
+    connectOrCreate?: NexusGenInputs['ConversationCreateOrConnectWithoutParticipantsInput'][] | null; // [ConversationCreateOrConnectWithoutParticipantsInput!]
     create?: NexusGenInputs['ConversationCreateWithoutParticipantsInput'][] | null; // [ConversationCreateWithoutParticipantsInput!]
   }
-  ConversationCreateOneWithoutLastReadInput: { // input type
+  ConversationCreateNestedOneWithoutLastReadInput: { // input type
     connect?: NexusGenInputs['ConversationWhereUniqueInput'] | null; // ConversationWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['ConversationCreateOrConnectWithoutlastReadInput'] | null; // ConversationCreateOrConnectWithoutlastReadInput
+    connectOrCreate?: NexusGenInputs['ConversationCreateOrConnectWithoutLastReadInput'] | null; // ConversationCreateOrConnectWithoutLastReadInput
     create?: NexusGenInputs['ConversationCreateWithoutLastReadInput'] | null; // ConversationCreateWithoutLastReadInput
   }
-  ConversationCreateOneWithoutMessagesInput: { // input type
+  ConversationCreateNestedOneWithoutMessagesInput: { // input type
     connect?: NexusGenInputs['ConversationWhereUniqueInput'] | null; // ConversationWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['ConversationCreateOrConnectWithoutmessagesInput'] | null; // ConversationCreateOrConnectWithoutmessagesInput
+    connectOrCreate?: NexusGenInputs['ConversationCreateOrConnectWithoutMessagesInput'] | null; // ConversationCreateOrConnectWithoutMessagesInput
     create?: NexusGenInputs['ConversationCreateWithoutMessagesInput'] | null; // ConversationCreateWithoutMessagesInput
   }
-  ConversationCreateOrConnectWithoutlastReadInput: { // input type
+  ConversationCreateOrConnectWithoutLastReadInput: { // input type
     create: NexusGenInputs['ConversationCreateWithoutLastReadInput']; // ConversationCreateWithoutLastReadInput!
     where: NexusGenInputs['ConversationWhereUniqueInput']; // ConversationWhereUniqueInput!
   }
-  ConversationCreateOrConnectWithoutmessagesInput: { // input type
+  ConversationCreateOrConnectWithoutMessagesInput: { // input type
     create: NexusGenInputs['ConversationCreateWithoutMessagesInput']; // ConversationCreateWithoutMessagesInput!
     where: NexusGenInputs['ConversationWhereUniqueInput']; // ConversationWhereUniqueInput!
   }
-  ConversationCreateOrConnectWithoutparticipantsInput: { // input type
+  ConversationCreateOrConnectWithoutParticipantsInput: { // input type
     create: NexusGenInputs['ConversationCreateWithoutParticipantsInput']; // ConversationCreateWithoutParticipantsInput!
     where: NexusGenInputs['ConversationWhereUniqueInput']; // ConversationWhereUniqueInput!
   }
   ConversationCreateWithoutLastReadInput: { // input type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    messages?: NexusGenInputs['MessageCreateManyWithoutConversationInput'] | null; // MessageCreateManyWithoutConversationInput
+    messages?: NexusGenInputs['MessageCreateNestedManyWithoutConversationInput'] | null; // MessageCreateNestedManyWithoutConversationInput
     name: string; // String!
-    participants?: NexusGenInputs['PersonCreateManyWithoutConversationsInput'] | null; // PersonCreateManyWithoutConversationsInput
+    participants?: NexusGenInputs['PersonCreateNestedManyWithoutConversationsInput'] | null; // PersonCreateNestedManyWithoutConversationsInput
   }
   ConversationCreateWithoutMessagesInput: { // input type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    lastRead?: NexusGenInputs['LastReadCreateManyWithoutConversationInput'] | null; // LastReadCreateManyWithoutConversationInput
+    lastRead?: NexusGenInputs['LastReadCreateNestedManyWithoutConversationInput'] | null; // LastReadCreateNestedManyWithoutConversationInput
     name: string; // String!
-    participants?: NexusGenInputs['PersonCreateManyWithoutConversationsInput'] | null; // PersonCreateManyWithoutConversationsInput
+    participants?: NexusGenInputs['PersonCreateNestedManyWithoutConversationsInput'] | null; // PersonCreateNestedManyWithoutConversationsInput
   }
   ConversationCreateWithoutParticipantsInput: { // input type
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
-    lastRead?: NexusGenInputs['LastReadCreateManyWithoutConversationInput'] | null; // LastReadCreateManyWithoutConversationInput
-    messages?: NexusGenInputs['MessageCreateManyWithoutConversationInput'] | null; // MessageCreateManyWithoutConversationInput
+    lastRead?: NexusGenInputs['LastReadCreateNestedManyWithoutConversationInput'] | null; // LastReadCreateNestedManyWithoutConversationInput
+    messages?: NexusGenInputs['MessageCreateNestedManyWithoutConversationInput'] | null; // MessageCreateNestedManyWithoutConversationInput
     name: string; // String!
   }
   ConversationScalarWhereInput: { // input type
     AND?: NexusGenInputs['ConversationScalarWhereInput'][] | null; // [ConversationScalarWhereInput!]
+    NOT?: NexusGenInputs['ConversationScalarWhereInput'][] | null; // [ConversationScalarWhereInput!]
+    OR?: NexusGenInputs['ConversationScalarWhereInput'][] | null; // [ConversationScalarWhereInput!]
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: NexusGenInputs['IntFilter'] | null; // IntFilter
     name?: NexusGenInputs['StringFilter'] | null; // StringFilter
-    NOT?: NexusGenInputs['ConversationScalarWhereInput'][] | null; // [ConversationScalarWhereInput!]
-    OR?: NexusGenInputs['ConversationScalarWhereInput'][] | null; // [ConversationScalarWhereInput!]
   }
   ConversationUpdateInput: { // input type
     createdAt?: NexusGenInputs['DateTimeFieldUpdateOperationsInput'] | null; // DateTimeFieldUpdateOperationsInput
@@ -127,7 +127,7 @@ export interface NexusGenInputs {
   }
   ConversationUpdateManyWithoutParticipantsInput: { // input type
     connect?: NexusGenInputs['ConversationWhereUniqueInput'][] | null; // [ConversationWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['ConversationCreateOrConnectWithoutparticipantsInput'][] | null; // [ConversationCreateOrConnectWithoutparticipantsInput!]
+    connectOrCreate?: NexusGenInputs['ConversationCreateOrConnectWithoutParticipantsInput'][] | null; // [ConversationCreateOrConnectWithoutParticipantsInput!]
     create?: NexusGenInputs['ConversationCreateWithoutParticipantsInput'][] | null; // [ConversationCreateWithoutParticipantsInput!]
     delete?: NexusGenInputs['ConversationWhereUniqueInput'][] | null; // [ConversationWhereUniqueInput!]
     deleteMany?: NexusGenInputs['ConversationScalarWhereInput'][] | null; // [ConversationScalarWhereInput!]
@@ -139,14 +139,14 @@ export interface NexusGenInputs {
   }
   ConversationUpdateOneRequiredWithoutLastReadInput: { // input type
     connect?: NexusGenInputs['ConversationWhereUniqueInput'] | null; // ConversationWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['ConversationCreateOrConnectWithoutlastReadInput'] | null; // ConversationCreateOrConnectWithoutlastReadInput
+    connectOrCreate?: NexusGenInputs['ConversationCreateOrConnectWithoutLastReadInput'] | null; // ConversationCreateOrConnectWithoutLastReadInput
     create?: NexusGenInputs['ConversationCreateWithoutLastReadInput'] | null; // ConversationCreateWithoutLastReadInput
     update?: NexusGenInputs['ConversationUpdateWithoutLastReadInput'] | null; // ConversationUpdateWithoutLastReadInput
     upsert?: NexusGenInputs['ConversationUpsertWithoutLastReadInput'] | null; // ConversationUpsertWithoutLastReadInput
   }
   ConversationUpdateOneRequiredWithoutMessagesInput: { // input type
     connect?: NexusGenInputs['ConversationWhereUniqueInput'] | null; // ConversationWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['ConversationCreateOrConnectWithoutmessagesInput'] | null; // ConversationCreateOrConnectWithoutmessagesInput
+    connectOrCreate?: NexusGenInputs['ConversationCreateOrConnectWithoutMessagesInput'] | null; // ConversationCreateOrConnectWithoutMessagesInput
     create?: NexusGenInputs['ConversationCreateWithoutMessagesInput'] | null; // ConversationCreateWithoutMessagesInput
     update?: NexusGenInputs['ConversationUpdateWithoutMessagesInput'] | null; // ConversationUpdateWithoutMessagesInput
     upsert?: NexusGenInputs['ConversationUpsertWithoutMessagesInput'] | null; // ConversationUpsertWithoutMessagesInput
@@ -232,38 +232,42 @@ export interface NexusGenInputs {
     not?: NexusGenInputs['NestedIntNullableFilter'] | null; // NestedIntNullableFilter
     notIn?: number[] | null; // [Int!]
   }
-  LastReadCreateManyWithoutConversationInput: { // input type
+  LastReadCreateNestedManyWithoutConversationInput: { // input type
     connect?: NexusGenInputs['LastReadWhereUniqueInput'][] | null; // [LastReadWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['LastReadCreateOrConnectWithoutconversationInput'][] | null; // [LastReadCreateOrConnectWithoutconversationInput!]
+    connectOrCreate?: NexusGenInputs['LastReadCreateOrConnectWithoutConversationInput'][] | null; // [LastReadCreateOrConnectWithoutConversationInput!]
     create?: NexusGenInputs['LastReadCreateWithoutConversationInput'][] | null; // [LastReadCreateWithoutConversationInput!]
   }
-  LastReadCreateManyWithoutPersonInput: { // input type
+  LastReadCreateNestedManyWithoutPersonInput: { // input type
     connect?: NexusGenInputs['LastReadWhereUniqueInput'][] | null; // [LastReadWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['LastReadCreateOrConnectWithoutpersonInput'][] | null; // [LastReadCreateOrConnectWithoutpersonInput!]
+    connectOrCreate?: NexusGenInputs['LastReadCreateOrConnectWithoutPersonInput'][] | null; // [LastReadCreateOrConnectWithoutPersonInput!]
     create?: NexusGenInputs['LastReadCreateWithoutPersonInput'][] | null; // [LastReadCreateWithoutPersonInput!]
   }
-  LastReadCreateOrConnectWithoutconversationInput: { // input type
+  LastReadCreateOrConnectWithoutConversationInput: { // input type
     create: NexusGenInputs['LastReadCreateWithoutConversationInput']; // LastReadCreateWithoutConversationInput!
     where: NexusGenInputs['LastReadWhereUniqueInput']; // LastReadWhereUniqueInput!
   }
-  LastReadCreateOrConnectWithoutpersonInput: { // input type
+  LastReadCreateOrConnectWithoutPersonInput: { // input type
     create: NexusGenInputs['LastReadCreateWithoutPersonInput']; // LastReadCreateWithoutPersonInput!
     where: NexusGenInputs['LastReadWhereUniqueInput']; // LastReadWhereUniqueInput!
   }
   LastReadCreateWithoutConversationInput: { // input type
     lastRead: NexusGenScalars['DateTime']; // DateTime!
-    person: NexusGenInputs['PersonCreateOneWithoutLastReadInput']; // PersonCreateOneWithoutLastReadInput!
+    person: NexusGenInputs['PersonCreateNestedOneWithoutLastReadInput']; // PersonCreateNestedOneWithoutLastReadInput!
   }
   LastReadCreateWithoutPersonInput: { // input type
-    conversation: NexusGenInputs['ConversationCreateOneWithoutLastReadInput']; // ConversationCreateOneWithoutLastReadInput!
+    conversation: NexusGenInputs['ConversationCreateNestedOneWithoutLastReadInput']; // ConversationCreateNestedOneWithoutLastReadInput!
     lastRead: NexusGenScalars['DateTime']; // DateTime!
+  }
+  LastReadPersonIDConversationIDCompoundUniqueInput: { // input type
+    conversationID: number; // Int!
+    personID: number; // Int!
   }
   LastReadScalarWhereInput: { // input type
     AND?: NexusGenInputs['LastReadScalarWhereInput'][] | null; // [LastReadScalarWhereInput!]
-    conversationID?: NexusGenInputs['IntFilter'] | null; // IntFilter
-    lastRead?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     NOT?: NexusGenInputs['LastReadScalarWhereInput'][] | null; // [LastReadScalarWhereInput!]
     OR?: NexusGenInputs['LastReadScalarWhereInput'][] | null; // [LastReadScalarWhereInput!]
+    conversationID?: NexusGenInputs['IntFilter'] | null; // IntFilter
+    lastRead?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     personID?: NexusGenInputs['IntFilter'] | null; // IntFilter
   }
   LastReadUpdateManyMutationInput: { // input type
@@ -279,7 +283,7 @@ export interface NexusGenInputs {
   }
   LastReadUpdateManyWithoutConversationInput: { // input type
     connect?: NexusGenInputs['LastReadWhereUniqueInput'][] | null; // [LastReadWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['LastReadCreateOrConnectWithoutconversationInput'][] | null; // [LastReadCreateOrConnectWithoutconversationInput!]
+    connectOrCreate?: NexusGenInputs['LastReadCreateOrConnectWithoutConversationInput'][] | null; // [LastReadCreateOrConnectWithoutConversationInput!]
     create?: NexusGenInputs['LastReadCreateWithoutConversationInput'][] | null; // [LastReadCreateWithoutConversationInput!]
     delete?: NexusGenInputs['LastReadWhereUniqueInput'][] | null; // [LastReadWhereUniqueInput!]
     deleteMany?: NexusGenInputs['LastReadScalarWhereInput'][] | null; // [LastReadScalarWhereInput!]
@@ -291,7 +295,7 @@ export interface NexusGenInputs {
   }
   LastReadUpdateManyWithoutPersonInput: { // input type
     connect?: NexusGenInputs['LastReadWhereUniqueInput'][] | null; // [LastReadWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['LastReadCreateOrConnectWithoutpersonInput'][] | null; // [LastReadCreateOrConnectWithoutpersonInput!]
+    connectOrCreate?: NexusGenInputs['LastReadCreateOrConnectWithoutPersonInput'][] | null; // [LastReadCreateOrConnectWithoutPersonInput!]
     create?: NexusGenInputs['LastReadCreateWithoutPersonInput'][] | null; // [LastReadCreateWithoutPersonInput!]
     delete?: NexusGenInputs['LastReadWhereUniqueInput'][] | null; // [LastReadWhereUniqueInput!]
     deleteMany?: NexusGenInputs['LastReadScalarWhereInput'][] | null; // [LastReadScalarWhereInput!]
@@ -328,45 +332,45 @@ export interface NexusGenInputs {
     where: NexusGenInputs['LastReadWhereUniqueInput']; // LastReadWhereUniqueInput!
   }
   LastReadWhereUniqueInput: { // input type
-    personID_conversationID?: NexusGenInputs['PersonIDConversationIDCompoundUniqueInput'] | null; // PersonIDConversationIDCompoundUniqueInput
+    personID_conversationID?: NexusGenInputs['LastReadPersonIDConversationIDCompoundUniqueInput'] | null; // LastReadPersonIDConversationIDCompoundUniqueInput
   }
-  MessageCreateManyWithoutAuthorInput: { // input type
+  MessageCreateNestedManyWithoutAuthorInput: { // input type
     connect?: NexusGenInputs['MessageWhereUniqueInput'][] | null; // [MessageWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['MessageCreateOrConnectWithoutauthorInput'][] | null; // [MessageCreateOrConnectWithoutauthorInput!]
+    connectOrCreate?: NexusGenInputs['MessageCreateOrConnectWithoutAuthorInput'][] | null; // [MessageCreateOrConnectWithoutAuthorInput!]
     create?: NexusGenInputs['MessageCreateWithoutAuthorInput'][] | null; // [MessageCreateWithoutAuthorInput!]
   }
-  MessageCreateManyWithoutConversationInput: { // input type
+  MessageCreateNestedManyWithoutConversationInput: { // input type
     connect?: NexusGenInputs['MessageWhereUniqueInput'][] | null; // [MessageWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['MessageCreateOrConnectWithoutconversationInput'][] | null; // [MessageCreateOrConnectWithoutconversationInput!]
+    connectOrCreate?: NexusGenInputs['MessageCreateOrConnectWithoutConversationInput'][] | null; // [MessageCreateOrConnectWithoutConversationInput!]
     create?: NexusGenInputs['MessageCreateWithoutConversationInput'][] | null; // [MessageCreateWithoutConversationInput!]
   }
-  MessageCreateOrConnectWithoutauthorInput: { // input type
+  MessageCreateOrConnectWithoutAuthorInput: { // input type
     create: NexusGenInputs['MessageCreateWithoutAuthorInput']; // MessageCreateWithoutAuthorInput!
     where: NexusGenInputs['MessageWhereUniqueInput']; // MessageWhereUniqueInput!
   }
-  MessageCreateOrConnectWithoutconversationInput: { // input type
+  MessageCreateOrConnectWithoutConversationInput: { // input type
     create: NexusGenInputs['MessageCreateWithoutConversationInput']; // MessageCreateWithoutConversationInput!
     where: NexusGenInputs['MessageWhereUniqueInput']; // MessageWhereUniqueInput!
   }
   MessageCreateWithoutAuthorInput: { // input type
     content: string; // String!
-    conversation: NexusGenInputs['ConversationCreateOneWithoutMessagesInput']; // ConversationCreateOneWithoutMessagesInput!
+    conversation: NexusGenInputs['ConversationCreateNestedOneWithoutMessagesInput']; // ConversationCreateNestedOneWithoutMessagesInput!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   MessageCreateWithoutConversationInput: { // input type
-    author?: NexusGenInputs['PersonCreateOneWithoutMessagesInput'] | null; // PersonCreateOneWithoutMessagesInput
+    author?: NexusGenInputs['PersonCreateNestedOneWithoutMessagesInput'] | null; // PersonCreateNestedOneWithoutMessagesInput
     content: string; // String!
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   MessageScalarWhereInput: { // input type
     AND?: NexusGenInputs['MessageScalarWhereInput'][] | null; // [MessageScalarWhereInput!]
+    NOT?: NexusGenInputs['MessageScalarWhereInput'][] | null; // [MessageScalarWhereInput!]
+    OR?: NexusGenInputs['MessageScalarWhereInput'][] | null; // [MessageScalarWhereInput!]
     authorID?: NexusGenInputs['IntNullableFilter'] | null; // IntNullableFilter
     content?: NexusGenInputs['StringFilter'] | null; // StringFilter
     conversationID?: NexusGenInputs['IntFilter'] | null; // IntFilter
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     id?: NexusGenInputs['IntFilter'] | null; // IntFilter
-    NOT?: NexusGenInputs['MessageScalarWhereInput'][] | null; // [MessageScalarWhereInput!]
-    OR?: NexusGenInputs['MessageScalarWhereInput'][] | null; // [MessageScalarWhereInput!]
   }
   MessageUpdateInput: { // input type
     author?: NexusGenInputs['PersonUpdateOneWithoutMessagesInput'] | null; // PersonUpdateOneWithoutMessagesInput
@@ -388,7 +392,7 @@ export interface NexusGenInputs {
   }
   MessageUpdateManyWithoutAuthorInput: { // input type
     connect?: NexusGenInputs['MessageWhereUniqueInput'][] | null; // [MessageWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['MessageCreateOrConnectWithoutauthorInput'][] | null; // [MessageCreateOrConnectWithoutauthorInput!]
+    connectOrCreate?: NexusGenInputs['MessageCreateOrConnectWithoutAuthorInput'][] | null; // [MessageCreateOrConnectWithoutAuthorInput!]
     create?: NexusGenInputs['MessageCreateWithoutAuthorInput'][] | null; // [MessageCreateWithoutAuthorInput!]
     delete?: NexusGenInputs['MessageWhereUniqueInput'][] | null; // [MessageWhereUniqueInput!]
     deleteMany?: NexusGenInputs['MessageScalarWhereInput'][] | null; // [MessageScalarWhereInput!]
@@ -400,7 +404,7 @@ export interface NexusGenInputs {
   }
   MessageUpdateManyWithoutConversationInput: { // input type
     connect?: NexusGenInputs['MessageWhereUniqueInput'][] | null; // [MessageWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['MessageCreateOrConnectWithoutconversationInput'][] | null; // [MessageCreateOrConnectWithoutconversationInput!]
+    connectOrCreate?: NexusGenInputs['MessageCreateOrConnectWithoutConversationInput'][] | null; // [MessageCreateOrConnectWithoutConversationInput!]
     create?: NexusGenInputs['MessageCreateWithoutConversationInput'][] | null; // [MessageCreateWithoutConversationInput!]
     delete?: NexusGenInputs['MessageWhereUniqueInput'][] | null; // [MessageWhereUniqueInput!]
     deleteMany?: NexusGenInputs['MessageScalarWhereInput'][] | null; // [MessageScalarWhereInput!]
@@ -501,30 +505,30 @@ export interface NexusGenInputs {
   NullableDateTimeFieldUpdateOperationsInput: { // input type
     set?: NexusGenScalars['DateTime'] | null; // DateTime
   }
-  PersonCreateManyWithoutConversationsInput: { // input type
+  PersonCreateNestedManyWithoutConversationsInput: { // input type
     connect?: NexusGenInputs['PersonWhereUniqueInput'][] | null; // [PersonWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['PersonCreateOrConnectWithoutconversationsInput'][] | null; // [PersonCreateOrConnectWithoutconversationsInput!]
+    connectOrCreate?: NexusGenInputs['PersonCreateOrConnectWithoutConversationsInput'][] | null; // [PersonCreateOrConnectWithoutConversationsInput!]
     create?: NexusGenInputs['PersonCreateWithoutConversationsInput'][] | null; // [PersonCreateWithoutConversationsInput!]
   }
-  PersonCreateOneWithoutLastReadInput: { // input type
+  PersonCreateNestedOneWithoutLastReadInput: { // input type
     connect?: NexusGenInputs['PersonWhereUniqueInput'] | null; // PersonWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['PersonCreateOrConnectWithoutlastReadInput'] | null; // PersonCreateOrConnectWithoutlastReadInput
+    connectOrCreate?: NexusGenInputs['PersonCreateOrConnectWithoutLastReadInput'] | null; // PersonCreateOrConnectWithoutLastReadInput
     create?: NexusGenInputs['PersonCreateWithoutLastReadInput'] | null; // PersonCreateWithoutLastReadInput
   }
-  PersonCreateOneWithoutMessagesInput: { // input type
+  PersonCreateNestedOneWithoutMessagesInput: { // input type
     connect?: NexusGenInputs['PersonWhereUniqueInput'] | null; // PersonWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['PersonCreateOrConnectWithoutmessagesInput'] | null; // PersonCreateOrConnectWithoutmessagesInput
+    connectOrCreate?: NexusGenInputs['PersonCreateOrConnectWithoutMessagesInput'] | null; // PersonCreateOrConnectWithoutMessagesInput
     create?: NexusGenInputs['PersonCreateWithoutMessagesInput'] | null; // PersonCreateWithoutMessagesInput
   }
-  PersonCreateOrConnectWithoutconversationsInput: { // input type
+  PersonCreateOrConnectWithoutConversationsInput: { // input type
     create: NexusGenInputs['PersonCreateWithoutConversationsInput']; // PersonCreateWithoutConversationsInput!
     where: NexusGenInputs['PersonWhereUniqueInput']; // PersonWhereUniqueInput!
   }
-  PersonCreateOrConnectWithoutlastReadInput: { // input type
+  PersonCreateOrConnectWithoutLastReadInput: { // input type
     create: NexusGenInputs['PersonCreateWithoutLastReadInput']; // PersonCreateWithoutLastReadInput!
     where: NexusGenInputs['PersonWhereUniqueInput']; // PersonWhereUniqueInput!
   }
-  PersonCreateOrConnectWithoutmessagesInput: { // input type
+  PersonCreateOrConnectWithoutMessagesInput: { // input type
     create: NexusGenInputs['PersonCreateWithoutMessagesInput']; // PersonCreateWithoutMessagesInput!
     where: NexusGenInputs['PersonWhereUniqueInput']; // PersonWhereUniqueInput!
   }
@@ -533,45 +537,41 @@ export interface NexusGenInputs {
     email: string; // String!
     hash: string; // String!
     isAdmin?: boolean | null; // Boolean
-    lastRead?: NexusGenInputs['LastReadCreateManyWithoutPersonInput'] | null; // LastReadCreateManyWithoutPersonInput
+    lastRead?: NexusGenInputs['LastReadCreateNestedManyWithoutPersonInput'] | null; // LastReadCreateNestedManyWithoutPersonInput
     lastSeen?: NexusGenScalars['DateTime'] | null; // DateTime
-    messages?: NexusGenInputs['MessageCreateManyWithoutAuthorInput'] | null; // MessageCreateManyWithoutAuthorInput
+    messages?: NexusGenInputs['MessageCreateNestedManyWithoutAuthorInput'] | null; // MessageCreateNestedManyWithoutAuthorInput
     username: string; // String!
   }
   PersonCreateWithoutLastReadInput: { // input type
-    conversations?: NexusGenInputs['ConversationCreateManyWithoutParticipantsInput'] | null; // ConversationCreateManyWithoutParticipantsInput
+    conversations?: NexusGenInputs['ConversationCreateNestedManyWithoutParticipantsInput'] | null; // ConversationCreateNestedManyWithoutParticipantsInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     email: string; // String!
     hash: string; // String!
     isAdmin?: boolean | null; // Boolean
     lastSeen?: NexusGenScalars['DateTime'] | null; // DateTime
-    messages?: NexusGenInputs['MessageCreateManyWithoutAuthorInput'] | null; // MessageCreateManyWithoutAuthorInput
+    messages?: NexusGenInputs['MessageCreateNestedManyWithoutAuthorInput'] | null; // MessageCreateNestedManyWithoutAuthorInput
     username: string; // String!
   }
   PersonCreateWithoutMessagesInput: { // input type
-    conversations?: NexusGenInputs['ConversationCreateManyWithoutParticipantsInput'] | null; // ConversationCreateManyWithoutParticipantsInput
+    conversations?: NexusGenInputs['ConversationCreateNestedManyWithoutParticipantsInput'] | null; // ConversationCreateNestedManyWithoutParticipantsInput
     createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     email: string; // String!
     hash: string; // String!
     isAdmin?: boolean | null; // Boolean
-    lastRead?: NexusGenInputs['LastReadCreateManyWithoutPersonInput'] | null; // LastReadCreateManyWithoutPersonInput
+    lastRead?: NexusGenInputs['LastReadCreateNestedManyWithoutPersonInput'] | null; // LastReadCreateNestedManyWithoutPersonInput
     lastSeen?: NexusGenScalars['DateTime'] | null; // DateTime
     username: string; // String!
   }
-  PersonIDConversationIDCompoundUniqueInput: { // input type
-    conversationID: number; // Int!
-    personID: number; // Int!
-  }
   PersonScalarWhereInput: { // input type
     AND?: NexusGenInputs['PersonScalarWhereInput'][] | null; // [PersonScalarWhereInput!]
+    NOT?: NexusGenInputs['PersonScalarWhereInput'][] | null; // [PersonScalarWhereInput!]
+    OR?: NexusGenInputs['PersonScalarWhereInput'][] | null; // [PersonScalarWhereInput!]
     createdAt?: NexusGenInputs['DateTimeFilter'] | null; // DateTimeFilter
     email?: NexusGenInputs['StringFilter'] | null; // StringFilter
     hash?: NexusGenInputs['StringFilter'] | null; // StringFilter
     id?: NexusGenInputs['IntFilter'] | null; // IntFilter
     isAdmin?: NexusGenInputs['BoolFilter'] | null; // BoolFilter
     lastSeen?: NexusGenInputs['DateTimeNullableFilter'] | null; // DateTimeNullableFilter
-    NOT?: NexusGenInputs['PersonScalarWhereInput'][] | null; // [PersonScalarWhereInput!]
-    OR?: NexusGenInputs['PersonScalarWhereInput'][] | null; // [PersonScalarWhereInput!]
     username?: NexusGenInputs['StringFilter'] | null; // StringFilter
   }
   PersonUpdateManyMutationInput: { // input type
@@ -588,7 +588,7 @@ export interface NexusGenInputs {
   }
   PersonUpdateManyWithoutConversationsInput: { // input type
     connect?: NexusGenInputs['PersonWhereUniqueInput'][] | null; // [PersonWhereUniqueInput!]
-    connectOrCreate?: NexusGenInputs['PersonCreateOrConnectWithoutconversationsInput'][] | null; // [PersonCreateOrConnectWithoutconversationsInput!]
+    connectOrCreate?: NexusGenInputs['PersonCreateOrConnectWithoutConversationsInput'][] | null; // [PersonCreateOrConnectWithoutConversationsInput!]
     create?: NexusGenInputs['PersonCreateWithoutConversationsInput'][] | null; // [PersonCreateWithoutConversationsInput!]
     delete?: NexusGenInputs['PersonWhereUniqueInput'][] | null; // [PersonWhereUniqueInput!]
     deleteMany?: NexusGenInputs['PersonScalarWhereInput'][] | null; // [PersonScalarWhereInput!]
@@ -600,14 +600,14 @@ export interface NexusGenInputs {
   }
   PersonUpdateOneRequiredWithoutLastReadInput: { // input type
     connect?: NexusGenInputs['PersonWhereUniqueInput'] | null; // PersonWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['PersonCreateOrConnectWithoutlastReadInput'] | null; // PersonCreateOrConnectWithoutlastReadInput
+    connectOrCreate?: NexusGenInputs['PersonCreateOrConnectWithoutLastReadInput'] | null; // PersonCreateOrConnectWithoutLastReadInput
     create?: NexusGenInputs['PersonCreateWithoutLastReadInput'] | null; // PersonCreateWithoutLastReadInput
     update?: NexusGenInputs['PersonUpdateWithoutLastReadInput'] | null; // PersonUpdateWithoutLastReadInput
     upsert?: NexusGenInputs['PersonUpsertWithoutLastReadInput'] | null; // PersonUpsertWithoutLastReadInput
   }
   PersonUpdateOneWithoutMessagesInput: { // input type
     connect?: NexusGenInputs['PersonWhereUniqueInput'] | null; // PersonWhereUniqueInput
-    connectOrCreate?: NexusGenInputs['PersonCreateOrConnectWithoutmessagesInput'] | null; // PersonCreateOrConnectWithoutmessagesInput
+    connectOrCreate?: NexusGenInputs['PersonCreateOrConnectWithoutMessagesInput'] | null; // PersonCreateOrConnectWithoutMessagesInput
     create?: NexusGenInputs['PersonCreateWithoutMessagesInput'] | null; // PersonCreateWithoutMessagesInput
     delete?: boolean | null; // Boolean
     disconnect?: boolean | null; // Boolean

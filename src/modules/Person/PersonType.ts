@@ -1,10 +1,6 @@
 import { objectType } from 'nexus';
 import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
-import {
-    Conversation,
-    ConversationWhereInput,
-    ConversationWhereUniqueInput,
-} from 'prisma-machat';
+import { Conversation, Prisma } from 'prisma-machat';
 
 import cursorUtils from '../../helpers/cursor';
 import isAuthorized from '../../helpers/isAuthorized';
@@ -30,7 +26,7 @@ export const Person = objectType({
                 isAuthorized(session);
 
                 const myID = session.owner.id;
-                const whereMe: ConversationWhereInput = {
+                const whereMe: Prisma.ConversationWhereInput = {
                     participants: {
                         some: {
                             id: myID,
@@ -38,7 +34,7 @@ export const Person = objectType({
                     },
                 };
 
-                const where: ConversationWhereInput = (root.id === myID) ? whereMe : {
+                const where: Prisma.ConversationWhereInput = (root.id === myID) ? whereMe : {
                     AND: [
                         whereMe,
                         {
@@ -50,7 +46,7 @@ export const Person = objectType({
                         },
                     ],
                 };
-                return findManyCursorConnection<Conversation, ConversationWhereUniqueInput>(
+                return findManyCursorConnection<Conversation, Prisma.ConversationWhereUniqueInput>(
                     async (convArgs) => prisma.conversation.findMany({ ...convArgs, where }),
                     async () => prisma.conversation.count({ where }),
                     args,

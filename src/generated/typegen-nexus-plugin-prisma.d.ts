@@ -3,10 +3,10 @@ import * as Prisma from '@prisma/client';
 
 // Pagination type
 type Pagination = {
-  first?: boolean
-  last?: boolean
-  before?: boolean
-  after?: boolean
+    first?: boolean
+    last?: boolean
+    before?: boolean
+    after?: boolean
 }
 
 // Prisma custom scalar names
@@ -30,7 +30,7 @@ interface NexusPrismaInputs {
     }
     messages: {
       filtering: 'AND' | 'OR' | 'NOT' | 'content' | 'authorID' | 'conversationID' | 'createdAt' | 'id' | 'author' | 'conversation'
-      ordering: 'content' | 'authorID' | 'conversationID' | 'createdAt' | 'id'
+      ordering: 'content' | 'authorID' | 'conversationID' | 'createdAt' | 'id' | 'author' | 'conversation'
     }
     people: {
       filtering: 'AND' | 'OR' | 'NOT' | 'createdAt' | 'email' | 'id' | 'isAdmin' | 'lastSeen' | 'username' | 'hash' | 'messages' | 'lastRead' | 'conversations'
@@ -38,7 +38,7 @@ interface NexusPrismaInputs {
     }
     lastReads: {
       filtering: 'AND' | 'OR' | 'NOT' | 'lastRead' | 'personID' | 'conversationID' | 'person' | 'conversation'
-      ordering: 'lastRead' | 'personID' | 'conversationID'
+      ordering: 'lastRead' | 'personID' | 'conversationID' | 'person' | 'conversation'
     }
     sessions: {
       filtering: 'AND' | 'OR' | 'NOT' | 'sid' | 'sess' | 'expire'
@@ -48,11 +48,11 @@ interface NexusPrismaInputs {
   Conversation: {
     messages: {
       filtering: 'AND' | 'OR' | 'NOT' | 'content' | 'authorID' | 'conversationID' | 'createdAt' | 'id' | 'author' | 'conversation'
-      ordering: 'content' | 'authorID' | 'conversationID' | 'createdAt' | 'id'
+      ordering: 'content' | 'authorID' | 'conversationID' | 'createdAt' | 'id' | 'author' | 'conversation'
     }
     lastRead: {
       filtering: 'AND' | 'OR' | 'NOT' | 'lastRead' | 'personID' | 'conversationID' | 'person' | 'conversation'
-      ordering: 'lastRead' | 'personID' | 'conversationID'
+      ordering: 'lastRead' | 'personID' | 'conversationID' | 'person' | 'conversation'
     }
     participants: {
       filtering: 'AND' | 'OR' | 'NOT' | 'createdAt' | 'email' | 'id' | 'isAdmin' | 'lastSeen' | 'username' | 'hash' | 'messages' | 'lastRead' | 'conversations'
@@ -65,11 +65,11 @@ interface NexusPrismaInputs {
   Person: {
     messages: {
       filtering: 'AND' | 'OR' | 'NOT' | 'content' | 'authorID' | 'conversationID' | 'createdAt' | 'id' | 'author' | 'conversation'
-      ordering: 'content' | 'authorID' | 'conversationID' | 'createdAt' | 'id'
+      ordering: 'content' | 'authorID' | 'conversationID' | 'createdAt' | 'id' | 'author' | 'conversation'
     }
     lastRead: {
       filtering: 'AND' | 'OR' | 'NOT' | 'lastRead' | 'personID' | 'conversationID' | 'person' | 'conversation'
-      ordering: 'lastRead' | 'personID' | 'conversationID'
+      ordering: 'lastRead' | 'personID' | 'conversationID' | 'person' | 'conversation'
     }
     conversations: {
       filtering: 'AND' | 'OR' | 'NOT' | 'createdAt' | 'id' | 'name' | 'messages' | 'lastRead' | 'participants'
@@ -101,33 +101,33 @@ interface NexusPrismaOutputs {
   Mutation: {
     createOneConversation: 'Conversation'
     updateOneConversation: 'Conversation'
-    updateManyConversation: 'BatchPayload'
+    updateManyConversation: 'AffectedRowsOutput'
     deleteOneConversation: 'Conversation'
-    deleteManyConversation: 'BatchPayload'
+    deleteManyConversation: 'AffectedRowsOutput'
     upsertOneConversation: 'Conversation'
     createOneMessage: 'Message'
     updateOneMessage: 'Message'
-    updateManyMessage: 'BatchPayload'
+    updateManyMessage: 'AffectedRowsOutput'
     deleteOneMessage: 'Message'
-    deleteManyMessage: 'BatchPayload'
+    deleteManyMessage: 'AffectedRowsOutput'
     upsertOneMessage: 'Message'
     createOnePerson: 'Person'
     updateOnePerson: 'Person'
-    updateManyPerson: 'BatchPayload'
+    updateManyPerson: 'AffectedRowsOutput'
     deleteOnePerson: 'Person'
-    deleteManyPerson: 'BatchPayload'
+    deleteManyPerson: 'AffectedRowsOutput'
     upsertOnePerson: 'Person'
     createOneLastRead: 'LastRead'
     updateOneLastRead: 'LastRead'
-    updateManyLastRead: 'BatchPayload'
+    updateManyLastRead: 'AffectedRowsOutput'
     deleteOneLastRead: 'LastRead'
-    deleteManyLastRead: 'BatchPayload'
+    deleteManyLastRead: 'AffectedRowsOutput'
     upsertOneLastRead: 'LastRead'
     createOneSession: 'Session'
     updateOneSession: 'Session'
-    updateManySession: 'BatchPayload'
+    updateManySession: 'AffectedRowsOutput'
     deleteOneSession: 'Session'
-    deleteManySession: 'BatchPayload'
+    deleteManySession: 'AffectedRowsOutput'
     upsertOneSession: 'Session'
   },
   Conversation: {
