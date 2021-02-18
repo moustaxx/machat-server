@@ -12,7 +12,7 @@ afterAll(async () => {
 });
 
 const queryString = `
-    query logout {
+    mutation logout {
         logout {
             id
         }
