@@ -5,8 +5,9 @@ import fastifySession from 'fastify-session';
 import pgSession from 'connect-pg-simple';
 import mercurius from 'mercurius';
 import dotenv from 'dotenv';
+import 'reflect-metadata';
 
-import { schema } from './schema';
+import { createSchema } from './schema';
 import { ISession } from './types';
 import { createContext } from './context';
 import prisma from './prismaClient';
@@ -71,7 +72,7 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
     });
 
     await app.register(mercurius, {
-        schema,
+        schema: await createSchema,
         graphiql: 'playground',
         subscription: {
             pubsub,
