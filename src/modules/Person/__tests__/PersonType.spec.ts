@@ -1,7 +1,9 @@
+import { Person } from '@prisma/client';
 import { initTestServer, ITestUtils } from '../../../tests/helpers';
-import { NexusGenRootTypes } from '../../../generated/nexus';
 import cursorUtils from '../../../helpers/cursor';
 import randomString from '../../../tests/helpers/randomString';
+import { Connection } from '../../../relay';
+import { ConversationType } from '../../Conversation';
 
 let t: ITestUtils;
 
@@ -29,8 +31,8 @@ const queryString = `
 `;
 
 type TPerson = {
-    person: NexusGenRootTypes['Person'] & {
-        conversations: NexusGenRootTypes['ConversationConnection'];
+    person: Omit<Person, 'hash'> & {
+        conversations: Connection<ConversationType>;
     };
 };
 

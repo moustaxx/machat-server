@@ -1,18 +1,26 @@
-import { nonNull, mutationField, stringArg } from 'nexus';
+import { Ctx, Args, Resolver, Mutation, ArgsType, Field } from 'type-graphql';
 import { ApolloError } from 'apollo-server-errors';
 import argon2 from 'argon2';
 
+import { Context } from '../../../context';
+import { PersonType } from '../PersonType';
 import isAlreadyLoggedIn from '../../../helpers/isAlreadyLoggedIn';
 
 const wrongCredentialsError = new ApolloError('Wrong username or password!', 'WRONG_CREDENTIALS');
 
-export const loginMutationField = mutationField('login', {
-    type: 'Person',
-    args: {
-        username: nonNull(stringArg()),
-        password: nonNull(stringArg()),
-    },
-    resolve: async (_, args, { prisma, session }) => {
+@ArgsType()
+class LoginArgs {
+    @Field()
+    username!: string;
+
+    @Field()
+    password!: string;
+}
+
+@Resolver((_of) => PersonType)
+export class LoginResolver {
+    @Mutation((_returns) => PersonType)
+    async login(@Args() args: LoginArgs, @Ctx() { prisma, session }: Context) {
         isAlreadyLoggedIn(session);
 
         const username = args.username.trim();
@@ -27,5 +35,5 @@ export const loginMutationField = mutationField('login', {
         session.owner = data;
 
         return data;
-    },
-});
+    }
+}

@@ -1,12 +1,5 @@
-import { objectType } from 'nexus';
+import { ObjectType } from 'type-graphql';
+import { LastRead } from '../../generated/type-graphql';
 
-export const LastRead = objectType({
-    name: 'LastRead',
-    definition(t) {
-        t.model.lastRead();
-        t.model.conversation();
-        t.model.conversationID();
-        t.model.personID();
-        t.model.person();
-    },
-});
+@ObjectType()
+export class LastReadType extends LastRead { }

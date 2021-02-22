@@ -1,10 +1,10 @@
 import { ForbiddenError } from 'apollo-server-errors';
-import { NexusGenAllTypes } from '../generated/nexus';
 import { TPrisma } from '../prismaClient';
+import { ISession } from '../types';
 
 const checkUserHasConvAccess = async (
     prisma: TPrisma,
-    user: NexusGenAllTypes['Person'],
+    user: NonNullable<ISession['owner']>,
     conversationId: number,
 ): Promise<void> => {
     const getConv = await prisma.person.findUnique({

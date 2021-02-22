@@ -1,5 +1,5 @@
+import { Person } from '@prisma/client';
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
-import { NexusGenRootTypes } from '../../../../generated/nexus';
 
 let t: ITestUtils;
 
@@ -22,7 +22,7 @@ const queryString = `
 it('should return me', async () => {
     const { cookies, user } = await t.createRandomUserAndLogin();
 
-    type TPerson = { me: NexusGenRootTypes['Person'] };
+    type TPerson = { me: Omit<Person, 'hash'> };
     const { data } = await t.gqlQuery<TPerson>({
         query: queryString,
         cookies,

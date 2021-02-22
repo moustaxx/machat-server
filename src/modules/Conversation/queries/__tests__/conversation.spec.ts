@@ -1,4 +1,4 @@
-import { NexusGenRootTypes } from '../../../../generated/nexus';
+import { Conversation } from '@prisma/client';
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
 import randomString from '../../../../tests/helpers/randomString';
 
@@ -47,7 +47,7 @@ it('should return conversation', async () => {
         },
     });
 
-    type TData = { conversation: NexusGenRootTypes['Conversation'] };
+    type TData = { conversation: Conversation };
     const { data } = await t.gqlQuery<TData>({
         cookies,
         query: queryStringFull,

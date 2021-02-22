@@ -1,4 +1,4 @@
-import { NexusGenAllTypes } from './generated/nexus';
+import { Person } from '@prisma/client';
 
 export interface ISession {
     sessionId: string;
@@ -10,5 +10,5 @@ export interface ISession {
 
     isLoggedIn?: boolean;
     expires?: Date;
-    owner?: NexusGenAllTypes['Person'];
+    owner?: Omit<Person, 'hash'>;
 }

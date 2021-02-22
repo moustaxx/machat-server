@@ -1,17 +1,16 @@
 /** @jest-environment node */
 import { ApolloError } from 'apollo-server-errors';
-import { NexusGenFieldTypes } from '../../generated/nexus';
+import { ISession } from '../../types';
 import isAuthorized from '../isAuthorized';
 
 const unauthorizedError = new ApolloError('You must be logged in!', 'UNAUTHORIZED');
 
-const owner: Omit<NexusGenFieldTypes['Person'], 'conversations'> = {
+const owner: ISession['owner'] = {
     id: 1,
     username: 'test',
     email: 'test@machat.ru',
     createdAt: new Date(),
     lastSeen: new Date(),
-    isActive: true,
     isAdmin: false,
 };
 

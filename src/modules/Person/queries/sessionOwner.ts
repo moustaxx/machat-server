@@ -1,10 +1,13 @@
-import { queryField } from 'nexus';
+import { Ctx, Query, Resolver } from 'type-graphql';
+import { Context } from '../../../context';
 import isAuthorized from '../../../helpers/isAuthorized';
+import { PersonType } from '../PersonType';
 
-export const sessionOwnerQueryField = queryField('sessionOwner', {
-    type: 'Person',
-    resolve: (_root, _args, { session }) => {
+@Resolver((_of) => PersonType)
+export class SessionOwnerResolver {
+    @Query((_returns) => PersonType)
+    sessionOwner(@Ctx() { session }: Context) {
         isAuthorized(session);
         return session.owner;
-    },
-});
+    }
+}

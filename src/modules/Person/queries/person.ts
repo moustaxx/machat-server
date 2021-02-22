@@ -1,23 +1,24 @@
-import { Prisma } from 'prisma-machat';
-import { queryField, arg, nonNull } from 'nexus';
 import { ApolloError } from 'apollo-server-errors';
-
+import { Ctx, Arg, Query, Resolver } from 'type-graphql';
+import { Context } from '../../../context';
+import { PersonWhereUniqueInput } from '../../../generated/type-graphql';
 import isAuthorized from '../../../helpers/isAuthorized';
+import { PersonType } from '../PersonType';
 
-export const personQueryField = queryField('person', {
-    type: 'Person',
-    args: {
-        where: nonNull(arg({ type: 'PersonWhereUniqueInput' })),
-    },
-    resolve: async (_, { where }, { prisma, session }) => {
+@Resolver((_of) => PersonType)
+export class PersonResolver {
+    @Query((_returns) => PersonType)
+    async person(
+    // eslint-disable-next-line @typescript-eslint/indent
+        @Arg('where') where: PersonWhereUniqueInput,
+        @Ctx() { prisma, session }: Context,
+    ) {
         isAuthorized(session);
 
-        const data = await prisma.person.findUnique({
-            where: where as Prisma.PersonWhereUniqueInput,
-        });
+        const data = await prisma.person.findUnique({ where });
 
         if (!data) throw new ApolloError('User not found!', 'USER_NOT_FOUND');
 
         return data;
-    },
-});
+    }
+}

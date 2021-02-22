@@ -1,5 +1,4 @@
-import { NexusGenRootTypes } from '../../../../generated/nexus';
-
+import { Person } from '@prisma/client';
 import { GQLResponse, initTestServer, ITestUtils } from '../../../../tests/helpers';
 import randomString from '../../../../tests/helpers/randomString';
 
@@ -65,7 +64,7 @@ it('should register', async () => {
 
     const loggedIn = logoutRes.cookies.find((cookie) => cookie.name === 'loggedIn');
 
-    type TPerson = GQLResponse<{ register: NexusGenRootTypes['Person'] }>;
+    type TPerson = GQLResponse<{ register: Omit<Person, 'hash'> }>;
     const { data }: TPerson = await logoutRes.json();
 
     expect(loggedIn?.value).toEqual('1');

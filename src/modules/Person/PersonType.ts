@@ -1,58 +1,124 @@
-import { objectType } from 'nexus';
-import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
-import { Conversation, Prisma } from 'prisma-machat';
+/* eslint-disable @typescript-eslint/indent */
+import { Prisma } from '@prisma/client';
+import { Args, Ctx, Field, FieldResolver, Int, ObjectType, Resolver, Root } from 'type-graphql';
+import { ConnectionArguments, findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 
-import cursorUtils from '../../helpers/cursor';
+import { Context } from '../../context';
+import {
+    LastRead,
+    Message,
+    Person,
+    PersonLastReadArgs,
+    PersonMessagesArgs,
+} from '../../generated/type-graphql';
+import { ConversationConnection, ConversationType } from '../Conversation/ConversationType';
+import { Connection, ConnectionArgs } from '../../relay';
 import isAuthorized from '../../helpers/isAuthorized';
+import cursorUtils from '../../helpers/cursor';
 
-export const Person = objectType({
-    name: 'Person',
-    definition(t) {
-        t.model.id();
-        t.model.username();
-        t.model.email();
-        t.model.isAdmin();
-        t.model.createdAt();
-        t.model.lastSeen();
-        t.boolean('isActive', {
-            resolve: (_root, _args, { session, personActiveStatus }) => {
-                isAuthorized(session);
-                return personActiveStatus.get(session.owner.id);
+@ObjectType()
+export class PersonType {
+    @Field((_type) => Int)
+    id!: number;
+
+    @Field((_type) => Boolean)
+    isActive!: boolean;
+
+    @Field((_type) => Date)
+    createdAt!: Date;
+
+    @Field((_type) => String)
+    email!: string;
+
+    @Field((_type) => Boolean)
+    isAdmin!: boolean;
+
+    @Field((_type) => Date, { nullable: true })
+    lastSeen?: Date | null;
+
+    @Field((_type) => String)
+    username!: string;
+
+    @Field((_type) => [Message])
+    messages?: Message[];
+
+    @Field((_type) => [LastRead])
+    lastRead?: LastRead[];
+
+    @Field((_type) => ConversationConnection)
+    conversations!: Promise<Connection<ConversationType>>;
+}
+
+@Resolver((_of) => PersonType)
+export class PersonTypeResolver {
+    @FieldResolver()
+    isActive(@Root() _person: PersonType, @Ctx() ctx: Context) {
+        isAuthorized(ctx.session);
+        return ctx.personActiveStatus.get(ctx.session.owner.id);
+    }
+
+    @FieldResolver()
+    async conversations(
+        @Root() person: PersonType,
+        @Args((_type) => ConnectionArgs) args: ConnectionArguments,
+        @Ctx() { session, prisma }: Context,
+    ) {
+        isAuthorized(session);
+
+        const myID = session.owner.id;
+        const whereMe: Prisma.ConversationWhereInput = {
+            participants: {
+                some: {
+                    id: myID,
+                },
             },
-        });
-        t.connectionField('conversations', {
-            type: 'Conversation',
-            resolve: async (root, args, { session, prisma }) => {
-                isAuthorized(session);
+        };
 
-                const myID = session.owner.id;
-                const whereMe: Prisma.ConversationWhereInput = {
+        const where: Prisma.ConversationWhereInput = (person.id === myID) ? whereMe : {
+            AND: [
+                whereMe,
+                {
                     participants: {
                         some: {
-                            id: myID,
+                            id: person.id,
                         },
                     },
-                };
+                },
+            ],
+        };
 
-                const where: Prisma.ConversationWhereInput = (root.id === myID) ? whereMe : {
-                    AND: [
-                        whereMe,
-                        {
-                            participants: {
-                                some: {
-                                    id: root.id,
-                                },
-                            },
-                        },
-                    ],
-                };
-                return findManyCursorConnection<Conversation, Prisma.ConversationWhereUniqueInput>(
-                    async (convArgs) => prisma.conversation.findMany({ ...convArgs, where }),
-                    async () => prisma.conversation.count({ where }),
-                    args,
-                    cursorUtils,
-                );
-            },
-        });
-    },
-});
+
+        return findManyCursorConnection<
+            ConversationType, Prisma.ConversationWhereUniqueInput
+        >(
+            async (convArgs) => prisma.conversation.findMany({ ...convArgs, where }),
+            async () => prisma.conversation.count({ where }),
+            args,
+            cursorUtils,
+        );
+    }
+
+    @FieldResolver((_type) => [Message])
+    async messages(
+        @Root() person: Person,
+        @Ctx() ctx: Context,
+        @Args() args: PersonMessagesArgs,
+    ): Promise<Message[]> {
+        return ctx.prisma.person.findUnique({
+            where: { id: person.id },
+            select: { messages: true },
+        }).messages(args);
+    }
+
+    @FieldResolver((_type) => [LastRead])
+    async lastRead(
+        @Root() person: Person,
+        @Ctx() ctx: Context,
+        @Args() args: PersonLastReadArgs,
+    ): Promise<LastRead[]> {
+        return ctx.prisma.person.findUnique({
+            where: { id: person.id },
+            select: { lastRead: true },
+        }).lastRead(args);
+    }
+}

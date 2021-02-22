@@ -1,9 +1,11 @@
 import { promisify } from 'util';
 import { Message } from '@prisma/client';
 import { SubscriptionContext } from 'mercurius/lib/subscriber';
+import { GraphQLSchema } from 'graphql';
+import 'reflect-metadata';
 
 import { WSContext } from '../../../../context';
-import { schema } from '../../../../schema';
+import { createSchema } from '../../../../schema';
 import prisma from '../../../../prismaClient';
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
 import { ISession } from '../../../../types';
@@ -22,13 +24,16 @@ type TSubscribe = (
     ctx: Pick<WSContext, 'prisma' | 'pubsub' | 'session'>,
 ) => Promise<AsyncGenerator<Message, Message>>;
 
-const { newMessages } = schema.getSubscriptionType()!.getFields();
-const subscribe: TSubscribe = newMessages.subscribe as any;
+let schema: GraphQLSchema;
+let subscribe: TSubscribe;
 
 let t: ITestUtils;
 
 beforeAll(async () => {
     t = await initTestServer();
+    schema = await createSchema;
+    const { newMessages } = schema.getSubscriptionType()!.getFields();
+    subscribe = newMessages.subscribe as any;
 });
 
 afterAll(async () => {
