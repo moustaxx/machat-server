@@ -1,15 +1,13 @@
 import { ApolloError } from 'apollo-server-errors';
-import { Ctx, Query, Resolver } from 'type-graphql';
+import { Authorized, Ctx, Query, Resolver } from 'type-graphql';
 import { Context } from '../../../context';
-import isAuthorized from '../../../helpers/isAuthorized';
 import { PersonType } from '../PersonType';
 
 @Resolver((_of) => PersonType)
 export class MeResolver {
+    @Authorized()
     @Query((_returns) => PersonType)
-    async me(@Ctx() { prisma, session }: Context) {
-        isAuthorized(session);
-
+    async me(@Ctx() { prisma, session }: Context<true>) {
         const data = await prisma.person.findUnique({
             where: { id: session.owner.id },
         });

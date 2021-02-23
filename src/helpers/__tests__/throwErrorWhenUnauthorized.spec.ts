@@ -1,7 +1,7 @@
 /** @jest-environment node */
 import { ApolloError } from 'apollo-server-errors';
 import { ISession } from '../../types';
-import isAuthorized from '../isAuthorized';
+import throwErrorWhenUnauthorized from '../throwErrorWhenUnauthorized';
 
 const unauthorizedError = new ApolloError('You must be logged in!', 'UNAUTHORIZED');
 
@@ -21,7 +21,7 @@ it('should pass', () => {
         owner,
     } as any;
 
-    isAuthorized(session);
+    throwErrorWhenUnauthorized(session);
 });
 
 it('should throw error when isLoggedIn is false', () => {
@@ -30,7 +30,7 @@ it('should throw error when isLoggedIn is false', () => {
         owner,
     } as any;
 
-    const fn = () => isAuthorized(session);
+    const fn = () => throwErrorWhenUnauthorized(session);
     expect(fn).toThrow(unauthorizedError);
 });
 
@@ -39,11 +39,11 @@ it('should throw error when no owner', () => {
         isLoggedIn: true,
     } as any;
 
-    const fn = () => isAuthorized(session);
+    const fn = () => throwErrorWhenUnauthorized(session);
     expect(fn).toThrow(unauthorizedError);
 });
 
 it('should throw error when no session', () => {
-    const fn = () => isAuthorized();
+    const fn = () => throwErrorWhenUnauthorized();
     expect(fn).toThrow(unauthorizedError);
 });

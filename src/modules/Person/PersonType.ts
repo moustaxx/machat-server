@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/indent */
 import { Prisma } from '@prisma/client';
-import { Args, Ctx, Field, FieldResolver, Int, ObjectType, Resolver, Root } from 'type-graphql';
+import { Args, Authorized, Ctx, Field, FieldResolver, Int, ObjectType, Resolver, Root } from 'type-graphql';
 import { ConnectionArguments, findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 
 import { Context } from '../../context';
@@ -13,7 +13,6 @@ import {
 } from '../../generated/type-graphql';
 import { ConversationConnection, ConversationType } from '../Conversation/ConversationType';
 import { Connection, ConnectionArgs } from '../../relay';
-import isAuthorized from '../../helpers/isAuthorized';
 import cursorUtils from '../../helpers/cursor';
 
 @ObjectType()
@@ -51,20 +50,19 @@ export class PersonType {
 
 @Resolver((_of) => PersonType)
 export class PersonTypeResolver {
+    @Authorized()
     @FieldResolver()
-    isActive(@Root() _person: PersonType, @Ctx() ctx: Context) {
-        isAuthorized(ctx.session);
+    isActive(@Root() _person: PersonType, @Ctx() ctx: Context<true>) {
         return ctx.personActiveStatus.get(ctx.session.owner.id);
     }
 
+    @Authorized()
     @FieldResolver()
     async conversations(
         @Root() person: PersonType,
         @Args((_type) => ConnectionArgs) args: ConnectionArguments,
-        @Ctx() { session, prisma }: Context,
+        @Ctx() { session, prisma }: Context<true>,
     ) {
-        isAuthorized(session);
-
         const myID = session.owner.id;
         const whereMe: Prisma.ConversationWhereInput = {
             participants: {

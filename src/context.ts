@@ -6,20 +6,22 @@ import prisma, { TPrisma } from './prismaClient';
 import PersonActiveStatus from './PersonActiveStatus';
 import PubSub from './PubSub';
 
-interface TMyContext {
+type AuthorizedSession = ISession & Pick<Required<ISession>, 'owner'>;
+
+interface TMyContext<IsAuthorized = false> {
     req: FastifyRequest;
     reply: FastifyReply;
     prisma: TPrisma;
-    session?: ISession;
+    session: IsAuthorized extends true ? AuthorizedSession : ISession | undefined;
     personActiveStatus: PersonActiveStatus;
 }
 
-export interface Context extends TMyContext {
+export interface Context<IsAuthorized = false> extends TMyContext<IsAuthorized> {
     app: FastifyInstance;
     pubsub: PubSub;
 }
 
-export interface WSContext extends Omit<TMyContext, 'reply'> {
+export interface WSContext<IsAuthorized = false> extends Omit<TMyContext<IsAuthorized>, 'reply'> {
     pubsub: SubscriptionContext;
     /** Fix type when needed */
     lruGatewayResolvers: any;

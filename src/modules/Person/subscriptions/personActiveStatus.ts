@@ -3,7 +3,7 @@ import { withFilter } from 'mercurius';
 
 import { WSContext } from '../../../context';
 import { PersonType } from '../PersonType';
-import isAuthorized from '../../../helpers/isAuthorized';
+import throwErrorWhenUnauthorized from '../../../helpers/throwErrorWhenUnauthorized';
 import { TPersonActiveStatusEvent } from '../../../PersonActiveStatus';
 
 @ArgsType()
@@ -17,12 +17,12 @@ export class PersonActiveStatusResolver {
     @Subscription((_returns) => Boolean, {
         subscribe: withFilter<TPersonActiveStatusEvent, any, WSContext>(
             async (_root, _args, { session, pubsub }) => {
-                isAuthorized(session);
+                throwErrorWhenUnauthorized(session);
                 return pubsub.subscribe('PERSON_ACTIVE_STATUS');
             },
             (_payload, _args, { session }) => {
                 try {
-                    isAuthorized(session);
+                    throwErrorWhenUnauthorized(session);
                 } catch (error) {
                     return false;
                 }

@@ -1,8 +1,7 @@
-import { Ctx, Args, Resolver, Mutation, ArgsType, Field, Int } from 'type-graphql';
+import { Ctx, Args, Resolver, Mutation, ArgsType, Field, Int, Authorized } from 'type-graphql';
 
 import { Context } from '../../../context';
 import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';
-import isAuthorized from '../../../helpers/isAuthorized';
 import { LastReadType } from '../LastReadType';
 
 @ArgsType()
@@ -13,13 +12,13 @@ class MarkConvAsReadArgs {
 
 @Resolver((_of) => LastReadType)
 export class MarkConvAsReadResolver {
+    @Authorized()
     @Mutation((_returns) => LastReadType)
     async markConvAsRead(
     // eslint-disable-next-line @typescript-eslint/indent
         @Args() args: MarkConvAsReadArgs,
-        @Ctx() { prisma, session }: Context,
+        @Ctx() { prisma, session }: Context<true>,
     ) {
-        isAuthorized(session);
         await checkUserHasConvAccess(prisma, session.owner, args.conversationId);
 
         const data = await prisma.lastRead.upsert({

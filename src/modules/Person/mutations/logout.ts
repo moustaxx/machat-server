@@ -1,15 +1,13 @@
-import { Ctx, Resolver, Mutation } from 'type-graphql';
+import { Ctx, Resolver, Mutation, Authorized } from 'type-graphql';
 
 import { Context } from '../../../context';
 import { PersonType } from '../PersonType';
-import isAuthorized from '../../../helpers/isAuthorized';
 
 @Resolver((_of) => PersonType)
 export class LogoutResolver {
+    @Authorized()
     @Mutation((_returns) => PersonType)
-    logout(@Ctx() { session, req, reply }: Context) {
-        isAuthorized(session);
-
+    logout(@Ctx() { session, req, reply }: Context<true>) {
         const { owner } = session;
         req.destroySession((err) => err && console.log);
         req.session = null as any;
