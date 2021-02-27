@@ -341,7 +341,6 @@ type PersonType {
   id: Int!
   isActive: Boolean!
   isAdmin: Boolean!
-  lastRead(cursor: LastReadWhereUniqueInput, distinct: [LastReadScalarFieldEnum!], orderBy: [LastReadOrderByInput!], skip: Int, take: Int, where: LastReadWhereInput): [LastRead!]!
   lastSeen: DateTime
   messages(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum!], orderBy: [MessageOrderByInput!], skip: Int, take: Int, where: MessageWhereInput): [Message!]!
   username: String!

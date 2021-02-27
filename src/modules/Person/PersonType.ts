@@ -2,15 +2,10 @@
 import { Prisma } from '@prisma/client';
 import { Args, Authorized, Ctx, Field, FieldResolver, Int, ObjectType, Resolver, Root } from 'type-graphql';
 import { ConnectionArguments, findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
+import { ForbiddenError } from 'apollo-server-errors';
 
 import { Context } from '../../context';
-import {
-    LastRead,
-    Message,
-    Person,
-    PersonLastReadArgs,
-    PersonMessagesArgs,
-} from '../../generated/type-graphql';
+import { Message, Person, PersonMessagesArgs } from '../../generated/type-graphql';
 import { ConversationConnection, ConversationType } from '../Conversation/ConversationType';
 import { Connection, ConnectionArgs } from '../../relay';
 import cursorUtils from '../../helpers/cursor';
@@ -40,9 +35,6 @@ export class PersonType {
 
     @Field((_type) => [Message])
     messages?: Message[];
-
-    @Field((_type) => [LastRead])
-    lastRead?: LastRead[];
 
     @Field((_type) => ConversationConnection)
     conversations!: Promise<Connection<ConversationType>>;
@@ -99,24 +91,16 @@ export class PersonTypeResolver {
     @FieldResolver((_type) => [Message])
     async messages(
         @Root() person: Person,
-        @Ctx() ctx: Context,
+        @Ctx() { prisma, session }: Context,
         @Args() args: PersonMessagesArgs,
     ): Promise<Message[]> {
-        return ctx.prisma.person.findUnique({
+        if (!session?.owner?.isAdmin) {
+            throw new ForbiddenError('Insufficient permissions');
+        }
+
+        return prisma.person.findUnique({
             where: { id: person.id },
             select: { messages: true },
         }).messages(args);
-    }
-
-    @FieldResolver((_type) => [LastRead])
-    async lastRead(
-        @Root() person: Person,
-        @Ctx() ctx: Context,
-        @Args() args: PersonLastReadArgs,
-    ): Promise<LastRead[]> {
-        return ctx.prisma.person.findUnique({
-            where: { id: person.id },
-            select: { lastRead: true },
-        }).lastRead(args);
     }
 }
