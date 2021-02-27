@@ -50,7 +50,7 @@ type ConversationType {
   lastRead(cursor: LastReadWhereUniqueInput, distinct: [LastReadScalarFieldEnum!], orderBy: [LastReadOrderByInput!], skip: Int, take: Int, where: LastReadWhereInput): [LastRead!]!
   messages(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum!], orderBy: [MessageOrderByInput!], skip: Int, take: Int, where: MessageWhereInput): [Message!]!
   name: String!
-  participants(cursor: PersonWhereUniqueInput, distinct: [PersonScalarFieldEnum!], orderBy: [PersonOrderByInput!], skip: Int, take: Int, where: PersonWhereInput): [Person!]!
+  participants(cursor: PersonWhereUniqueInput, distinct: [PersonScalarFieldEnum!], orderBy: [PersonOrderByInput!], skip: Int, take: Int, where: PersonWhereInput): [PersonType!]!
 }
 
 input ConversationWhereInput {
@@ -301,16 +301,6 @@ type PageInfo {
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
   startCursor: String
-}
-
-type Person {
-  createdAt: DateTime!
-  email: String!
-  hash: String!
-  id: Int!
-  isAdmin: Boolean!
-  lastSeen: DateTime
-  username: String!
 }
 
 input PersonListRelationFilter {
