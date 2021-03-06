@@ -12,8 +12,8 @@ export class MessageType extends Node {
     @Field((_type) => String)
     content!: string;
 
-    @Field((_type) => Int, { nullable: true })
-    authorID?: number | null;
+    @Field((_type) => Int)
+    authorID!: number;
 
     @Field((_type) => Int)
     conversationID!: number;
