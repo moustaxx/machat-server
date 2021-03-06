@@ -33,7 +33,7 @@ export class PersonType extends Node {
     username!: string;
 
     @Field((_type) => [Message])
-    messages?: Message[];
+    messages!: Message[];
 
     @Field((_type) => ConversationConnection)
     conversations!: Promise<Connection<ConversationType>>;

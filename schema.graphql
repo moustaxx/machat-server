@@ -198,7 +198,7 @@ enum MessageScalarFieldEnum {
 
 type MessageType implements Node {
   author: PersonType!
-  authorID: Int
+  authorID: Int!
   content: String!
   conversation: ConversationType!
   conversationID: Int!

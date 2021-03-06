@@ -16,11 +16,11 @@ export class ConversationType extends Node {
     @Field((_type) => String)
     name!: string;
 
-    participants?: PersonType[];
+    participants!: PersonType[];
 
-    messages?: MessageType[];
+    messages!: MessageType[];
 
-    lastRead?: LastReadType[];
+    lastRead!: LastReadType[];
 }
 
 @Resolver((_of) => ConversationType)

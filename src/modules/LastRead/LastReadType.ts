@@ -14,9 +14,9 @@ export class LastReadType {
     @Field((_type) => Int)
     conversationID!: number;
 
-    person?: PersonType;
+    person!: PersonType;
 
-    conversation?: ConversationType;
+    conversation!: ConversationType;
 }
 
 const whereIDEqalsID = (lastRead: LastReadType) => ({
