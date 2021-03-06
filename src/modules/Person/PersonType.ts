@@ -1,18 +1,17 @@
 /* eslint-disable @typescript-eslint/indent */
-import { Prisma } from '@prisma/client';
-import { Args, Authorized, Ctx, Field, FieldResolver, Int, ObjectType, Resolver, Root } from 'type-graphql';
+import { Conversation, Prisma } from '@prisma/client';
+import { Args, Authorized, Ctx, Field, FieldResolver, ObjectType, Resolver, Root } from 'type-graphql';
 import { ConnectionArguments, findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 import { ForbiddenError } from 'apollo-server-errors';
 
 import { Context } from '../../context';
 import { Message, Person, PersonMessagesArgs } from '../../generated/type-graphql';
 import { ConversationConnection, ConversationType } from '../Conversation/ConversationType';
-import { Connection, ConnectionArgs } from '../../relay';
+import { Connection, ConnectionArgs, Node } from '../../relay';
 import cursorUtils from '../../helpers/cursor';
 
-@ObjectType()
-export class PersonType {
-    @Field((_type) => Int)
+@ObjectType({ implements: Node })
+export class PersonType extends Node {
     id!: number;
 
     @Field((_type) => Boolean)
@@ -79,7 +78,7 @@ export class PersonTypeResolver {
 
 
         return findManyCursorConnection<
-            ConversationType, Prisma.ConversationWhereUniqueInput
+            Conversation, Prisma.ConversationWhereUniqueInput
         >(
             async (convArgs) => prisma.conversation.findMany({ ...convArgs, where }),
             async () => prisma.conversation.count({ where }),

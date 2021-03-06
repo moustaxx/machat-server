@@ -1,4 +1,5 @@
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
+import { TNodeModel } from '../../../../relay';
 import { PersonType } from '../../PersonType';
 
 let t: ITestUtils;
@@ -44,7 +45,7 @@ it('should return person', async () => {
     const { cookies } = await t.createRandomUserAndLogin({ isAdmin: true });
     const { user } = await t.createRandomUser();
 
-    type TPerson = { person: PersonType };
+    type TPerson = { person: TNodeModel<PersonType> };
     const { data } = await t.gqlQuery<TPerson>({
         query: queryStringFull,
         variables: { whereId: user.id },

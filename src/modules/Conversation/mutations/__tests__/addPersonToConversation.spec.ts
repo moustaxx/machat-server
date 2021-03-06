@@ -1,7 +1,8 @@
-import { Conversation, Person } from 'prisma-machat';
-
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
+import { TNodeModel, toGlobalId } from '../../../../relay';
 import randomString from '../../../../tests/helpers/randomString';
+import { PersonType } from '../../../Person';
+import { ConversationType } from '../../ConversationType';
 
 let t: ITestUtils;
 
@@ -37,8 +38,8 @@ it('should add person to conversation', async () => {
     });
 
     type TData = {
-        addPersonToConversation: Conversation & {
-            participants: Person[];
+        addPersonToConversation: Omit<TNodeModel<ConversationType>, 'participants'> & {
+            participants: TNodeModel<PersonType>[];
         };
     };
     const { data } = await t.gqlQuery<TData>({
@@ -51,7 +52,9 @@ it('should add person to conversation', async () => {
 
     expect(participants).toEqual(
         expect.arrayContaining([
-            expect.objectContaining({ id: someUser.user.id }),
+            expect.objectContaining({
+                id: toGlobalId('PersonType', someUser.user.id),
+            }),
         ]),
     );
 });

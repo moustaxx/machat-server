@@ -4,12 +4,12 @@ exports[`should return conversation 1`] = `
 Object {
   "conversation": Object {
     "createdAt": Any<String>,
-    "id": 1,
+    "id": "ConversationType:1",
     "messages": Array [],
     "name": Any<String>,
     "participants": Array [
       Object {
-        "id": 1,
+        "id": "PersonType:1",
       },
     ],
   },

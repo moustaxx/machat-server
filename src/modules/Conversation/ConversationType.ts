@@ -1,14 +1,30 @@
-import { Args, Ctx, FieldResolver, ObjectType, Resolver, Root } from 'type-graphql';
+import { Args, Ctx, Field, FieldResolver, ObjectType, Resolver, Root } from 'type-graphql';
 import { Context } from '../../context';
-import { Conversation, ConversationParticipantsArgs, ConversationRelationsResolver } from '../../generated/type-graphql';
-import { ConnectionType, EdgeType } from '../../relay';
+import { Conversation, ConversationLastReadArgs, ConversationMessagesArgs, ConversationParticipantsArgs } from '../../generated/type-graphql';
+import { ConnectionType, EdgeType, Node } from '../../relay';
+import { LastReadType } from '../LastRead';
+import { MessageType } from '../Message';
 import { PersonType } from '../Person';
 
-@ObjectType()
-export class ConversationType extends Conversation { }
+@ObjectType({ implements: Node })
+export class ConversationType extends Node {
+    id!: number;
+
+    @Field((_type) => Date)
+    createdAt!: Date;
+
+    @Field((_type) => String)
+    name!: string;
+
+    participants?: PersonType[];
+
+    messages?: MessageType[];
+
+    lastRead?: LastReadType[];
+}
 
 @Resolver((_of) => ConversationType)
-export class ConversationTypeResolver extends ConversationRelationsResolver {
+export class ConversationTypeResolver {
     @FieldResolver((_type) => [PersonType])
     async participants(
     // eslint-disable-next-line @typescript-eslint/indent
@@ -19,6 +35,30 @@ export class ConversationTypeResolver extends ConversationRelationsResolver {
         return prisma.conversation.findUnique({
             where: { id: conversation.id },
         }).participants(args);
+    }
+
+    @FieldResolver((_type) => [MessageType])
+    async messages(
+    // eslint-disable-next-line @typescript-eslint/indent
+        @Root() conversation: Conversation,
+        @Ctx() { prisma }: Context,
+        @Args() args: ConversationMessagesArgs,
+    ) {
+        return prisma.conversation.findUnique({
+            where: { id: conversation.id },
+        }).messages(args);
+    }
+
+    @FieldResolver((_type) => [LastReadType])
+    async lastRead(
+    // eslint-disable-next-line @typescript-eslint/indent
+        @Root() conversation: Conversation,
+        @Ctx() { prisma }: Context,
+        @Args() args: ConversationLastReadArgs,
+    ) {
+        return prisma.conversation.findUnique({
+            where: { id: conversation.id },
+        }).lastRead(args);
     }
 }
 

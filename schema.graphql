@@ -44,11 +44,13 @@ input ConversationRelationFilter {
   isNot: ConversationWhereInput
 }
 
-type ConversationType {
+type ConversationType implements Node {
   createdAt: DateTime!
-  id: Int!
-  lastRead(cursor: LastReadWhereUniqueInput, distinct: [LastReadScalarFieldEnum!], orderBy: [LastReadOrderByInput!], skip: Int, take: Int, where: LastReadWhereInput): [LastRead!]!
-  messages(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum!], orderBy: [MessageOrderByInput!], skip: Int, take: Int, where: MessageWhereInput): [Message!]!
+
+  """The global ID of the object."""
+  id: ID!
+  lastRead(cursor: LastReadWhereUniqueInput, distinct: [LastReadScalarFieldEnum!], orderBy: [LastReadOrderByInput!], skip: Int, take: Int, where: LastReadWhereInput): [LastReadType!]!
+  messages(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum!], orderBy: [MessageOrderByInput!], skip: Int, take: Int, where: MessageWhereInput): [MessageType!]!
   name: String!
   participants(cursor: PersonWhereUniqueInput, distinct: [PersonScalarFieldEnum!], orderBy: [PersonOrderByInput!], skip: Int, take: Int, where: PersonWhereInput): [PersonType!]!
 }
@@ -114,12 +116,6 @@ input IntNullableFilter {
   notIn: [Int!]
 }
 
-type LastRead {
-  conversationID: Int!
-  lastRead: DateTime!
-  personID: Int!
-}
-
 input LastReadListRelationFilter {
   every: LastReadWhereInput
   none: LastReadWhereInput
@@ -146,8 +142,10 @@ enum LastReadScalarFieldEnum {
 }
 
 type LastReadType {
+  conversation: ConversationType!
   conversationID: Int!
   lastRead: DateTime!
+  person: PersonType!
   personID: Int!
 }
 
@@ -198,12 +196,16 @@ enum MessageScalarFieldEnum {
   id
 }
 
-type MessageType {
+type MessageType implements Node {
+  author: PersonType!
   authorID: Int
   content: String!
+  conversation: ConversationType!
   conversationID: Int!
   createdAt: DateTime!
-  id: Int!
+
+  """The global ID of the object."""
+  id: ID!
 }
 
 input MessageWhereInput {
@@ -296,6 +298,12 @@ input NestedStringFilter {
   startsWith: String
 }
 
+"""An object with a global ID."""
+interface Node {
+  """The global ID of the object."""
+  id: ID!
+}
+
 type PageInfo {
   endCursor: String
   hasNextPage: Boolean!
@@ -334,11 +342,13 @@ enum PersonScalarFieldEnum {
   username
 }
 
-type PersonType {
+type PersonType implements Node {
   conversations(after: String, before: String, first: Int, last: Int): ConversationConnection!
   createdAt: DateTime!
   email: String!
-  id: Int!
+
+  """The global ID of the object."""
+  id: ID!
   isActive: Boolean!
   isAdmin: Boolean!
   lastSeen: DateTime

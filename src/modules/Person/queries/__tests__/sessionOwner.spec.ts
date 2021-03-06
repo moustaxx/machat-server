@@ -1,5 +1,6 @@
-import { Person } from '@prisma/client';
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
+import { fromGlobalId, TNodeModel } from '../../../../relay';
+import { PersonType } from '../../PersonType';
 
 let t: ITestUtils;
 
@@ -22,11 +23,11 @@ const queryString = `
 it('should return session owner', async () => {
     const { cookies, user } = await t.createRandomUserAndLogin();
 
-    type TPerson = { sessionOwner: Omit<Person, 'hash'> };
+    type TPerson = { sessionOwner: TNodeModel<PersonType> };
     const { data } = await t.gqlQuery<TPerson>({
         query: queryString,
         cookies,
     });
 
-    expect(data.sessionOwner.id).toEqual(user.id);
+    expect(fromGlobalId(data.sessionOwner.id).id).toEqual(user.id);
 });

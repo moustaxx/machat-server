@@ -8,7 +8,7 @@ Object {
     },
     "createdAt": Any<String>,
     "email": Any<String>,
-    "id": 2,
+    "id": "PersonType:2",
     "isActive": true,
     "isAdmin": false,
     "lastSeen": null,

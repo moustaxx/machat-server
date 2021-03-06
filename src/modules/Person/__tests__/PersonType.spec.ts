@@ -1,9 +1,9 @@
-import { Person } from '@prisma/client';
 import { initTestServer, ITestUtils } from '../../../tests/helpers';
 import cursorUtils from '../../../helpers/cursor';
 import randomString from '../../../tests/helpers/randomString';
-import { Connection } from '../../../relay';
+import { Connection, TNodeModel, toGlobalId } from '../../../relay';
 import { ConversationType } from '../../Conversation';
+import { PersonType } from '../PersonType';
 
 let t: ITestUtils;
 
@@ -31,8 +31,8 @@ const queryString = `
 `;
 
 type TPerson = {
-    person: Omit<Person, 'hash'> & {
-        conversations: Connection<ConversationType>;
+    person: TNodeModel<PersonType> & {
+        conversations: Connection<TNodeModel<ConversationType>>;
     };
 };
 
@@ -71,8 +71,8 @@ it('should return only mine conversations', async () => {
     expect(convEdges).toHaveLength(2);
     expect(convEdges).toEqual(
         expect.arrayContaining([
-            { node: { id: convs[0].id } },
-            { node: { id: convs[1].id } },
+            { node: { id: toGlobalId('ConversationType', convs[0].id) } },
+            { node: { id: toGlobalId('ConversationType', convs[1].id) } },
         ]),
     );
 });
@@ -94,7 +94,7 @@ it('should return only shared conversations', async () => {
 
     const convEdges = data.person.conversations.edges;
 
-    expect(convEdges).toEqual([{ node: { id: sharedConv.id } }]);
+    expect(convEdges).toEqual([{ node: { id: toGlobalId('ConversationType', sharedConv.id) } }]);
 });
 
 it('should paginate', async () => {
@@ -125,8 +125,8 @@ it('should paginate', async () => {
 
     expect(convEdges).toEqual(
         expect.arrayContaining([
-            { node: { id: convs[3].id } },
-            { node: { id: convs[5].id } },
+            { node: { id: toGlobalId('ConversationType', convs[3].id) } },
+            { node: { id: toGlobalId('ConversationType', convs[5].id) } },
         ]),
     );
 });
