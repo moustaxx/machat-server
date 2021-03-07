@@ -4,7 +4,7 @@ import argon2 from 'argon2';
 
 import { Context } from '../../../context';
 import { PersonType } from '../PersonType';
-import isAlreadyLoggedIn from '../../../helpers/isAlreadyLoggedIn';
+import throwErrorWhenAlreadyLoggedIn from '../../../helpers/throwErrorWhenAlreadyLoggedIn';
 
 const wrongCredentialsError = new ApolloError('Wrong username or password!', 'WRONG_CREDENTIALS');
 
@@ -21,7 +21,7 @@ class LoginArgs {
 export class LoginResolver {
     @Mutation((_returns) => PersonType)
     async login(@Args() args: LoginArgs, @Ctx() { prisma, session }: Context) {
-        isAlreadyLoggedIn(session);
+        throwErrorWhenAlreadyLoggedIn(session);
 
         const username = args.username.trim();
 

@@ -4,7 +4,7 @@ import argon2 from 'argon2';
 
 import { Context } from '../../../context';
 import { PersonType } from '../PersonType';
-import isAlreadyLoggedIn from '../../../helpers/isAlreadyLoggedIn';
+import throwErrorWhenAlreadyLoggedIn from '../../../helpers/throwErrorWhenAlreadyLoggedIn';
 import isValidEmail from '../helpers/isValidEmail';
 
 @ArgsType()
@@ -23,7 +23,7 @@ class RegisterArgs {
 export class RegisterResolver {
     @Mutation((_returns) => PersonType)
     async register(@Args() args: RegisterArgs, @Ctx() { prisma, session }: Context) {
-        isAlreadyLoggedIn(session);
+        throwErrorWhenAlreadyLoggedIn(session);
 
         const username = args.username.trim();
         const email = args.email.trim();
