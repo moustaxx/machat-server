@@ -4,7 +4,7 @@ import { withFilter } from 'mercurius';
 import { WSContext } from '../../../context';
 import { MessageType } from '../MessageType';
 import throwErrorWhenUnauthorized from '../../../helpers/throwErrorWhenUnauthorized';
-import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';
+import throwErrorWhenNoConvAccess from '../../../helpers/throwErrorWhenNoConvAccess';
 
 @ArgsType()
 class NewMessagesArgs {
@@ -19,14 +19,14 @@ export class NewMessagesResolver {
         subscribe: withFilter<{ conversationID: number }, any, WSContext, NewMessagesArgs>(
             async (_root, args, { prisma, session, pubsub }) => {
                 throwErrorWhenUnauthorized(session);
-                await checkUserHasConvAccess(prisma, session.owner, args.conversationId);
+                await throwErrorWhenNoConvAccess(prisma, session.owner, args.conversationId);
 
                 return pubsub.subscribe('NEW_MESSAGES');
             },
-            async (payload, args, { prisma, session }: any) => {
+            async (payload, args, { prisma, session }: WSContext) => {
                 try {
                     throwErrorWhenUnauthorized(session);
-                    await checkUserHasConvAccess(prisma, session.owner, args.conversationId);
+                    await throwErrorWhenNoConvAccess(prisma, session.owner, args.conversationId);
                 } catch (error) {
                     return false;
                 }

@@ -2,7 +2,7 @@ import { Ctx, Args, Resolver, Mutation, ArgsType, Field, Int, Authorized } from 
 import { UserInputError } from 'apollo-server-errors';
 
 import { Context } from '../../../context';
-import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';
+import throwErrorWhenNoConvAccess from '../../../helpers/throwErrorWhenNoConvAccess';
 import { MessageType } from '../MessageType';
 
 @ArgsType()
@@ -26,7 +26,7 @@ export class CreateMessageResolver {
         const content = args.content.trim();
         if (content.length < 1) throw new UserInputError('Message cannot be empty!');
 
-        await checkUserHasConvAccess(prisma, session.owner, args.conversationId);
+        await throwErrorWhenNoConvAccess(prisma, session.owner, args.conversationId);
 
         const data = await prisma.message.create({
             data: {

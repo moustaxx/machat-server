@@ -2,7 +2,7 @@ import { PrismaClient } from 'prisma-machat';
 import { ForbiddenError } from 'apollo-server-errors';
 
 import randomString from '../../tests/helpers/randomString';
-import checkUserHasConvAccess from '../checkUserHasConvAccess';
+import throwErrorWhenNoConvAccess from '../throwErrorWhenNoConvAccess';
 import { createRandomUserSep } from '../../tests/helpers';
 
 let prisma: PrismaClient;
@@ -25,7 +25,7 @@ it('should return that user can access the conversation', async () => {
         },
     });
 
-    await checkUserHasConvAccess(prisma, user, conversation.id);
+    await throwErrorWhenNoConvAccess(prisma, user, conversation.id);
 });
 
 it('should throw error that user cannot access the conversation', async () => {
@@ -37,7 +37,7 @@ it('should throw error that user cannot access the conversation', async () => {
         },
     });
 
-    await checkUserHasConvAccess(prisma, user, conversation.id).catch((error) => {
+    await throwErrorWhenNoConvAccess(prisma, user, conversation.id).catch((error) => {
         expect(error).toEqual(new ForbiddenError('Insufficient permissions'));
     });
 });

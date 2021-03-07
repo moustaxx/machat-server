@@ -1,6 +1,6 @@
 import { Ctx, Args, Resolver, Mutation, ArgsType, Field, Int, Authorized } from 'type-graphql';
 import { Context } from '../../../context';
-import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';
+import throwErrorWhenNoConvAccess from '../../../helpers/throwErrorWhenNoConvAccess';
 import { ConversationType } from '../ConversationType';
 
 @ArgsType()
@@ -21,7 +21,7 @@ export class RemovePersonFromConversationResolver {
         @Args() args: RemovePersonFromConversationArgs,
         @Ctx() { prisma, session }: Context<true>,
     ) {
-        await checkUserHasConvAccess(prisma, session.owner, args.conversationId);
+        await throwErrorWhenNoConvAccess(prisma, session.owner, args.conversationId);
 
         const data = await prisma.conversation.update({
             where: { id: args.conversationId },

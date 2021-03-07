@@ -2,7 +2,7 @@ import { ForbiddenError } from 'apollo-server-errors';
 import { TPrisma } from '../prismaClient';
 import { ISession } from '../types';
 
-const checkUserHasConvAccess = async (
+const throwErrorWhenNoConvAccess = async (
     prisma: TPrisma,
     user: NonNullable<ISession['owner']>,
     conversationId: number,
@@ -27,4 +27,4 @@ const checkUserHasConvAccess = async (
     }
 };
 
-export default checkUserHasConvAccess;
+export default throwErrorWhenNoConvAccess;

@@ -1,7 +1,7 @@
 import { ApolloError } from 'apollo-server-errors';
 import { Ctx, Args, Query, Resolver, ArgsType, Field, Int, Authorized } from 'type-graphql';
 import { Context } from '../../../context';
-import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';
+import throwErrorWhenNoConvAccess from '../../../helpers/throwErrorWhenNoConvAccess';
 import { ConversationType } from '../ConversationType';
 
 @ArgsType()
@@ -19,7 +19,7 @@ export class ConversationResolver {
         @Args() args: ConversationArgs,
         @Ctx() { prisma, session }: Context<true>,
     ) {
-        await checkUserHasConvAccess(prisma, session.owner, args.whereId);
+        await throwErrorWhenNoConvAccess(prisma, session.owner, args.whereId);
 
         const data = await prisma.conversation.findUnique({
             where: { id: args.whereId },

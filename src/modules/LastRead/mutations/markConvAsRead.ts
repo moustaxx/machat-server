@@ -1,7 +1,7 @@
 import { Ctx, Args, Resolver, Mutation, ArgsType, Field, Int, Authorized } from 'type-graphql';
 
 import { Context } from '../../../context';
-import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';
+import throwErrorWhenNoConvAccess from '../../../helpers/throwErrorWhenNoConvAccess';
 import { LastReadType } from '../LastReadType';
 
 @ArgsType()
@@ -19,7 +19,7 @@ export class MarkConvAsReadResolver {
         @Args() args: MarkConvAsReadArgs,
         @Ctx() { prisma, session }: Context<true>,
     ) {
-        await checkUserHasConvAccess(prisma, session.owner, args.conversationId);
+        await throwErrorWhenNoConvAccess(prisma, session.owner, args.conversationId);
 
         const data = await prisma.lastRead.upsert({
             create: {
