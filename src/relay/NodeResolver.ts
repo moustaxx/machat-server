@@ -2,10 +2,13 @@
 import { FieldResolver, Info, Resolver, Root } from 'type-graphql';
 
 import { Node } from './NodeInterface';
+import { Connection } from './ConnectionType';
 
 export type TNodeModel<TModel> = Omit<TModel, 'id' | 'globalId'> & {
     id: `${string}:${string}`;
 };
+
+export type TNodeConnection<TModel> = Connection<TNodeModel<TModel>>;
 
 export const toGlobalId = (typename: string, id: string | number) => {
     return `${typename}:${id}`;

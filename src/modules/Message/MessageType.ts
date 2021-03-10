@@ -1,7 +1,7 @@
 import { Conversation, Person } from '@prisma/client';
 import { Ctx, Field, FieldResolver, Int, ObjectType, Resolver, Root } from 'type-graphql';
 import { Context } from '../../context';
-import { Node } from '../../relay';
+import { ConnectionType, EdgeType, Node } from '../../relay';
 import { ConversationType } from '../Conversation';
 import { PersonType } from '../Person';
 
@@ -52,3 +52,9 @@ export class MessageTypeResolver {
         }).conversation();
     }
 }
+
+@ObjectType()
+export class MessageEdge extends EdgeType(MessageType) { }
+
+@ObjectType()
+export class MessageConnection extends ConnectionType(MessageEdge) { }

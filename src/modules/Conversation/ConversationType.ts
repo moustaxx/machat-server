@@ -1,10 +1,14 @@
+import { Connection, ConnectionArguments, findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
+import { Person, Message, Prisma } from '@prisma/client';
 import { Args, Ctx, Field, FieldResolver, ObjectType, Resolver, Root } from 'type-graphql';
+
 import { Context } from '../../context';
-import { Conversation, ConversationLastReadArgs, ConversationMessagesArgs, ConversationParticipantsArgs } from '../../generated/type-graphql';
-import { ConnectionType, EdgeType, Node } from '../../relay';
+import { Conversation, ConversationLastReadArgs } from '../../generated/type-graphql';
+import cursorUtils from '../../helpers/cursor';
+import { ConnectionArgs, ConnectionType, EdgeType, Node } from '../../relay';
 import { LastReadType } from '../LastRead';
-import { MessageType } from '../Message';
-import { PersonType } from '../Person';
+import { MessageConnection, MessageType } from '../Message';
+import { PersonConnection, PersonType } from '../Person';
 
 @ObjectType({ implements: Node })
 export class ConversationType extends Node {
@@ -16,8 +20,10 @@ export class ConversationType extends Node {
     @Field((_type) => String)
     name!: string;
 
-    participants!: PersonType[];
+    @Field((_type) => PersonConnection)
+    participants!: Connection<PersonType>;
 
+    @Field((_type) => MessageConnection)
     messages!: MessageType[];
 
     lastRead!: LastReadType[];
@@ -25,28 +31,42 @@ export class ConversationType extends Node {
 
 @Resolver((_of) => ConversationType)
 export class ConversationTypeResolver {
-    @FieldResolver((_type) => [PersonType])
+    @FieldResolver((_type) => [PersonConnection])
     async participants(
     // eslint-disable-next-line @typescript-eslint/indent
         @Root() conversation: Conversation,
         @Ctx() { prisma }: Context,
-        @Args() args: ConversationParticipantsArgs,
+        @Args((_type) => ConnectionArgs) args: ConnectionArguments,
     ) {
-        return prisma.conversation.findUnique({
-            where: { id: conversation.id },
-        }).participants(args);
+        const where = {
+            conversations: {
+                some: { id: conversation.id },
+            },
+        };
+        return findManyCursorConnection<Person, Prisma.PersonWhereUniqueInput>(
+            async (convArgs) => prisma.person.findMany({ ...convArgs, where }),
+            async () => prisma.person.count({ where }),
+            args,
+            cursorUtils,
+        );
     }
 
-    @FieldResolver((_type) => [MessageType])
+    @FieldResolver((_type) => [MessageConnection])
     async messages(
     // eslint-disable-next-line @typescript-eslint/indent
         @Root() conversation: Conversation,
         @Ctx() { prisma }: Context,
-        @Args() args: ConversationMessagesArgs,
+        @Args((_type) => ConnectionArgs) args: ConnectionArguments,
     ) {
-        return prisma.conversation.findUnique({
-            where: { id: conversation.id },
-        }).messages(args);
+        const where = {
+            conversation: { id: conversation.id },
+        };
+        return findManyCursorConnection<Message, Prisma.MessageWhereUniqueInput>(
+            async (convArgs) => prisma.message.findMany({ ...convArgs, where }),
+            async () => prisma.message.count({ where }),
+            args,
+            cursorUtils,
+        );
     }
 
     @FieldResolver((_type) => [LastReadType])

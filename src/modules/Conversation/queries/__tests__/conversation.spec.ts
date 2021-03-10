@@ -20,10 +20,18 @@ const queryStringFull = `
             name
             createdAt
             participants {
-                id
+                edges {
+                    node {
+                        id
+                    }
+                }
             }
             messages {
-                id
+                edges {
+                    node {
+                        id
+                    }
+                }
             }
         }
     }

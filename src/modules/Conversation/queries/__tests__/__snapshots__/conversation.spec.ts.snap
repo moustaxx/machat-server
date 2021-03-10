@@ -5,13 +5,19 @@ Object {
   "conversation": Object {
     "createdAt": Any<String>,
     "id": "ConversationType:1",
-    "messages": Array [],
+    "messages": Object {
+      "edges": Array [],
+    },
     "name": Any<String>,
-    "participants": Array [
-      Object {
-        "id": "PersonType:1",
-      },
-    ],
+    "participants": Object {
+      "edges": Array [
+        Object {
+          "node": Object {
+            "id": "PersonType:1",
+          },
+        },
+      ],
+    },
   },
 }
 `;

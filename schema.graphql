@@ -50,9 +50,9 @@ type ConversationType implements Node {
   """The global ID of the object."""
   id: ID!
   lastRead(cursor: LastReadWhereUniqueInput, distinct: [LastReadScalarFieldEnum!], orderBy: [LastReadOrderByInput!], skip: Int, take: Int, where: LastReadWhereInput): [LastReadType!]!
-  messages(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum!], orderBy: [MessageOrderByInput!], skip: Int, take: Int, where: MessageWhereInput): [MessageType!]!
+  messages(after: String, before: String, first: Int, last: Int): MessageConnection!
   name: String!
-  participants(cursor: PersonWhereUniqueInput, distinct: [PersonScalarFieldEnum!], orderBy: [PersonOrderByInput!], skip: Int, take: Int, where: PersonWhereInput): [PersonType!]!
+  participants(after: String, before: String, first: Int, last: Int): PersonConnection!
 }
 
 input ConversationWhereInput {
@@ -170,6 +170,25 @@ type Message {
   conversationID: Int!
   createdAt: DateTime!
   id: Int!
+}
+
+type MessageConnection {
+  """A list of edges."""
+  edges: [MessageEdge]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """Identifies the total count of items in the connection."""
+  totalCount: Float!
+}
+
+type MessageEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: MessageType!
 }
 
 input MessageListRelationFilter {
@@ -311,6 +330,25 @@ type PageInfo {
   startCursor: String
 }
 
+type PersonConnection {
+  """A list of edges."""
+  edges: [PersonEdge]
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """Identifies the total count of items in the connection."""
+  totalCount: Float!
+}
+
+type PersonEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of the edge."""
+  node: PersonType!
+}
+
 input PersonListRelationFilter {
   every: PersonWhereInput
   none: PersonWhereInput
@@ -330,16 +368,6 @@ input PersonOrderByInput {
 input PersonRelationFilter {
   is: PersonWhereInput
   isNot: PersonWhereInput
-}
-
-enum PersonScalarFieldEnum {
-  createdAt
-  email
-  hash
-  id
-  isAdmin
-  lastSeen
-  username
 }
 
 type PersonType implements Node {

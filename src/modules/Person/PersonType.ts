@@ -7,7 +7,7 @@ import { ForbiddenError } from 'apollo-server-errors';
 import { Context } from '../../context';
 import { Message, Person, PersonMessagesArgs } from '../../generated/type-graphql';
 import { ConversationConnection, ConversationType } from '../Conversation/ConversationType';
-import { Connection, ConnectionArgs, Node } from '../../relay';
+import { Connection, ConnectionArgs, ConnectionType, EdgeType, Node } from '../../relay';
 import cursorUtils from '../../helpers/cursor';
 
 @ObjectType({ implements: Node })
@@ -36,7 +36,7 @@ export class PersonType extends Node {
     messages!: Message[];
 
     @Field((_type) => ConversationConnection)
-    conversations!: Promise<Connection<ConversationType>>;
+    conversations!: Connection<ConversationType>;
 }
 
 @Resolver((_of) => PersonType)
@@ -103,3 +103,9 @@ export class PersonTypeResolver {
         }).messages(args);
     }
 }
+
+@ObjectType()
+export class PersonEdge extends EdgeType(PersonType) { }
+
+@ObjectType()
+export class PersonConnection extends ConnectionType(PersonEdge) { }

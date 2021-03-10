@@ -1,5 +1,5 @@
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
-import { TNodeModel, toGlobalId } from '../../../../relay';
+import { TNodeModel, TNodeConnection, toGlobalId } from '../../../../relay';
 import randomString from '../../../../tests/helpers/randomString';
 import { PersonType } from '../../../Person';
 import { ConversationType } from '../../ConversationType';
@@ -19,8 +19,12 @@ const queryString = `
         addPersonToConversation(personId: $personId, conversationId: $conversationId) {
             id
             participants {
-                username
-                id
+                edges {
+                    node {
+                        username
+                        id
+                    }
+                }
             }
         }
     }
@@ -39,7 +43,7 @@ it('should add person to conversation', async () => {
 
     type TData = {
         addPersonToConversation: Omit<TNodeModel<ConversationType>, 'participants'> & {
-            participants: TNodeModel<PersonType>[];
+            participants: TNodeConnection<PersonType>;
         };
     };
     const { data } = await t.gqlQuery<TData>({
@@ -50,10 +54,12 @@ it('should add person to conversation', async () => {
 
     const { participants } = data.addPersonToConversation;
 
-    expect(participants).toEqual(
+    expect(participants.edges).toEqual(
         expect.arrayContaining([
             expect.objectContaining({
-                id: toGlobalId('PersonType', someUser.user.id),
+                node: expect.objectContaining({
+                    id: toGlobalId('PersonType', someUser.user.id),
+                }),
             }),
         ]),
     );
