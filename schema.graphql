@@ -409,6 +409,18 @@ input PersonWhereUniqueInput {
 type Query {
   conversation(whereId: Int!): ConversationType!
   me: PersonType!
+
+  """Fetches an object given its global ID."""
+  node(
+    """The global ID of the object."""
+    id: ID!
+  ): Node
+
+  """Fetches objects given their global IDs."""
+  nodes(
+    """The global IDs of the objects."""
+    ids: [ID!]!
+  ): [Node]!
   person(where: PersonWhereUniqueInput!): PersonType!
   sessionOwner: PersonType!
 }
