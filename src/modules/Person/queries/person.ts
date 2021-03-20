@@ -11,7 +11,7 @@ export class PersonResolver {
     async person(
     // eslint-disable-next-line @typescript-eslint/indent
         @Arg('where') where: PersonWhereUniqueInput,
-        @Ctx() { prisma }: Context,
+        @Ctx() { prisma }: Context<true>,
     ) {
         const data = await prisma.person.findUnique({ where });
 
