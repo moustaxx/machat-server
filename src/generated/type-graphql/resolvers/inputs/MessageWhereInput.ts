@@ -5,7 +5,6 @@ import { DecimalJSScalar } from "../../scalars";
 import { ConversationRelationFilter } from "../inputs/ConversationRelationFilter";
 import { DateTimeFilter } from "../inputs/DateTimeFilter";
 import { IntFilter } from "../inputs/IntFilter";
-import { IntNullableFilter } from "../inputs/IntNullableFilter";
 import { PersonRelationFilter } from "../inputs/PersonRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
 
@@ -33,10 +32,10 @@ export class MessageWhereInput {
   })
   content?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => IntNullableFilter, {
+  @TypeGraphQL.Field(_type => IntFilter, {
     nullable: true
   })
-  authorID?: IntNullableFilter | undefined;
+  authorID?: IntFilter | undefined;
 
   @TypeGraphQL.Field(_type => IntFilter, {
     nullable: true

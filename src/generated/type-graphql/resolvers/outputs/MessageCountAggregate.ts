@@ -13,9 +13,9 @@ export class MessageCountAggregate {
   content!: number | null;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+    nullable: false
   })
-  authorID!: number | null;
+  authorID!: number;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false

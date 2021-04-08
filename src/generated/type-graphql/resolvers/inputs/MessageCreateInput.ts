@@ -20,9 +20,9 @@ export class MessageCreateInput {
   createdAt?: Date | undefined;
 
   @TypeGraphQL.Field(_type => PersonCreateNestedOneWithoutMessagesInput, {
-    nullable: true
+    nullable: false
   })
-  author?: PersonCreateNestedOneWithoutMessagesInput | undefined;
+  author!: PersonCreateNestedOneWithoutMessagesInput;
 
   @TypeGraphQL.Field(_type => ConversationCreateNestedOneWithoutMessagesInput, {
     nullable: false

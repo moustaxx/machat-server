@@ -4,7 +4,7 @@ import { Prisma } from "../../../../../prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { ConversationUpdateOneRequiredWithoutMessagesInput } from "../inputs/ConversationUpdateOneRequiredWithoutMessagesInput";
 import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
-import { PersonUpdateOneWithoutMessagesInput } from "../inputs/PersonUpdateOneWithoutMessagesInput";
+import { PersonUpdateOneRequiredWithoutMessagesInput } from "../inputs/PersonUpdateOneRequiredWithoutMessagesInput";
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType({
@@ -21,10 +21,10 @@ export class MessageUpdateInput {
   })
   createdAt?: DateTimeFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => PersonUpdateOneWithoutMessagesInput, {
+  @TypeGraphQL.Field(_type => PersonUpdateOneRequiredWithoutMessagesInput, {
     nullable: true
   })
-  author?: PersonUpdateOneWithoutMessagesInput | undefined;
+  author?: PersonUpdateOneRequiredWithoutMessagesInput | undefined;
 
   @TypeGraphQL.Field(_type => ConversationUpdateOneRequiredWithoutMessagesInput, {
     nullable: true

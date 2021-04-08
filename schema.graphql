@@ -105,17 +105,6 @@ input IntFilter {
   notIn: [Int!]
 }
 
-input IntNullableFilter {
-  equals: Int
-  gt: Int
-  gte: Int
-  in: [Int!]
-  lt: Int
-  lte: Int
-  not: NestedIntNullableFilter
-  notIn: [Int!]
-}
-
 input LastReadListRelationFilter {
   every: LastReadWhereInput
   none: LastReadWhereInput
@@ -165,7 +154,7 @@ input LastReadWhereUniqueInput {
 }
 
 type Message {
-  authorID: Int
+  authorID: Int!
   content: String!
   conversationID: Int!
   createdAt: DateTime!
@@ -232,7 +221,7 @@ input MessageWhereInput {
   NOT: [MessageWhereInput!]
   OR: [MessageWhereInput!]
   author: PersonRelationFilter
-  authorID: IntNullableFilter
+  authorID: IntFilter
   content: StringFilter
   conversation: ConversationRelationFilter
   conversationID: IntFilter
@@ -289,17 +278,6 @@ input NestedIntFilter {
   lt: Int
   lte: Int
   not: NestedIntFilter
-  notIn: [Int!]
-}
-
-input NestedIntNullableFilter {
-  equals: Int
-  gt: Int
-  gte: Int
-  in: [Int!]
-  lt: Int
-  lte: Int
-  not: NestedIntNullableFilter
   notIn: [Int!]
 }
 

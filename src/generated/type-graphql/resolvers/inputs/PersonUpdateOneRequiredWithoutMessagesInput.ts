@@ -11,7 +11,7 @@ import { PersonWhereUniqueInput } from "../inputs/PersonWhereUniqueInput";
 @TypeGraphQL.InputType({
   isAbstract: true
 })
-export class PersonUpdateOneWithoutMessagesInput {
+export class PersonUpdateOneRequiredWithoutMessagesInput {
   @TypeGraphQL.Field(_type => PersonCreateWithoutMessagesInput, {
     nullable: true
   })
@@ -31,16 +31,6 @@ export class PersonUpdateOneWithoutMessagesInput {
     nullable: true
   })
   connect?: PersonWhereUniqueInput | undefined;
-
-  @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true
-  })
-  disconnect?: boolean | undefined;
-
-  @TypeGraphQL.Field(_type => Boolean, {
-    nullable: true
-  })
-  delete?: boolean | undefined;
 
   @TypeGraphQL.Field(_type => PersonUpdateWithoutMessagesInput, {
     nullable: true

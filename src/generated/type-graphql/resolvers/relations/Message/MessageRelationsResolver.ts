@@ -6,9 +6,9 @@ import { Person } from "../../../models/Person";
 @TypeGraphQL.Resolver(_of => Message)
 export class MessageRelationsResolver {
   @TypeGraphQL.FieldResolver(_type => Person, {
-    nullable: true
+    nullable: false
   })
-  async author(@TypeGraphQL.Root() message: Message, @TypeGraphQL.Ctx() ctx: any): Promise<Person | null> {
+  async author(@TypeGraphQL.Root() message: Message, @TypeGraphQL.Ctx() ctx: any): Promise<Person> {
     return ctx.prisma.message.findUnique({
       where: {
         id: message.id,

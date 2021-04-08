@@ -8,9 +8,9 @@ import { DecimalJSScalar } from "../../scalars";
 })
 export class MessageSumAggregate {
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+    nullable: false
   })
-  authorID!: number | null;
+  authorID!: number;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false

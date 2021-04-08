@@ -15,9 +15,9 @@ export class Message {
   content!: string;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+    nullable: false
   })
-  authorID?: number | null;
+  authorID!: number;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false
@@ -34,7 +34,7 @@ export class Message {
   })
   id!: number;
 
-  author?: Person | null;
+  author?: Person;
 
   conversation?: Conversation;
 }
