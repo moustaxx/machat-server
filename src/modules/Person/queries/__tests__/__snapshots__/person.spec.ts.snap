@@ -9,7 +9,7 @@ Object {
     "createdAt": Any<String>,
     "email": Any<String>,
     "id": "PersonType:2",
-    "isActive": true,
+    "isActive": false,
     "isAdmin": false,
     "lastSeen": null,
     "username": Any<String>,

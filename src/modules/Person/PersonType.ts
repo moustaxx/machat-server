@@ -43,8 +43,8 @@ export class PersonType extends Node {
 export class PersonTypeResolver {
     @Authorized()
     @FieldResolver()
-    isActive(@Root() _person: PersonType, @Ctx() ctx: Context<true>) {
-        return ctx.personActiveStatus.get(ctx.session.owner.id);
+    isActive(@Root() person: PersonType, @Ctx() ctx: Context<true>) {
+        return ctx.personActiveStatus.get(person.id);
     }
 
     @Authorized()
