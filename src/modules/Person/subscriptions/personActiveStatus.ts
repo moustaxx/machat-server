@@ -20,9 +20,10 @@ export class PersonActiveStatusResolver {
                 throwErrorWhenUnauthorized(session);
                 return pubsub.subscribe('PERSON_ACTIVE_STATUS');
             },
-            (_payload, _args, { session }) => {
+            (payload, args, { session }) => {
                 try {
                     throwErrorWhenUnauthorized(session);
+                    if (payload.id !== args.userId) return false;
                 } catch (error) {
                     return false;
                 }

@@ -1,3 +1,4 @@
+import { promisify } from 'util';
 import { SubscriptionContext } from 'mercurius/lib/subscriber';
 import { GraphQLSchema } from 'graphql';
 import 'reflect-metadata';
@@ -9,6 +10,8 @@ import { initTestServer, ITestUtils } from '../../../../tests/helpers';
 import { ISession } from '../../../../types';
 import PersonActiveStatus, { TPersonActiveStatusEvent } from '../../../../PersonActiveStatus';
 import PubSub from '../../../../PubSub';
+
+const setTimeoutPromise = promisify(setTimeout);
 
 type TSubscribe = (
     root: any,
@@ -35,6 +38,7 @@ afterAll(async () => {
 });
 
 it('should return active: true', async () => {
+    const { user: me } = await t.createRandomUser();
     const { user } = await t.createRandomUser();
 
     const pubsub = t.app.graphql.pubsub as any as PubSub;
@@ -47,7 +51,7 @@ it('should return active: true', async () => {
             personActiveStatus: new PersonActiveStatus(),
             session: {
                 isLoggedIn: true,
-                owner: user,
+                owner: me,
             } as ISession,
         },
     );
@@ -65,6 +69,7 @@ it('should return active: true', async () => {
 });
 
 it('should return active: false', async () => {
+    const { user: me } = await t.createRandomUser();
     const { user } = await t.createRandomUser();
 
     const pubsub = t.app.graphql.pubsub as any as PubSub;
@@ -77,7 +82,7 @@ it('should return active: false', async () => {
             personActiveStatus: new PersonActiveStatus(),
             session: {
                 isLoggedIn: true,
-                owner: user,
+                owner: me,
             } as ISession,
         },
     );
@@ -92,6 +97,37 @@ it('should return active: false', async () => {
 
     const { value } = await yieldedResult;
     expect(value).toEqual(payload);
+});
+
+it('should not return when `userId` argument is different', async () => {
+    const { user: me } = await t.createRandomUser();
+    const { user } = await t.createRandomUser();
+
+    const pubsub = t.app.graphql.pubsub as any as PubSub;
+    const subscription = await subscribe(
+        {},
+        { userId: me.id }, // wrong ID
+        {
+            prisma,
+            pubsub: new SubscriptionContext({ pubsub }),
+            personActiveStatus: new PersonActiveStatus(),
+            session: {
+                isLoggedIn: true,
+                owner: me,
+            } as ISession,
+        },
+    );
+
+    const yieldedResult = subscription.next();
+
+    const payload: TPersonActiveStatusEvent = {
+        active: true,
+        id: user.id,
+    };
+    pubsub.publish({ topic: 'PERSON_ACTIVE_STATUS', payload });
+
+    const result = await Promise.race([yieldedResult, setTimeoutPromise(1000)]);
+    expect(result).toEqual(undefined);
 });
 
 it('should throw UNAUTHORIZED on subscription init when not logged in', async () => {
