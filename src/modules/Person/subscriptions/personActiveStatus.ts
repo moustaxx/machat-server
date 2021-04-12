@@ -15,7 +15,7 @@ class PersonActiveStatusArgs {
 @Resolver((_of) => PersonType)
 export class PersonActiveStatusResolver {
     @Subscription((_returns) => Boolean, {
-        subscribe: withFilter<TPersonActiveStatusEvent, any, WSContext>(
+        subscribe: withFilter<TPersonActiveStatusEvent, any, WSContext, PersonActiveStatusArgs>(
             async (_root, _args, { session, pubsub }) => {
                 throwErrorWhenUnauthorized(session);
                 return pubsub.subscribe('PERSON_ACTIVE_STATUS');
