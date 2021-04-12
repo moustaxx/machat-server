@@ -15,7 +15,7 @@ class NewMessagesArgs {
 @Resolver((_of) => MessageType)
 export class NewMessagesResolver {
     // eslint-disable-next-line @typescript-eslint/require-await
-    @Subscription((_returns) => Boolean, {
+    @Subscription((_returns) => MessageType, {
         subscribe: withFilter<{ conversationID: number }, any, WSContext, NewMessagesArgs>(
             async (_root, args, { prisma, session, pubsub }) => {
                 throwErrorWhenUnauthorized(session);

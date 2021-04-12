@@ -429,6 +429,6 @@ input StringFilter {
 }
 
 type Subscription {
-  newMessages(conversationId: Int!): Boolean!
+  newMessages(conversationId: Int!): MessageType!
   personActiveStatus(userId: Int!): Boolean!
 }
