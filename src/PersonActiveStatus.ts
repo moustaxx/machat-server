@@ -32,6 +32,11 @@ export default class PersonActiveStatus {
     public get = (id: TID): boolean => !!this.data.get(id);
 
     public set = (id: TID, active: boolean): void => {
+        if (this.get(id) === active) { // if status has not changed
+            if (!active) this.scheduleStatusDispose(id); // delay currently scheduled
+            return;
+        }
+
         if (!active) this.data.delete(id);
         else {
             this.data.set(id, true);
