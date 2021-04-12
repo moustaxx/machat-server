@@ -16,7 +16,10 @@ export default class PersonActiveStatus {
         if (currentTimer) clearTimeout(currentTimer);
 
         const timer = setTimeout(
-            () => this.set(id, false),
+            () => {
+                this.set(id, false);
+                this.timerMap.delete(id);
+            },
             30000,
         );
         this.timerMap.set(id, timer);
