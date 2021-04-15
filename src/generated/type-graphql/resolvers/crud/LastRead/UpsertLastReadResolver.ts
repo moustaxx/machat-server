@@ -1,6 +1,7 @@
 import * as TypeGraphQL from "type-graphql";
 import { UpsertLastReadArgs } from "./args/UpsertLastReadArgs";
 import { LastRead } from "../../../models/LastRead";
+import { transformFields, getPrismaFromContext } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => LastRead)
 export class UpsertLastReadResolver {
@@ -8,6 +9,6 @@ export class UpsertLastReadResolver {
     nullable: false
   })
   async upsertLastRead(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpsertLastReadArgs): Promise<LastRead> {
-    return ctx.prisma.lastRead.upsert(args);
+    return getPrismaFromContext(ctx).lastRead.upsert(args);
   }
 }

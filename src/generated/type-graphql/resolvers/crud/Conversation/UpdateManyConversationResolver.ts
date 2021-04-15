@@ -2,6 +2,7 @@ import * as TypeGraphQL from "type-graphql";
 import { UpdateManyConversationArgs } from "./args/UpdateManyConversationArgs";
 import { Conversation } from "../../../models/Conversation";
 import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
+import { transformFields, getPrismaFromContext } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => Conversation)
 export class UpdateManyConversationResolver {
@@ -9,6 +10,6 @@ export class UpdateManyConversationResolver {
     nullable: false
   })
   async updateManyConversation(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdateManyConversationArgs): Promise<AffectedRowsOutput> {
-    return ctx.prisma.conversation.updateMany(args);
+    return getPrismaFromContext(ctx).conversation.updateMany(args);
   }
 }

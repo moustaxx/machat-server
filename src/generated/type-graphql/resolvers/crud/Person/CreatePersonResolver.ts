@@ -1,6 +1,7 @@
 import * as TypeGraphQL from "type-graphql";
 import { CreatePersonArgs } from "./args/CreatePersonArgs";
 import { Person } from "../../../models/Person";
+import { transformFields, getPrismaFromContext } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => Person)
 export class CreatePersonResolver {
@@ -8,6 +9,6 @@ export class CreatePersonResolver {
     nullable: false
   })
   async createPerson(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: CreatePersonArgs): Promise<Person> {
-    return ctx.prisma.person.create(args);
+    return getPrismaFromContext(ctx).person.create(args);
   }
 }

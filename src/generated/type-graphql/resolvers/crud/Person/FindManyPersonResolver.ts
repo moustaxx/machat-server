@@ -1,6 +1,7 @@
 import * as TypeGraphQL from "type-graphql";
 import { FindManyPersonArgs } from "./args/FindManyPersonArgs";
 import { Person } from "../../../models/Person";
+import { transformFields, getPrismaFromContext } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => Person)
 export class FindManyPersonResolver {
@@ -8,6 +9,6 @@ export class FindManyPersonResolver {
     nullable: false
   })
   async people(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindManyPersonArgs): Promise<Person[]> {
-    return ctx.prisma.person.findMany(args);
+    return getPrismaFromContext(ctx).person.findMany(args);
   }
 }

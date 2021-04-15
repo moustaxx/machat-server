@@ -1,6 +1,7 @@
 import * as TypeGraphQL from "type-graphql";
 import { FindUniqueMessageArgs } from "./args/FindUniqueMessageArgs";
 import { Message } from "../../../models/Message";
+import { transformFields, getPrismaFromContext } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => Message)
 export class FindUniqueMessageResolver {
@@ -8,6 +9,6 @@ export class FindUniqueMessageResolver {
     nullable: true
   })
   async message(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindUniqueMessageArgs): Promise<Message | null> {
-    return ctx.prisma.message.findUnique(args);
+    return getPrismaFromContext(ctx).message.findUnique(args);
   }
 }

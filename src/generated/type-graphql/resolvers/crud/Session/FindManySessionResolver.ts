@@ -1,6 +1,7 @@
 import * as TypeGraphQL from "type-graphql";
 import { FindManySessionArgs } from "./args/FindManySessionArgs";
 import { Session } from "../../../models/Session";
+import { transformFields, getPrismaFromContext } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => Session)
 export class FindManySessionResolver {
@@ -8,6 +9,6 @@ export class FindManySessionResolver {
     nullable: false
   })
   async sessions(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindManySessionArgs): Promise<Session[]> {
-    return ctx.prisma.session.findMany(args);
+    return getPrismaFromContext(ctx).session.findMany(args);
   }
 }

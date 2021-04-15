@@ -1,6 +1,7 @@
 import * as TypeGraphQL from "type-graphql";
 import { UpdateSessionArgs } from "./args/UpdateSessionArgs";
 import { Session } from "../../../models/Session";
+import { transformFields, getPrismaFromContext } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => Session)
 export class UpdateSessionResolver {
@@ -8,6 +9,6 @@ export class UpdateSessionResolver {
     nullable: true
   })
   async updateSession(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdateSessionArgs): Promise<Session | null> {
-    return ctx.prisma.session.update(args);
+    return getPrismaFromContext(ctx).session.update(args);
   }
 }

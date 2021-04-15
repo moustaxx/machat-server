@@ -4,6 +4,7 @@ import { GraphQLResolveInfo } from "graphql";
 import { AggregateConversationArgs } from "./args/AggregateConversationArgs";
 import { Conversation } from "../../../models/Conversation";
 import { AggregateConversation } from "../../outputs/AggregateConversation";
+import { transformFields, getPrismaFromContext } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => Conversation)
 export class AggregateConversationResolver {
@@ -11,21 +12,7 @@ export class AggregateConversationResolver {
     nullable: false
   })
   async aggregateConversation(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: AggregateConversationArgs): Promise<AggregateConversation> {
-    function transformFields(fields: Record<string, any>): Record<string, any> {
-      return Object.fromEntries(
-        Object.entries(fields)
-          // remove __typename and others
-          .filter(([key, value]) => !key.startsWith("__"))
-          .map<[string, any]>(([key, value]) => {
-            if (Object.keys(value).length === 0) {
-              return [key, true];
-            }
-            return [key, transformFields(value)];
-          }),
-      );
-    }
-
-    return ctx.prisma.conversation.aggregate({
+    return getPrismaFromContext(ctx).conversation.aggregate({
       ...args,
       ...transformFields(graphqlFields(info as any)),
     });

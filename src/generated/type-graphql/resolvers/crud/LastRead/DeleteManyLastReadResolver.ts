@@ -2,6 +2,7 @@ import * as TypeGraphQL from "type-graphql";
 import { DeleteManyLastReadArgs } from "./args/DeleteManyLastReadArgs";
 import { LastRead } from "../../../models/LastRead";
 import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
+import { transformFields, getPrismaFromContext } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => LastRead)
 export class DeleteManyLastReadResolver {
@@ -9,6 +10,6 @@ export class DeleteManyLastReadResolver {
     nullable: false
   })
   async deleteManyLastRead(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteManyLastReadArgs): Promise<AffectedRowsOutput> {
-    return ctx.prisma.lastRead.deleteMany(args);
+    return getPrismaFromContext(ctx).lastRead.deleteMany(args);
   }
 }

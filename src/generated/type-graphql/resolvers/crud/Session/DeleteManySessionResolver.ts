@@ -2,6 +2,7 @@ import * as TypeGraphQL from "type-graphql";
 import { DeleteManySessionArgs } from "./args/DeleteManySessionArgs";
 import { Session } from "../../../models/Session";
 import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
+import { transformFields, getPrismaFromContext } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => Session)
 export class DeleteManySessionResolver {
@@ -9,6 +10,6 @@ export class DeleteManySessionResolver {
     nullable: false
   })
   async deleteManySession(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteManySessionArgs): Promise<AffectedRowsOutput> {
-    return ctx.prisma.session.deleteMany(args);
+    return getPrismaFromContext(ctx).session.deleteMany(args);
   }
 }

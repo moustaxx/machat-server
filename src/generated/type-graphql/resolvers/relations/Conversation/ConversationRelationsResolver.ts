@@ -6,6 +6,7 @@ import { Person } from "../../../models/Person";
 import { ConversationLastReadArgs } from "./args/ConversationLastReadArgs";
 import { ConversationMessagesArgs } from "./args/ConversationMessagesArgs";
 import { ConversationParticipantsArgs } from "./args/ConversationParticipantsArgs";
+import { transformFields, getPrismaFromContext } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => Conversation)
 export class ConversationRelationsResolver {
@@ -13,7 +14,7 @@ export class ConversationRelationsResolver {
     nullable: false
   })
   async messages(@TypeGraphQL.Root() conversation: Conversation, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: ConversationMessagesArgs): Promise<Message[]> {
-    return ctx.prisma.conversation.findUnique({
+    return getPrismaFromContext(ctx).conversation.findUnique({
       where: {
         id: conversation.id,
       },
@@ -24,7 +25,7 @@ export class ConversationRelationsResolver {
     nullable: false
   })
   async lastRead(@TypeGraphQL.Root() conversation: Conversation, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: ConversationLastReadArgs): Promise<LastRead[]> {
-    return ctx.prisma.conversation.findUnique({
+    return getPrismaFromContext(ctx).conversation.findUnique({
       where: {
         id: conversation.id,
       },
@@ -35,7 +36,7 @@ export class ConversationRelationsResolver {
     nullable: false
   })
   async participants(@TypeGraphQL.Root() conversation: Conversation, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: ConversationParticipantsArgs): Promise<Person[]> {
-    return ctx.prisma.conversation.findUnique({
+    return getPrismaFromContext(ctx).conversation.findUnique({
       where: {
         id: conversation.id,
       },

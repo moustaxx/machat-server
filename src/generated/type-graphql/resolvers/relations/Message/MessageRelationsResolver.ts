@@ -2,6 +2,7 @@ import * as TypeGraphQL from "type-graphql";
 import { Conversation } from "../../../models/Conversation";
 import { Message } from "../../../models/Message";
 import { Person } from "../../../models/Person";
+import { transformFields, getPrismaFromContext } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => Message)
 export class MessageRelationsResolver {
@@ -9,7 +10,7 @@ export class MessageRelationsResolver {
     nullable: false
   })
   async author(@TypeGraphQL.Root() message: Message, @TypeGraphQL.Ctx() ctx: any): Promise<Person> {
-    return ctx.prisma.message.findUnique({
+    return getPrismaFromContext(ctx).message.findUnique({
       where: {
         id: message.id,
       },
@@ -20,7 +21,7 @@ export class MessageRelationsResolver {
     nullable: false
   })
   async conversation(@TypeGraphQL.Root() message: Message, @TypeGraphQL.Ctx() ctx: any): Promise<Conversation> {
-    return ctx.prisma.message.findUnique({
+    return getPrismaFromContext(ctx).message.findUnique({
       where: {
         id: message.id,
       },

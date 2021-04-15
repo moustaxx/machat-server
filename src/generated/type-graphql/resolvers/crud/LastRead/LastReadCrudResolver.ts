@@ -11,6 +11,7 @@ import { FindUniqueLastReadArgs } from "./args/FindUniqueLastReadArgs";
 import { UpdateLastReadArgs } from "./args/UpdateLastReadArgs";
 import { UpdateManyLastReadArgs } from "./args/UpdateManyLastReadArgs";
 import { UpsertLastReadArgs } from "./args/UpsertLastReadArgs";
+import { transformFields, getPrismaFromContext } from "../../../helpers";
 import { LastRead } from "../../../models/LastRead";
 import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
 import { AggregateLastRead } from "../../outputs/AggregateLastRead";
@@ -21,84 +22,70 @@ export class LastReadCrudResolver {
     nullable: true
   })
   async lastRead(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindUniqueLastReadArgs): Promise<LastRead | null> {
-    return ctx.prisma.lastRead.findUnique(args);
+    return getPrismaFromContext(ctx).lastRead.findUnique(args);
   }
 
   @TypeGraphQL.Query(_returns => LastRead, {
     nullable: true
   })
   async findFirstLastRead(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindFirstLastReadArgs): Promise<LastRead | null> {
-    return ctx.prisma.lastRead.findFirst(args);
+    return getPrismaFromContext(ctx).lastRead.findFirst(args);
   }
 
   @TypeGraphQL.Query(_returns => [LastRead], {
     nullable: false
   })
   async lastReads(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: FindManyLastReadArgs): Promise<LastRead[]> {
-    return ctx.prisma.lastRead.findMany(args);
+    return getPrismaFromContext(ctx).lastRead.findMany(args);
   }
 
   @TypeGraphQL.Mutation(_returns => LastRead, {
     nullable: false
   })
   async createLastRead(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: CreateLastReadArgs): Promise<LastRead> {
-    return ctx.prisma.lastRead.create(args);
+    return getPrismaFromContext(ctx).lastRead.create(args);
   }
 
   @TypeGraphQL.Mutation(_returns => LastRead, {
     nullable: true
   })
   async deleteLastRead(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteLastReadArgs): Promise<LastRead | null> {
-    return ctx.prisma.lastRead.delete(args);
+    return getPrismaFromContext(ctx).lastRead.delete(args);
   }
 
   @TypeGraphQL.Mutation(_returns => LastRead, {
     nullable: true
   })
   async updateLastRead(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdateLastReadArgs): Promise<LastRead | null> {
-    return ctx.prisma.lastRead.update(args);
+    return getPrismaFromContext(ctx).lastRead.update(args);
   }
 
   @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
   async deleteManyLastRead(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: DeleteManyLastReadArgs): Promise<AffectedRowsOutput> {
-    return ctx.prisma.lastRead.deleteMany(args);
+    return getPrismaFromContext(ctx).lastRead.deleteMany(args);
   }
 
   @TypeGraphQL.Mutation(_returns => AffectedRowsOutput, {
     nullable: false
   })
   async updateManyLastRead(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdateManyLastReadArgs): Promise<AffectedRowsOutput> {
-    return ctx.prisma.lastRead.updateMany(args);
+    return getPrismaFromContext(ctx).lastRead.updateMany(args);
   }
 
   @TypeGraphQL.Mutation(_returns => LastRead, {
     nullable: false
   })
   async upsertLastRead(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpsertLastReadArgs): Promise<LastRead> {
-    return ctx.prisma.lastRead.upsert(args);
+    return getPrismaFromContext(ctx).lastRead.upsert(args);
   }
 
   @TypeGraphQL.Query(_returns => AggregateLastRead, {
     nullable: false
   })
   async aggregateLastRead(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Info() info: GraphQLResolveInfo, @TypeGraphQL.Args() args: AggregateLastReadArgs): Promise<AggregateLastRead> {
-    function transformFields(fields: Record<string, any>): Record<string, any> {
-      return Object.fromEntries(
-        Object.entries(fields)
-          // remove __typename and others
-          .filter(([key, value]) => !key.startsWith("__"))
-          .map<[string, any]>(([key, value]) => {
-            if (Object.keys(value).length === 0) {
-              return [key, true];
-            }
-            return [key, transformFields(value)];
-          }),
-      );
-    }
-
-    return ctx.prisma.lastRead.aggregate({
+    return getPrismaFromContext(ctx).lastRead.aggregate({
       ...args,
       ...transformFields(graphqlFields(info as any)),
     });

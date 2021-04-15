@@ -1,6 +1,7 @@
 import * as TypeGraphQL from "type-graphql";
 import { UpdateConversationArgs } from "./args/UpdateConversationArgs";
 import { Conversation } from "../../../models/Conversation";
+import { transformFields, getPrismaFromContext } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => Conversation)
 export class UpdateConversationResolver {
@@ -8,6 +9,6 @@ export class UpdateConversationResolver {
     nullable: true
   })
   async updateConversation(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UpdateConversationArgs): Promise<Conversation | null> {
-    return ctx.prisma.conversation.update(args);
+    return getPrismaFromContext(ctx).conversation.update(args);
   }
 }

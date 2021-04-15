@@ -1,6 +1,7 @@
 import * as TypeGraphQL from "type-graphql";
 import { CreateLastReadArgs } from "./args/CreateLastReadArgs";
 import { LastRead } from "../../../models/LastRead";
+import { transformFields, getPrismaFromContext } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => LastRead)
 export class CreateLastReadResolver {
@@ -8,6 +9,6 @@ export class CreateLastReadResolver {
     nullable: false
   })
   async createLastRead(@TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: CreateLastReadArgs): Promise<LastRead> {
-    return ctx.prisma.lastRead.create(args);
+    return getPrismaFromContext(ctx).lastRead.create(args);
   }
 }
