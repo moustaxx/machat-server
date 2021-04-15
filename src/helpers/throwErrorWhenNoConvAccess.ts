@@ -1,28 +1,28 @@
 import { ForbiddenError } from 'apollo-server-errors';
 import { TPrisma } from '../prismaClient';
-import { ISession } from '../types';
 
 const throwErrorWhenNoConvAccess = async (
     prisma: TPrisma,
-    user: NonNullable<ISession['owner']>,
-    conversationId: number,
+    userID: number,
+    conversationID: number,
 ): Promise<void> => {
-    const getConv = await prisma.person.findUnique({
+    const data = await prisma.person.findUnique({
         select: {
+            isAdmin: true,
             conversations: {
                 select: {
                     id: true,
                 },
             },
         },
-        where: { id: user.id },
+        where: { id: userID },
     });
 
-    const isParticipated = !!getConv?.conversations.find((conv) => {
-        return conv.id === conversationId;
+    const isParticipated = !!data?.conversations.find((conv) => {
+        return conv.id === conversationID;
     });
 
-    if (!user.isAdmin && !isParticipated) {
+    if (!data?.isAdmin && !isParticipated) {
         throw new ForbiddenError('Insufficient permissions');
     }
 };

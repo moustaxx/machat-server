@@ -21,17 +21,17 @@ export class CreateMessageResolver {
     async createMessage(
     // eslint-disable-next-line @typescript-eslint/indent
         @Args() args: CreateMessageArgs,
-        @Ctx() { prisma, session, pubsub }: Context<true>,
+        @Ctx() { prisma, clientID, pubsub }: Context<true>,
     ) {
         const content = args.content.trim();
         if (content.length < 1) throw new UserInputError('Message cannot be empty!');
 
-        await throwErrorWhenNoConvAccess(prisma, session.owner, args.conversationId);
+        await throwErrorWhenNoConvAccess(prisma, clientID, args.conversationId);
 
         const data = await prisma.message.create({
             data: {
                 content,
-                author: { connect: { id: session.owner.id } },
+                author: { connect: { id: clientID } },
                 conversation: { connect: { id: args.conversationId } },
             },
         });

@@ -17,13 +17,13 @@ export class MarkConvAsReadResolver {
     async markConvAsRead(
     // eslint-disable-next-line @typescript-eslint/indent
         @Args() args: MarkConvAsReadArgs,
-        @Ctx() { prisma, session }: Context<true>,
+        @Ctx() { prisma, clientID }: Context<true>,
     ) {
-        await throwErrorWhenNoConvAccess(prisma, session.owner, args.conversationId);
+        await throwErrorWhenNoConvAccess(prisma, clientID, args.conversationId);
 
         const data = await prisma.lastRead.upsert({
             create: {
-                person: { connect: { id: session.owner.id } },
+                person: { connect: { id: clientID } },
                 conversation: { connect: { id: args.conversationId } },
                 lastRead: new Date(),
             },
@@ -32,7 +32,7 @@ export class MarkConvAsReadResolver {
             },
             where: {
                 personID_conversationID: {
-                    personID: session.owner.id,
+                    personID: clientID,
                     conversationID: args.conversationId,
                 },
             },

@@ -25,7 +25,7 @@ it('should return that user can access the conversation', async () => {
         },
     });
 
-    await throwErrorWhenNoConvAccess(prisma, user, conversation.id);
+    await throwErrorWhenNoConvAccess(prisma, user.id, conversation.id);
 });
 
 it('should throw error that user cannot access the conversation', async () => {
@@ -37,7 +37,7 @@ it('should throw error that user cannot access the conversation', async () => {
         },
     });
 
-    await throwErrorWhenNoConvAccess(prisma, user, conversation.id).catch((error) => {
+    await throwErrorWhenNoConvAccess(prisma, user.id, conversation.id).catch((error) => {
         expect(error).toEqual(new ForbiddenError('Insufficient permissions'));
     });
 });

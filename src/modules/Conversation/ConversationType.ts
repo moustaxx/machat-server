@@ -3,7 +3,7 @@ import { Person, Message, Prisma } from '@prisma/client';
 import { Args, Ctx, Field, FieldResolver, ObjectType, Resolver, Root } from 'type-graphql';
 
 import { Context } from '../../context';
-import { Conversation, ConversationLastReadArgs } from '../../generated/type-graphql';
+import { ConversationLastReadArgs } from '../../generated/type-graphql';
 import cursorUtils from '../../helpers/cursor';
 import { ConnectionArgs, ConnectionType, EdgeType, Node } from '../../relay';
 import { LastReadType } from '../LastRead';
@@ -34,7 +34,7 @@ export class ConversationTypeResolver {
     @FieldResolver((_type) => [PersonConnection])
     async participants(
     // eslint-disable-next-line @typescript-eslint/indent
-        @Root() conversation: Conversation,
+        @Root() conversation: ConversationType,
         @Ctx() { prisma }: Context,
         @Args((_type) => ConnectionArgs) args: ConnectionArguments,
     ) {
@@ -54,7 +54,7 @@ export class ConversationTypeResolver {
     @FieldResolver((_type) => [MessageConnection])
     async messages(
     // eslint-disable-next-line @typescript-eslint/indent
-        @Root() conversation: Conversation,
+        @Root() conversation: ConversationType,
         @Ctx() { prisma }: Context,
         @Args((_type) => ConnectionArgs) args: ConnectionArguments,
     ) {
@@ -72,7 +72,7 @@ export class ConversationTypeResolver {
     @FieldResolver((_type) => [LastReadType])
     async lastRead(
     // eslint-disable-next-line @typescript-eslint/indent
-        @Root() conversation: Conversation,
+        @Root() conversation: ConversationType,
         @Ctx() { prisma }: Context,
         @Args() args: ConversationLastReadArgs,
     ) {

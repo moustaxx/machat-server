@@ -1,9 +1,7 @@
 import { ApolloError } from 'apollo-server-errors';
-import { ISession } from '../types';
 
-function throwErrorWhenAlreadyLoggedIn(session?: ISession): asserts session is ISession {
-    if (!session) throw new ApolloError('No session!', 'NO_SESSION');
-    if (session.isLoggedIn) {
+function throwErrorWhenAlreadyLoggedIn(isLoggedIn: boolean | null) {
+    if (isLoggedIn) {
         throw new ApolloError('You are already logged in!', 'ALREADY_LOGGED_IN');
     }
 }

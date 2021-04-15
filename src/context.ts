@@ -1,18 +1,19 @@
 import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify';
 import { SubscriptionContext } from 'mercurius/lib/subscriber';
+import { Session } from 'fastify-secure-session';
 
-import { ISession } from './types';
 import prisma, { TPrisma } from './prismaClient';
 import PersonActiveStatus from './PersonActiveStatus';
 import PubSub from './PubSub';
-
-type AuthorizedSession = ISession & Pick<Required<ISession>, 'owner'>;
 
 interface TMyContext<IsAuthorized = false> {
     req: FastifyRequest;
     reply: FastifyReply;
     prisma: TPrisma;
-    session: IsAuthorized extends true ? AuthorizedSession : ISession | undefined;
+    session: Session;
+    clientID: IsAuthorized extends true ? number : number | null;
+    isLoggedIn: boolean;
+    isClientAdmin: boolean;
     personActiveStatus: PersonActiveStatus;
 }
 
@@ -38,15 +39,20 @@ export function createContext(
     },
 ): TMyContext {
     const { personActiveStatus } = options;
-    const session = req.session as ISession;
-    const ownerID = session.owner?.id;
-    if (ownerID) personActiveStatus.set(ownerID, true);
+    const { session } = req;
+
+    const clientID = session.get('clientID') || null;
+    const isClientAdmin = session.get('isClientAdmin') || false;
+    if (clientID) personActiveStatus.set(clientID, true);
 
     return {
         req,
         reply,
         prisma,
         session,
+        clientID,
+        isClientAdmin,
+        isLoggedIn: !!clientID,
         personActiveStatus,
     };
 }

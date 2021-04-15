@@ -19,9 +19,9 @@ export class RemovePersonFromConversationResolver {
     async removePersonFromConversation(
     // eslint-disable-next-line @typescript-eslint/indent
         @Args() args: RemovePersonFromConversationArgs,
-        @Ctx() { prisma, session }: Context<true>,
+        @Ctx() { prisma, clientID }: Context<true>,
     ) {
-        await throwErrorWhenNoConvAccess(prisma, session.owner, args.conversationId);
+        await throwErrorWhenNoConvAccess(prisma, clientID, args.conversationId);
 
         const data = await prisma.conversation.update({
             where: { id: args.conversationId },

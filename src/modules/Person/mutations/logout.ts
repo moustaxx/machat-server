@@ -7,13 +7,12 @@ import { PersonType } from '../PersonType';
 export class LogoutResolver {
     @Authorized()
     @Mutation((_returns) => PersonType)
-    logout(@Ctx() { session, req, reply }: Context<true>) {
-        const { owner } = session;
-        req.destroySession((err) => err && console.log);
-        req.session = null as any;
+    logout(@Ctx() { session, reply, prisma, clientID }: Context<true>) {
+        session.delete();
+
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         reply.setCookie('loggedIn', '0');
 
-        return owner;
+        return prisma.person.findUnique({ where: { id: clientID } });
     }
 }

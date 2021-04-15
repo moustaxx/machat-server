@@ -22,8 +22,8 @@ class RegisterArgs {
 @Resolver((_of) => PersonType)
 export class RegisterResolver {
     @Mutation((_returns) => PersonType)
-    async register(@Args() args: RegisterArgs, @Ctx() { prisma, session }: Context) {
-        throwErrorWhenAlreadyLoggedIn(session);
+    async register(@Args() args: RegisterArgs, @Ctx() { prisma, session, isLoggedIn }: Context) {
+        throwErrorWhenAlreadyLoggedIn(isLoggedIn);
 
         const username = args.username.trim();
         const email = args.email.trim();
@@ -47,8 +47,9 @@ export class RegisterResolver {
             },
         });
 
-        session.isLoggedIn = true;
-        session.owner = data;
+        session.set('clientID', data.id);
+        session.set('isClientAdmin', data.isAdmin);
+
         return data;
     }
 }

@@ -17,9 +17,9 @@ export class ConversationResolver {
     async conversation(
     // eslint-disable-next-line @typescript-eslint/indent
         @Args() args: ConversationArgs,
-        @Ctx() { prisma, session }: Context<true>,
+        @Ctx() { prisma, clientID }: Context<true>,
     ) {
-        await throwErrorWhenNoConvAccess(prisma, session.owner, args.whereId);
+        await throwErrorWhenNoConvAccess(prisma, clientID, args.whereId);
 
         const data = await prisma.conversation.findUnique({
             where: { id: args.whereId },

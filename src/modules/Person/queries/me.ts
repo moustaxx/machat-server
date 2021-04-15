@@ -7,9 +7,9 @@ import { PersonType } from '../PersonType';
 export class MeResolver {
     @Authorized()
     @Query((_returns) => PersonType)
-    async me(@Ctx() { prisma, session }: Context<true>) {
+    async me(@Ctx() { prisma, clientID }: Context<true>) {
         const data = await prisma.person.findUnique({
-            where: { id: session.owner.id },
+            where: { id: clientID },
         });
 
         if (!data) throw new ApolloError('User not found!', 'USER_NOT_FOUND');

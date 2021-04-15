@@ -7,7 +7,6 @@ import { WSContext } from '../../../../context';
 import { createSchema } from '../../../../schema';
 import prisma from '../../../../prismaClient';
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
-import { ISession } from '../../../../types';
 import PersonActiveStatus, { TPersonActiveStatusEvent } from '../../../../PersonActiveStatus';
 import PubSub from '../../../../PubSub';
 
@@ -18,7 +17,7 @@ type TSubscribe = (
     args: {
         userId: number;
     },
-    ctx: Pick<WSContext, 'prisma' | 'pubsub' | 'personActiveStatus' | 'session'>,
+    ctx: Pick<WSContext, 'prisma' | 'pubsub' | 'personActiveStatus' | 'clientID'>,
 ) => Promise<AsyncGenerator<Date, Date>>;
 
 let schema: GraphQLSchema;
@@ -49,10 +48,7 @@ it('should return active: true', async () => {
             prisma,
             pubsub: new SubscriptionContext({ pubsub }),
             personActiveStatus: new PersonActiveStatus(),
-            session: {
-                isLoggedIn: true,
-                owner: me,
-            } as ISession,
+            clientID: me.id,
         },
     );
 
@@ -80,10 +76,7 @@ it('should return active: false', async () => {
             prisma,
             pubsub: new SubscriptionContext({ pubsub }),
             personActiveStatus: new PersonActiveStatus(),
-            session: {
-                isLoggedIn: true,
-                owner: me,
-            } as ISession,
+            clientID: me.id,
         },
     );
 
@@ -111,10 +104,7 @@ it('should not return when `userId` argument is different', async () => {
             prisma,
             pubsub: new SubscriptionContext({ pubsub }),
             personActiveStatus: new PersonActiveStatus(),
-            session: {
-                isLoggedIn: true,
-                owner: me,
-            } as ISession,
+            clientID: me.id,
         },
     );
 
@@ -142,9 +132,7 @@ it('should throw UNAUTHORIZED on subscription init when not logged in', async ()
             prisma,
             personActiveStatus: new PersonActiveStatus(),
             pubsub: new SubscriptionContext({ pubsub }),
-            session: {
-                isLoggedIn: false,
-            } as ISession,
+            clientID: null,
         },
     );
 

@@ -16,13 +16,13 @@ class PersonActiveStatusArgs {
 export class PersonActiveStatusResolver {
     @Subscription((_returns) => Boolean, {
         subscribe: withFilter<TPersonActiveStatusEvent, any, WSContext, PersonActiveStatusArgs>(
-            async (_root, _args, { session, pubsub }) => {
-                throwErrorWhenUnauthorized(session);
+            async (_root, _args, { clientID, pubsub }) => {
+                throwErrorWhenUnauthorized(clientID);
                 return pubsub.subscribe('PERSON_ACTIVE_STATUS');
             },
-            (payload, args, { session }) => {
+            (payload, args, { clientID }) => {
                 try {
-                    throwErrorWhenUnauthorized(session);
+                    throwErrorWhenUnauthorized(clientID);
                     if (payload.id !== args.userId) return false;
                 } catch (error) {
                     return false;

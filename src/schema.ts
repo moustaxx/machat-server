@@ -7,7 +7,7 @@ import * as allTypes from './modules';
 const allTypesArr = Object.values(allTypes);
 
 const authChecker: AuthChecker<Context> = ({ context }) => {
-    throwErrorWhenUnauthorized(context.session);
+    throwErrorWhenUnauthorized(context.clientID);
     return true;
 };
 

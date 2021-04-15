@@ -20,8 +20,8 @@ class LoginArgs {
 @Resolver((_of) => PersonType)
 export class LoginResolver {
     @Mutation((_returns) => PersonType)
-    async login(@Args() args: LoginArgs, @Ctx() { prisma, session }: Context) {
-        throwErrorWhenAlreadyLoggedIn(session);
+    async login(@Args() args: LoginArgs, @Ctx() { prisma, session, isLoggedIn }: Context) {
+        throwErrorWhenAlreadyLoggedIn(isLoggedIn);
 
         const username = args.username.trim();
 
@@ -31,8 +31,8 @@ export class LoginResolver {
         const isVerified = await argon2.verify(data.hash, args.password); // TODO
         if (!isVerified) throw wrongCredentialsError;
 
-        session.isLoggedIn = true;
-        session.owner = data;
+        session.set('clientID', data.id);
+        session.set('isClientAdmin', data.isAdmin);
 
         return data;
     }

@@ -36,7 +36,7 @@ export class NodeResolver {
     }
 
     private async fetcher(globalId: string, ctx: Context | Context<true>) {
-        throwErrorWhenUnauthorized(ctx.session);
+        throwErrorWhenUnauthorized(ctx.clientID);
         const { typename, id } = fromGlobalId(globalId);
 
         switch (typename) {

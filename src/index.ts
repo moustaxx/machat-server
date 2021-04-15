@@ -1,14 +1,12 @@
 import fastify, { FastifyInstance } from 'fastify';
 import fastifyCors from 'fastify-cors';
-import fastifyCookie from 'fastify-cookie';
-import fastifySession from 'fastify-session';
-import pgSession from 'connect-pg-simple';
+import fastifySession, { Session } from 'fastify-secure-session';
 import mercurius from 'mercurius';
 import dotenv from 'dotenv';
+import { IncomingMessage } from 'node:http';
 import 'reflect-metadata';
 
 import { createSchema } from './schema';
-import { ISession } from './types';
 import { createContext } from './context';
 import prisma from './prismaClient';
 import { pubsub } from './PubSub';
@@ -29,40 +27,28 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
         methods: ['GET', 'POST'],
     });
 
-    await app.register(fastifyCookie);
-
     if (!process.env.SESSION_SECRET) throw Error('Session secret must be provided!');
+    if (!process.env.COOKIE_TTL) throw Error('Cookie TTL env must be provided!');
+    const COOKIE_TTL = parseInt(process.env.COOKIE_TTL, 10);
 
     await app.register(fastifySession, {
-        store: testing ? undefined : new (pgSession(fastifySession as any))({
-            tableName: 'Session',
-            conObject: {
-                connectionString: process.env.DATABASE_URL,
-                ssl: { rejectUnauthorized: isProduction },
-            },
-        }),
+        salt: 'mq9hDxBVs231dasD',
+        secret: process.env.SESSION_SECRET,
         cookie: {
             secure: isProduction,
-            maxAge: 15552000000, // 6 months
+            maxAge: COOKIE_TTL,
         },
-        secret: process.env.SESSION_SECRET,
-        saveUninitialized: false,
     });
 
     app.addHook('onSend', async (req, reply) => {
-        type TReq = Omit<typeof req, 'session' | 'cookies'> & {
-            session?: typeof req.session;
+        type TReq = Omit<typeof req, 'cookies'> & {
             cookies: { [cookieName: string]: string | undefined };
         };
         const { session, cookies } = req as TReq;
-        if (!session) return;
+        const isLoggedIn = session.get('clientID') ? '1' : '0';
 
-        const { isLoggedIn, expires } = session as ISession;
-        const isLoggedInCookie = cookies.loggedIn === '1';
-        if (cookies.loggedIn === undefined && isLoggedIn === undefined) return;
-
-        if (cookies.loggedIn === undefined || isLoggedIn !== isLoggedInCookie) {
-            await reply.setCookie('loggedIn', isLoggedIn ? '1' : '0', { expires });
+        if (cookies.loggedIn !== isLoggedIn) {
+            await reply.setCookie('loggedIn', isLoggedIn, { maxAge: COOKIE_TTL });
         }
     });
 
@@ -76,15 +62,18 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
         graphiql: 'playground',
         subscription: {
             pubsub,
-            verifyClient({ req }, next) {
-                if (!req.headers.cookie) {
-                    next(false);
-                    return;
-                }
-                const { sessionId } = app.parseCookie<{ sessionId: string }>(req.headers.cookie);
+            verifyClient(info, next) {
+                const { req } = info as { req: IncomingMessage & { session?: Session } };
+                if (!req.headers.cookie) return next(false);
 
-                if (sessionId) app.decryptSession(sessionId, req, () => next(true));
-                else next(false);
+                const { session } = app.parseCookie<{ session: string }>(req.headers.cookie);
+                if (!session) return next(false);
+
+                const decodedSession = app.decodeSecureSession(session);
+                if (!decodedSession) return next(false);
+
+                req.session = decodedSession;
+                next(true);
             },
             context: (_con, req) => createContext(req, null as any, { personActiveStatus }),
         },

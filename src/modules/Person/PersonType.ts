@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/indent */
-import { Conversation, Prisma } from '@prisma/client';
+import { Conversation, Message, Prisma } from '@prisma/client';
 import { Args, Authorized, Ctx, Field, FieldResolver, ObjectType, Resolver, Root } from 'type-graphql';
 import { ConnectionArguments, findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 import { ForbiddenError } from 'apollo-server-errors';
 
 import { Context } from '../../context';
-import { Message, Person, PersonMessagesArgs } from '../../generated/type-graphql';
+import { PersonMessagesArgs } from '../../generated/type-graphql';
 import { ConversationConnection, ConversationType } from '../Conversation/ConversationType';
 import { Connection, ConnectionArgs, ConnectionType, EdgeType, Node } from '../../relay';
 import cursorUtils from '../../helpers/cursor';
+import { MessageType } from '../Message';
 
 @ObjectType({ implements: Node })
 export class PersonType extends Node {
@@ -32,8 +33,8 @@ export class PersonType extends Node {
     @Field((_type) => String)
     username!: string;
 
-    @Field((_type) => [Message])
-    messages!: Message[];
+    @Field((_type) => [MessageType])
+    messages!: MessageType[];
 
     @Field((_type) => ConversationConnection)
     conversations!: Connection<ConversationType>;
@@ -52,18 +53,17 @@ export class PersonTypeResolver {
     async conversations(
         @Root() person: PersonType,
         @Args((_type) => ConnectionArgs) args: ConnectionArguments,
-        @Ctx() { session, prisma }: Context<true>,
+        @Ctx() { clientID, prisma }: Context<true>,
     ) {
-        const myID = session.owner.id;
         const whereMe: Prisma.ConversationWhereInput = {
             participants: {
                 some: {
-                    id: myID,
+                    id: clientID,
                 },
             },
         };
 
-        const where: Prisma.ConversationWhereInput = (person.id === myID) ? whereMe : {
+        const where: Prisma.ConversationWhereInput = (person.id === clientID) ? whereMe : {
             AND: [
                 whereMe,
                 {
@@ -87,13 +87,13 @@ export class PersonTypeResolver {
         );
     }
 
-    @FieldResolver((_type) => [Message])
+    @FieldResolver((_type) => [MessageType])
     async messages(
-        @Root() person: Person,
-        @Ctx() { prisma, session }: Context,
+        @Root() person: PersonType,
+        @Ctx() { prisma, isClientAdmin }: Context,
         @Args() args: PersonMessagesArgs,
     ): Promise<Message[]> {
-        if (!session?.owner?.isAdmin) {
+        if (!isClientAdmin) {
             throw new ForbiddenError('Insufficient permissions');
         }
 

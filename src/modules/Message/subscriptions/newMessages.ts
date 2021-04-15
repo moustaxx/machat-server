@@ -17,16 +17,16 @@ export class NewMessagesResolver {
     // eslint-disable-next-line @typescript-eslint/require-await
     @Subscription((_returns) => MessageType, {
         subscribe: withFilter<{ conversationID: number }, any, WSContext, NewMessagesArgs>(
-            async (_root, args, { prisma, session, pubsub }) => {
-                throwErrorWhenUnauthorized(session);
-                await throwErrorWhenNoConvAccess(prisma, session.owner, args.conversationId);
+            async (_root, args, { prisma, clientID, pubsub }) => {
+                throwErrorWhenUnauthorized(clientID);
+                await throwErrorWhenNoConvAccess(prisma, clientID, args.conversationId);
 
                 return pubsub.subscribe('NEW_MESSAGES');
             },
-            async (payload, args, { prisma, session }: WSContext) => {
+            async (payload, args, { prisma, clientID }: WSContext) => {
                 try {
-                    throwErrorWhenUnauthorized(session);
-                    await throwErrorWhenNoConvAccess(prisma, session.owner, args.conversationId);
+                    throwErrorWhenUnauthorized(clientID);
+                    await throwErrorWhenNoConvAccess(prisma, clientID, args.conversationId);
                 } catch (error) {
                     return false;
                 }
