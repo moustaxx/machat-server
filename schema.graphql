@@ -33,12 +33,6 @@ input ConversationListRelationFilter {
   some: ConversationWhereInput
 }
 
-input ConversationOrderByInput {
-  createdAt: SortOrder
-  id: SortOrder
-  name: SortOrder
-}
-
 input ConversationRelationFilter {
   is: ConversationWhereInput
   isNot: ConversationWhereInput
@@ -112,10 +106,8 @@ input LastReadListRelationFilter {
 }
 
 input LastReadOrderByInput {
-  conversation: ConversationOrderByInput
   conversationID: SortOrder
   lastRead: SortOrder
-  person: PersonOrderByInput
   personID: SortOrder
 }
 
@@ -153,14 +145,6 @@ input LastReadWhereUniqueInput {
   personID_conversationID: LastReadPersonIDConversationIDCompoundUniqueInput
 }
 
-type Message {
-  authorID: Int!
-  content: String!
-  conversationID: Int!
-  createdAt: DateTime!
-  id: Int!
-}
-
 type MessageConnection {
   """A list of edges."""
   edges: [MessageEdge]
@@ -187,10 +171,8 @@ input MessageListRelationFilter {
 }
 
 input MessageOrderByInput {
-  author: PersonOrderByInput
   authorID: SortOrder
   content: SortOrder
-  conversation: ConversationOrderByInput
   conversationID: SortOrder
   createdAt: SortOrder
   id: SortOrder
@@ -235,6 +217,7 @@ input MessageWhereUniqueInput {
 
 type Mutation {
   addPersonToConversation(conversationId: Int!, personId: Int!): ConversationType!
+  createConversation(name: String!, participantIDs: [Int!]!): ConversationType!
   createMessage(content: String!, conversationId: Int!): MessageType!
   login(password: String!, username: String!): PersonType!
   logout: PersonType!
@@ -333,16 +316,6 @@ input PersonListRelationFilter {
   some: PersonWhereInput
 }
 
-input PersonOrderByInput {
-  createdAt: SortOrder
-  email: SortOrder
-  hash: SortOrder
-  id: SortOrder
-  isAdmin: SortOrder
-  lastSeen: SortOrder
-  username: SortOrder
-}
-
 input PersonRelationFilter {
   is: PersonWhereInput
   isNot: PersonWhereInput
@@ -358,7 +331,7 @@ type PersonType implements Node {
   isActive: Boolean!
   isAdmin: Boolean!
   lastSeen: DateTime
-  messages(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum!], orderBy: [MessageOrderByInput!], skip: Int, take: Int, where: MessageWhereInput): [Message!]!
+  messages(cursor: MessageWhereUniqueInput, distinct: [MessageScalarFieldEnum!], orderBy: [MessageOrderByInput!], skip: Int, take: Int, where: MessageWhereInput): [MessageType!]!
   username: String!
 }
 
@@ -400,7 +373,6 @@ type Query {
     ids: [ID!]!
   ): [Node]!
   person(where: PersonWhereUniqueInput!): PersonType!
-  sessionOwner: PersonType!
 }
 
 enum QueryMode {
