@@ -24,7 +24,7 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
         credentials: true,
         origin: true,
         maxAge: 24 * 3600, // 24hrs
-        methods: ['GET', 'POST'],
+        methods: ['GET', 'POST', 'OPTIONS'],
     });
 
     if (!process.env.SESSION_SECRET) throw Error('Session secret must be provided!');
@@ -41,10 +41,13 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
     });
 
     app.addHook('onSend', async (req, reply) => {
-        type TReq = Omit<typeof req, 'cookies'> & {
+        type TReq = Omit<typeof req, 'session' | 'cookies'> & {
+            session?: typeof req.session;
             cookies: { [cookieName: string]: string | undefined };
         };
         const { session, cookies } = req as TReq;
+        if (!session) return;
+
         const isLoggedIn = session.get('clientID') ? '1' : '0';
 
         if (cookies.loggedIn !== isLoggedIn) {
@@ -67,10 +70,9 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
                 if (!req.headers.cookie) return next(false);
 
                 const { session } = app.parseCookie<{ session: string }>(req.headers.cookie);
-                if (!session) return next(false);
 
-                const decodedSession = app.decodeSecureSession(session);
-                if (!decodedSession) return next(false);
+                const decodedSession = (session && app.decodeSecureSession(session))
+                    || app.createSecureSession();
 
                 req.session = decodedSession;
                 next(true);
