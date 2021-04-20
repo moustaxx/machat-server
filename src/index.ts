@@ -1,4 +1,4 @@
-import fastify, { FastifyInstance } from 'fastify';
+import fastify, { FastifyInstance, FastifyLoggerOptions } from 'fastify';
 import fastifyCors from 'fastify-cors';
 import fastifySession, { Session } from 'fastify-secure-session';
 import mercurius from 'mercurius';
@@ -16,8 +16,16 @@ dotenv.config();
 
 const isProduction = process.env.NODE_ENV === 'production';
 
+const loggerSettings: FastifyLoggerOptions | boolean = isProduction ? true : {
+    level: 'warn',
+    prettyPrint: {
+        translateTime: true,
+        colorize: true,
+    },
+};
+
 const main = async (testing?: boolean): Promise<FastifyInstance> => {
-    const app = fastify({ logger: isProduction });
+    const app = fastify({ logger: testing ? false : loggerSettings });
     const personActiveStatus = new PersonActiveStatus();
 
     await app.register(fastifyCors, {
