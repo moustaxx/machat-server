@@ -36,11 +36,12 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
     });
 
     if (!process.env.SESSION_SECRET) throw Error('Session secret must be provided!');
+    if (!process.env.SESSION_SALT) throw Error('Session salt must be provided!');
     if (!process.env.COOKIE_TTL) throw Error('Cookie TTL env must be provided!');
     const COOKIE_TTL = parseInt(process.env.COOKIE_TTL, 10);
 
     await app.register(fastifySession, {
-        salt: 'mq9hDxBVs231dasD',
+        salt: process.env.SESSION_SALT,
         secret: process.env.SESSION_SECRET,
         cookie: {
             secure: isProduction,
