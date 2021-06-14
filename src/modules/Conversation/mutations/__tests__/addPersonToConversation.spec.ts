@@ -1,7 +1,8 @@
-import { Conversation, Person } from 'prisma-machat';
-
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
+import { TNodeModel, TNodeConnection, toGlobalId } from '../../../../relay';
 import randomString from '../../../../tests/helpers/randomString';
+import { PersonType } from '../../../Person';
+import { ConversationType } from '../../ConversationType';
 
 let t: ITestUtils;
 
@@ -18,8 +19,12 @@ const queryString = `
         addPersonToConversation(personId: $personId, conversationId: $conversationId) {
             id
             participants {
-                username
-                id
+                edges {
+                    node {
+                        username
+                        id
+                    }
+                }
             }
         }
     }
@@ -37,8 +42,8 @@ it('should add person to conversation', async () => {
     });
 
     type TData = {
-        addPersonToConversation: Conversation & {
-            participants: Person[];
+        addPersonToConversation: Omit<TNodeModel<ConversationType>, 'participants'> & {
+            participants: TNodeConnection<PersonType>;
         };
     };
     const { data } = await t.gqlQuery<TData>({
@@ -49,9 +54,13 @@ it('should add person to conversation', async () => {
 
     const { participants } = data.addPersonToConversation;
 
-    expect(participants).toEqual(
+    expect(participants.edges).toEqual(
         expect.arrayContaining([
-            expect.objectContaining({ id: someUser.user.id }),
+            expect.objectContaining({
+                node: expect.objectContaining({
+                    id: toGlobalId('PersonType', someUser.user.id),
+                }),
+            }),
         ]),
     );
 });

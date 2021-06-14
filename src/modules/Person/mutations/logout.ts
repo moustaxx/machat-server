@@ -1,17 +1,18 @@
-import { mutationField } from 'nexus';
-import isAuthorized from '../../../helpers/isAuthorized';
+import { Ctx, Resolver, Mutation, Authorized } from 'type-graphql';
 
-export const logoutMutationField = mutationField('logout', {
-    type: 'Person',
-    resolve: (_, _args, { session, req, reply }) => {
-        isAuthorized(session);
+import { Context } from '../../../context';
+import { PersonType } from '../PersonType';
 
-        const { owner } = session;
-        req.destroySession((err) => err && console.log);
-        req.session = null as any;
+@Resolver((_of) => PersonType)
+export class LogoutResolver {
+    @Authorized()
+    @Mutation((_returns) => PersonType)
+    logout(@Ctx() { session, reply, prisma, clientID }: Context<true>) {
+        session.delete();
+
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         reply.setCookie('loggedIn', '0');
 
-        return owner;
-    },
-});
+        return prisma.person.findUnique({ where: { id: clientID } });
+    }
+}

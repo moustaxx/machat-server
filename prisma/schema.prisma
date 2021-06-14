@@ -1,11 +1,16 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
 generator client {
   provider = "prisma-client-js"
   output   = "./client"
 }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+generator typegraphql {
+  provider = "typegraphql-prisma"
+  output   = "../src/generated/type-graphql"
 }
 
 model Conversation {
@@ -19,11 +24,11 @@ model Conversation {
 
 model Message {
   content        String
-  authorID       Int?         @map("author_id")
+  authorID       Int          @map("author_id")
   conversationID Int          @map("conversation_id")
   createdAt      DateTime     @default(now()) @map("created_at")
   id             Int          @id @default(autoincrement())
-  author         Person?      @relation(fields: [authorID], references: [id])
+  author         Person       @relation(fields: [authorID], references: [id])
   conversation   Conversation @relation(fields: [conversationID], references: [id])
 }
 

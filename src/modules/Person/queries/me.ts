@@ -1,18 +1,19 @@
-import { queryField } from 'nexus';
 import { ApolloError } from 'apollo-server-errors';
-import isAuthorized from '../../../helpers/isAuthorized';
+import { Authorized, Ctx, Query, Resolver } from 'type-graphql';
+import { Context } from '../../../context';
+import { PersonType } from '../PersonType';
 
-export const meQueryField = queryField('me', {
-    type: 'Person',
-    resolve: async (_root, _args, { prisma, session }) => {
-        isAuthorized(session);
-
+@Resolver((_of) => PersonType)
+export class MeResolver {
+    @Authorized()
+    @Query((_returns) => PersonType)
+    async me(@Ctx() { prisma, clientID }: Context<true>) {
         const data = await prisma.person.findUnique({
-            where: { id: session.owner.id },
+            where: { id: clientID },
         });
 
         if (!data) throw new ApolloError('User not found!', 'USER_NOT_FOUND');
 
         return data;
-    },
-});
+    }
+}

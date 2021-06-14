@@ -1,29 +1,37 @@
-import { mutationField, intArg, nonNull } from 'nexus';
-import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';
-import isAuthorized from '../../../helpers/isAuthorized';
+import { Ctx, Args, Resolver, Mutation, ArgsType, Field, Int, Authorized } from 'type-graphql';
+import { Context } from '../../../context';
+import throwErrorWhenNoConvAccess from '../../../helpers/throwErrorWhenNoConvAccess';
+import { ConversationType } from '../ConversationType';
 
-export const removePersonFromConversationMutationField = mutationField(
-    'removePersonFromConversation', {
-        type: 'Conversation',
-        args: {
-            personId: nonNull(intArg()),
-            conversationId: nonNull(intArg()),
-        },
-        resolve: async (_root, args, { prisma, session }) => {
-            isAuthorized(session);
+@ArgsType()
+class RemovePersonFromConversationArgs {
+    @Field((_type) => Int)
+    conversationId!: number;
 
-            await checkUserHasConvAccess(prisma, session.owner, args.conversationId);
+    @Field((_type) => Int)
+    personId!: number;
+}
 
-            const data = await prisma.conversation.update({
-                where: { id: args.conversationId },
-                data: {
-                    participants: {
-                        disconnect: { id: args.personId },
-                    },
+@Resolver((_of) => ConversationType)
+export class RemovePersonFromConversationResolver {
+    @Authorized()
+    @Mutation((_returns) => ConversationType)
+    async removePersonFromConversation(
+    // eslint-disable-next-line @typescript-eslint/indent
+        @Args() args: RemovePersonFromConversationArgs,
+        @Ctx() { prisma, clientID }: Context<true>,
+    ) {
+        await throwErrorWhenNoConvAccess(prisma, clientID, args.conversationId);
+
+        const data = await prisma.conversation.update({
+            where: { id: args.conversationId },
+            data: {
+                participants: {
+                    disconnect: { id: args.personId },
                 },
-            });
+            },
+        });
 
-            return data;
-        },
-    },
-);
+        return data;
+    }
+}

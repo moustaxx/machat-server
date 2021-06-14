@@ -1,14 +1,13 @@
-import { PrismaClient } from 'prisma-machat';
+import { Person, PrismaClient } from 'prisma-machat';
 import argon2 from 'argon2';
 
-import { NexusGenRootTypes } from '../../generated/nexus';
 import randomString from './randomString';
 
 type TRandomUser = {
     username: string;
     password: string;
     email: string;
-    user: NexusGenRootTypes['Person'];
+    user: Omit<Person, 'hash'>;
 };
 
 export type TCreateRandomUser = (

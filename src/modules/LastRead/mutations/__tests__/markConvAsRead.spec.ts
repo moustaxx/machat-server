@@ -1,4 +1,5 @@
 import { LastRead } from '@prisma/client';
+import { TNodeModel } from '../../../../relay';
 
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
 import randomString from '../../../../tests/helpers/randomString';
@@ -43,7 +44,11 @@ it('should mark conversation as read', async () => {
         },
     });
 
-    type TData = { markConvAsRead: Omit<LastRead, 'lastRead'> & { lastRead: string } };
+    type TData = {
+        markConvAsRead: Omit<TNodeModel<LastRead>, 'lastRead'> & {
+            lastRead: string;
+        };
+    };
     const { data } = await t.gqlQuery<TData>({
         query: queryString,
         cookies,

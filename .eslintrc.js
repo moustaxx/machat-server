@@ -26,10 +26,12 @@ module.exports = {
         '@typescript-eslint/prefer-optional-chain': 'warn',
         '@typescript-eslint/promise-function-async': 'warn',
         'arrow-body-style': 0,
+        'class-methods-use-this': 0,
         'consistent-return': 0,
         'import/no-cycle': 0, // not performant
         'import/prefer-default-export': 0,
         'linebreak-style': ['warn', 'windows'],
+        'max-classes-per-file': 0,
         'max-len': ['error', 100, 4, {
             ignoreUrls: true,
             ignoreComments: false,

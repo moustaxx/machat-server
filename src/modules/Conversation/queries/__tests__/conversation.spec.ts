@@ -1,6 +1,7 @@
-import { NexusGenRootTypes } from '../../../../generated/nexus';
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
+import { TNodeModel } from '../../../../relay';
 import randomString from '../../../../tests/helpers/randomString';
+import { ConversationType } from '../../ConversationType';
 
 let t: ITestUtils;
 
@@ -19,10 +20,18 @@ const queryStringFull = `
             name
             createdAt
             participants {
-                id
+                edges {
+                    node {
+                        id
+                    }
+                }
             }
             messages {
-                id
+                edges {
+                    node {
+                        id
+                    }
+                }
             }
         }
     }
@@ -47,7 +56,7 @@ it('should return conversation', async () => {
         },
     });
 
-    type TData = { conversation: NexusGenRootTypes['Conversation'] };
+    type TData = { conversation: TNodeModel<ConversationType> };
     const { data } = await t.gqlQuery<TData>({
         cookies,
         query: queryStringFull,
@@ -81,9 +90,7 @@ it('should throw FORBIDDEN error when not permitted', async () => {
     const { cookies } = await t.createRandomUserAndLogin();
 
     const conversation = await t.prisma.conversation.create({
-        data: {
-            name: randomString(8),
-        },
+        data: { name: randomString(8) },
     });
 
     const { errors } = await t.gqlQuery({

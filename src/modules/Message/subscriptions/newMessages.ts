@@ -1,34 +1,41 @@
-import { intArg, nonNull, subscriptionField } from 'nexus';
-import { Message } from '@prisma/client';
+import { Args, Resolver, Subscription, ArgsType, Field, Int, Root } from 'type-graphql';
 import { withFilter } from 'mercurius';
 
-import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';
-import isAuthorized from '../../../helpers/isAuthorized';
 import { WSContext } from '../../../context';
+import { MessageType } from '../MessageType';
+import throwErrorWhenUnauthorized from '../../../helpers/throwErrorWhenUnauthorized';
+import throwErrorWhenNoConvAccess from '../../../helpers/throwErrorWhenNoConvAccess';
 
-export const newMessages = subscriptionField('newMessages', {
-    type: 'Message',
-    args: {
-        conversationId: nonNull(intArg()),
-    },
-    resolve: (payload: Message) => payload,
-    subscribe: withFilter(
-        async (_root, args, ctxFix) => {
-            const { prisma, session, pubsub } = ctxFix as any as WSContext;
-            isAuthorized(session);
-            await checkUserHasConvAccess(prisma, session.owner, args.conversationId);
+@ArgsType()
+class NewMessagesArgs {
+    @Field((_type) => Int)
+    conversationId!: number;
+}
 
-            return pubsub.subscribe('NEW_MESSAGES');
-        },
-        async (payload: Message, args, { prisma, session }) => {
-            try {
-                isAuthorized(session);
-                await checkUserHasConvAccess(prisma, session.owner, args.conversationId);
-            } catch (error) {
-                return false;
-            }
+@Resolver((_of) => MessageType)
+export class NewMessagesResolver {
+    // eslint-disable-next-line @typescript-eslint/require-await
+    @Subscription((_returns) => MessageType, {
+        subscribe: withFilter<{ conversationID: number }, any, WSContext, NewMessagesArgs>(
+            async (_root, args, { prisma, clientID, pubsub }) => {
+                throwErrorWhenUnauthorized(clientID);
+                await throwErrorWhenNoConvAccess(prisma, clientID, args.conversationId);
 
-            return payload.conversationID === args.conversationId;
-        },
-    ),
-});
+                return pubsub.subscribe('NEW_MESSAGES');
+            },
+            async (payload, args, { prisma, clientID }: WSContext) => {
+                try {
+                    throwErrorWhenUnauthorized(clientID);
+                    await throwErrorWhenNoConvAccess(prisma, clientID, args.conversationId);
+                } catch (error) {
+                    return false;
+                }
+
+                return payload.conversationID === args.conversationId;
+            },
+        ),
+    })
+    async newMessages(@Root() payload: MessageType, @Args() _args: NewMessagesArgs) {
+        return payload;
+    }
+}

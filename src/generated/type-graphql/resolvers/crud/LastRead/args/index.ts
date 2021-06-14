@@ -1,0 +1,10 @@
+export { AggregateLastReadArgs } from "./AggregateLastReadArgs";
+export { CreateLastReadArgs } from "./CreateLastReadArgs";
+export { DeleteLastReadArgs } from "./DeleteLastReadArgs";
+export { DeleteManyLastReadArgs } from "./DeleteManyLastReadArgs";
+export { FindFirstLastReadArgs } from "./FindFirstLastReadArgs";
+export { FindManyLastReadArgs } from "./FindManyLastReadArgs";
+export { FindUniqueLastReadArgs } from "./FindUniqueLastReadArgs";
+export { UpdateLastReadArgs } from "./UpdateLastReadArgs";
+export { UpdateManyLastReadArgs } from "./UpdateManyLastReadArgs";
+export { UpsertLastReadArgs } from "./UpsertLastReadArgs";

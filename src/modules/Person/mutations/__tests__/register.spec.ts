@@ -1,7 +1,7 @@
-import { NexusGenRootTypes } from '../../../../generated/nexus';
-
 import { GQLResponse, initTestServer, ITestUtils } from '../../../../tests/helpers';
+import { TNodeModel } from '../../../../relay';
 import randomString from '../../../../tests/helpers/randomString';
+import { PersonType } from '../../PersonType';
 
 let t: ITestUtils;
 
@@ -65,7 +65,7 @@ it('should register', async () => {
 
     const loggedIn = logoutRes.cookies.find((cookie) => cookie.name === 'loggedIn');
 
-    type TPerson = GQLResponse<{ register: NexusGenRootTypes['Person'] }>;
+    type TPerson = GQLResponse<{ register: TNodeModel<PersonType> }>;
     const { data }: TPerson = await logoutRes.json();
 
     expect(loggedIn?.value).toEqual('1');

@@ -1,13 +1,12 @@
-import fastify, { FastifyInstance } from 'fastify';
+import fastify, { FastifyInstance, FastifyLoggerOptions } from 'fastify';
 import fastifyCors from 'fastify-cors';
-import fastifyCookie from 'fastify-cookie';
-import fastifySession from 'fastify-session';
-import pgSession from 'connect-pg-simple';
+import fastifySession, { Session } from 'fastify-secure-session';
 import mercurius from 'mercurius';
 import dotenv from 'dotenv';
+import { IncomingMessage } from 'node:http';
+import 'reflect-metadata';
 
-import { schema } from './schema';
-import { ISession } from './types';
+import { createSchema } from './schema';
 import { createContext } from './context';
 import prisma from './prismaClient';
 import { pubsub } from './PubSub';
@@ -17,35 +16,37 @@ dotenv.config();
 
 const isProduction = process.env.NODE_ENV === 'production';
 
+const loggerSettings: FastifyLoggerOptions | boolean = isProduction ? true : {
+    level: 'warn',
+    prettyPrint: {
+        translateTime: true,
+        colorize: true,
+    },
+};
+
 const main = async (testing?: boolean): Promise<FastifyInstance> => {
-    const app = fastify({ logger: isProduction });
+    const app = fastify({ logger: testing ? false : loggerSettings });
     const personActiveStatus = new PersonActiveStatus();
 
     await app.register(fastifyCors, {
         credentials: true,
         origin: true,
         maxAge: 24 * 3600, // 24hrs
-        methods: ['GET', 'POST'],
+        methods: ['GET', 'POST', 'OPTIONS'],
     });
 
-    await app.register(fastifyCookie);
-
     if (!process.env.SESSION_SECRET) throw Error('Session secret must be provided!');
+    if (!process.env.SESSION_SALT) throw Error('Session salt must be provided!');
+    if (!process.env.COOKIE_TTL) throw Error('Cookie TTL env must be provided!');
+    const COOKIE_TTL = parseInt(process.env.COOKIE_TTL, 10);
 
     await app.register(fastifySession, {
-        store: testing ? undefined : new (pgSession(fastifySession as any))({
-            tableName: 'Session',
-            conObject: {
-                connectionString: process.env.DATABASE_URL,
-                ssl: { rejectUnauthorized: isProduction },
-            },
-        }),
+        salt: process.env.SESSION_SALT,
+        secret: process.env.SESSION_SECRET,
         cookie: {
             secure: isProduction,
-            maxAge: 15552000000, // 6 months
+            maxAge: COOKIE_TTL,
         },
-        secret: process.env.SESSION_SECRET,
-        saveUninitialized: false,
     });
 
     app.addHook('onSend', async (req, reply) => {
@@ -56,12 +57,10 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
         const { session, cookies } = req as TReq;
         if (!session) return;
 
-        const { isLoggedIn, expires } = session as ISession;
-        const isLoggedInCookie = cookies.loggedIn === '1';
-        if (cookies.loggedIn === undefined && isLoggedIn === undefined) return;
+        const isLoggedIn = session.get('clientID') ? '1' : '0';
 
-        if (cookies.loggedIn === undefined || isLoggedIn !== isLoggedInCookie) {
-            await reply.setCookie('loggedIn', isLoggedIn ? '1' : '0', { expires });
+        if (cookies.loggedIn !== isLoggedIn) {
+            await reply.setCookie('loggedIn', isLoggedIn, { maxAge: COOKIE_TTL });
         }
     });
 
@@ -71,19 +70,21 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
     });
 
     await app.register(mercurius, {
-        schema,
+        schema: await createSchema,
         graphiql: 'playground',
         subscription: {
             pubsub,
-            verifyClient({ req }, next) {
-                if (!req.headers.cookie) {
-                    next(false);
-                    return;
-                }
-                const { sessionId } = app.parseCookie<{ sessionId: string }>(req.headers.cookie);
+            verifyClient(info, next) {
+                const { req } = info as { req: IncomingMessage & { session?: Session } };
+                if (!req.headers.cookie) return next(false);
 
-                if (sessionId) app.decryptSession(sessionId, req, () => next(true));
-                else next(false);
+                const { session } = app.parseCookie<{ session: string }>(req.headers.cookie);
+
+                const decodedSession = (session && app.decodeSecureSession(session))
+                    || app.createSecureSession();
+
+                req.session = decodedSession;
+                next(true);
             },
             context: (_con, req) => createContext(req, null as any, { personActiveStatus }),
         },

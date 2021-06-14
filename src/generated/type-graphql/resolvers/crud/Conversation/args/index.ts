@@ -1,0 +1,10 @@
+export { AggregateConversationArgs } from "./AggregateConversationArgs";
+export { CreateConversationArgs } from "./CreateConversationArgs";
+export { DeleteConversationArgs } from "./DeleteConversationArgs";
+export { DeleteManyConversationArgs } from "./DeleteManyConversationArgs";
+export { FindFirstConversationArgs } from "./FindFirstConversationArgs";
+export { FindManyConversationArgs } from "./FindManyConversationArgs";
+export { FindUniqueConversationArgs } from "./FindUniqueConversationArgs";
+export { UpdateConversationArgs } from "./UpdateConversationArgs";
+export { UpdateManyConversationArgs } from "./UpdateManyConversationArgs";
+export { UpsertConversationArgs } from "./UpsertConversationArgs";

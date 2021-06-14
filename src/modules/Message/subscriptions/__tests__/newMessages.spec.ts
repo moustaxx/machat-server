@@ -1,12 +1,13 @@
 import { promisify } from 'util';
 import { Message } from '@prisma/client';
 import { SubscriptionContext } from 'mercurius/lib/subscriber';
+import { GraphQLSchema } from 'graphql';
+import 'reflect-metadata';
 
 import { WSContext } from '../../../../context';
-import { schema } from '../../../../schema';
+import { createSchema } from '../../../../schema';
 import prisma from '../../../../prismaClient';
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
-import { ISession } from '../../../../types';
 import randomString from '../../../../tests/helpers/randomString';
 import PubSub from '../../../../PubSub';
 
@@ -19,16 +20,19 @@ type TArgs = {
 type TSubscribe = (
     root: any,
     args: TArgs,
-    ctx: Pick<WSContext, 'prisma' | 'pubsub' | 'session'>,
+    ctx: Pick<WSContext, 'prisma' | 'pubsub' | 'clientID'>,
 ) => Promise<AsyncGenerator<Message, Message>>;
 
-const { newMessages } = schema.getSubscriptionType()!.getFields();
-const subscribe: TSubscribe = newMessages.subscribe as any;
+let schema: GraphQLSchema;
+let subscribe: TSubscribe;
 
 let t: ITestUtils;
 
 beforeAll(async () => {
     t = await initTestServer();
+    schema = await createSchema;
+    const { newMessages } = schema.getSubscriptionType()!.getFields();
+    subscribe = newMessages.subscribe as any;
 });
 
 afterAll(async () => {
@@ -53,10 +57,7 @@ it('should work', async () => {
         {
             prisma,
             pubsub: new SubscriptionContext({ pubsub }),
-            session: {
-                isLoggedIn: true,
-                owner: user,
-            } as ISession,
+            clientID: user.id,
         },
     );
 
@@ -85,9 +86,7 @@ it('should throw UNAUTHORIZED on subscription init when not logged in', async ()
         {
             prisma,
             pubsub: new SubscriptionContext({ pubsub }),
-            session: {
-                isLoggedIn: false,
-            } as ISession,
+            clientID: null,
         },
     );
 
@@ -110,10 +109,7 @@ it('should throw FORBIDDEN on subscription init when user has not access to conv
         {
             prisma,
             pubsub: new SubscriptionContext({ pubsub }),
-            session: {
-                isLoggedIn: true,
-                owner,
-            } as ISession,
+            clientID: owner.id,
         },
     );
 
@@ -131,10 +127,7 @@ it('should not yield after auth rights change', async () => {
         {
             prisma,
             pubsub: new SubscriptionContext({ pubsub }),
-            session: {
-                isLoggedIn: true,
-                owner: user,
-            } as ISession,
+            clientID: user.id,
         },
     );
 
@@ -174,10 +167,7 @@ it('should not yield when wrong args', async () => {
         {
             prisma,
             pubsub: new SubscriptionContext({ pubsub }),
-            session: {
-                isLoggedIn: true,
-                owner: user,
-            } as ISession,
+            clientID: user.id,
         },
     );
 

@@ -1,18 +1,29 @@
-import { mutationField, intArg, nonNull } from 'nexus';
+import { Ctx, Args, Resolver, Mutation, ArgsType, Field, Int, Authorized } from 'type-graphql';
 
-import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';
-import isAuthorized from '../../../helpers/isAuthorized';
+import { Context } from '../../../context';
+import throwErrorWhenNoConvAccess from '../../../helpers/throwErrorWhenNoConvAccess';
+import { LastReadType } from '../LastReadType';
 
-export const markConvAsReadMutationField = mutationField('markConvAsRead', {
-    type: 'LastRead',
-    args: { conversationId: nonNull(intArg()) },
-    resolve: async (_root, args, { prisma, session }) => {
-        isAuthorized(session);
-        await checkUserHasConvAccess(prisma, session.owner, args.conversationId);
+@ArgsType()
+class MarkConvAsReadArgs {
+    @Field((_type) => Int)
+    conversationId!: number;
+}
+
+@Resolver((_of) => LastReadType)
+export class MarkConvAsReadResolver {
+    @Authorized()
+    @Mutation((_returns) => LastReadType)
+    async markConvAsRead(
+    // eslint-disable-next-line @typescript-eslint/indent
+        @Args() args: MarkConvAsReadArgs,
+        @Ctx() { prisma, clientID }: Context<true>,
+    ) {
+        await throwErrorWhenNoConvAccess(prisma, clientID, args.conversationId);
 
         const data = await prisma.lastRead.upsert({
             create: {
-                person: { connect: { id: session.owner.id } },
+                person: { connect: { id: clientID } },
                 conversation: { connect: { id: args.conversationId } },
                 lastRead: new Date(),
             },
@@ -21,12 +32,12 @@ export const markConvAsReadMutationField = mutationField('markConvAsRead', {
             },
             where: {
                 personID_conversationID: {
-                    personID: session.owner.id,
+                    personID: clientID,
                     conversationID: args.conversationId,
                 },
             },
         });
 
         return data;
-    },
-});
+    }
+}

@@ -1,6 +1,7 @@
 import { Message } from 'prisma-machat';
 
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
+import { fromGlobalId, TNodeModel } from '../../../../relay';
 import randomString from '../../../../tests/helpers/randomString';
 
 let t: ITestUtils;
@@ -43,7 +44,7 @@ it('should publish a message', async () => {
         },
     });
 
-    type TCreateMessage = { createMessage: Message };
+    type TCreateMessage = { createMessage: TNodeModel<Message> };
     const { data } = await t.gqlQuery<TCreateMessage>({
         query: queryString,
         cookies,
@@ -55,7 +56,7 @@ it('should publish a message', async () => {
 
     expect(resolve).toBeDefined();
     const message = await waitForPublish;
-    expect(message.id).toEqual(data.createMessage.id);
+    expect(message.id).toEqual(fromGlobalId(data.createMessage.id).id);
 });
 
 it('should create message', async () => {
@@ -68,7 +69,7 @@ it('should create message', async () => {
         },
     });
 
-    type TData = { createMessage: Message };
+    type TData = { createMessage: TNodeModel<Message> };
     const { data } = await t.gqlQuery<TData>({
         query: queryString,
         cookies,
@@ -79,7 +80,7 @@ it('should create message', async () => {
     });
 
     const messageInDB = await t.prisma.conversation.findUnique({
-        where: { id: data.createMessage.id },
+        where: { id: fromGlobalId(data.createMessage.id).id },
     });
 
     expect(messageInDB?.id).toEqual(user.id);
@@ -117,7 +118,7 @@ it('should throw error if empty message', async () => {
         },
     });
 
-    type TData = { createMessage: Message };
+    type TData = { createMessage: TNodeModel<Message> };
     const { errors } = await t.gqlQuery<TData>({
         query: queryString,
         cookies,

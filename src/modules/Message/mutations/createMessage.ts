@@ -1,32 +1,38 @@
-import { mutationField, stringArg, intArg, nonNull } from 'nexus';
+import { Ctx, Args, Resolver, Mutation, ArgsType, Field, Int, Authorized } from 'type-graphql';
 import { UserInputError } from 'apollo-server-errors';
 
-import checkUserHasConvAccess from '../../../helpers/checkUserHasConvAccess';
-import isAuthorized from '../../../helpers/isAuthorized';
+import { Context } from '../../../context';
+import throwErrorWhenNoConvAccess from '../../../helpers/throwErrorWhenNoConvAccess';
+import { MessageType } from '../MessageType';
 
-export const createMessageMutationField = mutationField('createMessage', {
-    type: 'Message',
-    args: {
-        content: nonNull(stringArg()),
-        conversationId: nonNull(intArg()),
-    },
-    resolve: async (_root, args, { prisma, session, pubsub }) => {
-        isAuthorized(session);
+@ArgsType()
+class CreateMessageArgs {
+    @Field()
+    content!: string;
 
+    @Field((_type) => Int)
+    conversationId!: number;
+}
+
+@Resolver((_of) => MessageType)
+export class CreateMessageResolver {
+    @Authorized()
+    @Mutation((_returns) => MessageType)
+    async createMessage(
+    // eslint-disable-next-line @typescript-eslint/indent
+        @Args() args: CreateMessageArgs,
+        @Ctx() { prisma, clientID, pubsub }: Context<true>,
+    ) {
         const content = args.content.trim();
         if (content.length < 1) throw new UserInputError('Message cannot be empty!');
 
-        await checkUserHasConvAccess(prisma, session.owner, args.conversationId);
+        await throwErrorWhenNoConvAccess(prisma, clientID, args.conversationId);
 
         const data = await prisma.message.create({
             data: {
                 content,
-                author: {
-                    connect: { id: session.owner.id },
-                },
-                conversation: {
-                    connect: { id: args.conversationId },
-                },
+                author: { connect: { id: clientID } },
+                conversation: { connect: { id: args.conversationId } },
             },
         });
 
@@ -36,5 +42,5 @@ export const createMessageMutationField = mutationField('createMessage', {
         });
 
         return data;
-    },
-});
+    }
+}

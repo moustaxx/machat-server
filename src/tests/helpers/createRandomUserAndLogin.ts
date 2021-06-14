@@ -1,12 +1,12 @@
+import { Person } from '@prisma/client';
 import { FastifyInstance } from 'fastify';
 
-import { NexusGenRootTypes } from '../../generated/nexus';
 import { createRandomUserSep } from './createRandomUser';
 import { gqlRequestSep } from './gqlRequest';
 import { TCookie } from './types';
 
 type TRandomUser = {
-    user: NexusGenRootTypes['Person'];
+    user: Omit<Person, 'hash'>;
     username: string;
     password: string;
     cookies: Record<string, string>;
