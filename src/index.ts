@@ -94,8 +94,9 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
     app.decorate('prisma', prisma);
 
     if (!testing) {
-        await app.listen(4000);
-        console.log('🚀 Server ready at: http://localhost:4000/graphql');
+        const port = Number(process.env.PORT) || 4000;
+        await app.listen(port, '0.0.0.0');
+        console.log(`🚀 Server ready at: http://localhost:${port}/graphql`);
     }
 
     return app;
