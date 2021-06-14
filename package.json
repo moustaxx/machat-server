@@ -4,7 +4,7 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "start": "node ./dist/start.js",
+        "start": "yarn node ./dist/start.js",
         "clean": "rm -rf dist",
         "build": "yarn clean && yarn generate && tsc",
         "generate": "yarn generate:prisma",
