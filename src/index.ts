@@ -25,7 +25,7 @@ const loggerSettings: FastifyLoggerOptions | boolean = isProduction ? true : {
 };
 
 const main = async (testing?: boolean): Promise<FastifyInstance> => {
-    const app = fastify({ logger: testing ? false : loggerSettings });
+    const app = fastify({ logger: testing ? false : loggerSettings, trustProxy: true });
     const personActiveStatus = new PersonActiveStatus();
 
     await app.register(fastifyCors, {
@@ -44,6 +44,7 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
         salt: process.env.SESSION_SALT,
         secret: process.env.SESSION_SECRET,
         cookie: {
+            sameSite: isProduction && 'none',
             secure: isProduction,
             maxAge: COOKIE_TTL,
         },
@@ -60,7 +61,12 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
         const isLoggedIn = session.get('clientID') ? '1' : '0';
 
         if (cookies.loggedIn !== isLoggedIn) {
-            await reply.setCookie('loggedIn', isLoggedIn, { maxAge: COOKIE_TTL });
+            // eslint-disable-next-line @typescript-eslint/no-floating-promises
+            reply.setCookie('loggedIn', isLoggedIn, {
+                maxAge: COOKIE_TTL,
+                sameSite: isProduction && 'none',
+                secure: isProduction,
+            });
         }
     });
 

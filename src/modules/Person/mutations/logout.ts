@@ -3,6 +3,8 @@ import { Ctx, Resolver, Mutation, Authorized } from 'type-graphql';
 import { Context } from '../../../context';
 import { PersonType } from '../PersonType';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 @Resolver((_of) => PersonType)
 export class LogoutResolver {
     @Authorized()
@@ -11,7 +13,11 @@ export class LogoutResolver {
         session.delete();
 
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        reply.setCookie('loggedIn', '0');
+        reply.setCookie('loggedIn', '0', {
+            sameSite: isProduction && 'none',
+            secure: isProduction,
+        });
+
 
         return prisma.person.findUnique({ where: { id: clientID } });
     }
