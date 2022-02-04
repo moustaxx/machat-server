@@ -17,7 +17,6 @@ export class RemovePersonFromConversationResolver {
     @Authorized()
     @Mutation((_returns) => ConversationType)
     async removePersonFromConversation(
-    // eslint-disable-next-line @typescript-eslint/indent
         @Args() args: RemovePersonFromConversationArgs,
         @Ctx() { prisma, clientID }: Context<true>,
     ) {

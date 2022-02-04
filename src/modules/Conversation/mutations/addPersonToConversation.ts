@@ -17,7 +17,6 @@ export class AddPersonToConversationResolver {
     @Authorized()
     @Mutation((_returns) => ConversationType)
     async addPersonToConversation(
-    // eslint-disable-next-line @typescript-eslint/indent
         @Args() args: AddPersonToConversationArgs,
         @Ctx() { prisma, clientID }: Context<true>,
     ) {

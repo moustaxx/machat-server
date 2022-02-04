@@ -1,18 +1,25 @@
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
     extends: [
+        'airbnb-base',
         'airbnb-typescript/base',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
     ],
     parserOptions: {
         project: './tsconfig.eslint.json',
-        ecmaVersion: 2020,
-        sourceType: 'module',
+        ecmaVersion: 2022,
     },
     ignorePatterns: ['**/prisma/client', '**/src/generated'],
     rules: {
         '@typescript-eslint/explicit-module-boundary-types': 0,
-        '@typescript-eslint/indent': ['warn', 4, { SwitchCase: 1 }],
+        '@typescript-eslint/indent': ['warn', 4, {
+            SwitchCase: 1,
+            ignoredNodes: [
+                'FunctionExpression > .params[decorators.length > 0]',
+                'FunctionExpression > .params > :matches(Decorator, :not(:first-child))',
+                'ClassBody.body > PropertyDefinition[decorators.length > 0] > .key',
+            ],
+        }],
         '@typescript-eslint/member-delimiter-style': 'warn',
         '@typescript-eslint/no-explicit-any': 0,
         '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: false }],

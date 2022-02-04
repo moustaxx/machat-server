@@ -32,7 +32,6 @@ export class MessageType extends Node {
 export class MessageTypeResolver {
     @FieldResolver((_type) => [PersonType])
     async author(
-    // eslint-disable-next-line @typescript-eslint/indent
         @Root() message: MessageType,
         @Ctx() { prisma }: Context,
     ) {
@@ -43,7 +42,6 @@ export class MessageTypeResolver {
 
     @FieldResolver((_type) => [ConversationType])
     async conversation(
-    // eslint-disable-next-line @typescript-eslint/indent
         @Root() message: MessageType,
         @Ctx() { prisma }: Context,
     ) {

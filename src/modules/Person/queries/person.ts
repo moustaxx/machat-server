@@ -9,7 +9,6 @@ export class PersonResolver {
     @Authorized()
     @Query((_returns) => PersonType)
     async person(
-    // eslint-disable-next-line @typescript-eslint/indent
         @Arg('where') where: PersonWhereUniqueInput,
         @Ctx() { prisma }: Context<true>,
     ) {

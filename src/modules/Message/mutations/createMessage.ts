@@ -19,7 +19,6 @@ export class CreateMessageResolver {
     @Authorized()
     @Mutation((_returns) => MessageType)
     async createMessage(
-    // eslint-disable-next-line @typescript-eslint/indent
         @Args() args: CreateMessageArgs,
         @Ctx() { prisma, clientID, pubsub }: Context<true>,
     ) {

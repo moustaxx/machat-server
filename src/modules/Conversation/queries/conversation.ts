@@ -15,7 +15,6 @@ export class ConversationResolver {
     @Authorized()
     @Query((_returns) => ConversationType)
     async conversation(
-    // eslint-disable-next-line @typescript-eslint/indent
         @Args() args: ConversationArgs,
         @Ctx() { prisma, clientID }: Context<true>,
     ) {

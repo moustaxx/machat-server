@@ -15,7 +15,6 @@ export class MarkConvAsReadResolver {
     @Authorized()
     @Mutation((_returns) => LastReadType)
     async markConvAsRead(
-    // eslint-disable-next-line @typescript-eslint/indent
         @Args() args: MarkConvAsReadArgs,
         @Ctx() { prisma, clientID }: Context<true>,
     ) {

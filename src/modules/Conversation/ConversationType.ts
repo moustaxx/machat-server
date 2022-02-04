@@ -33,7 +33,6 @@ export class ConversationType extends Node {
 export class ConversationTypeResolver {
     @FieldResolver((_type) => [PersonConnection])
     async participants(
-    // eslint-disable-next-line @typescript-eslint/indent
         @Root() conversation: ConversationType,
         @Ctx() { prisma }: Context,
         @Args((_type) => ConnectionArgs) args: ConnectionArguments,
@@ -53,7 +52,6 @@ export class ConversationTypeResolver {
 
     @FieldResolver((_type) => [MessageConnection])
     async messages(
-    // eslint-disable-next-line @typescript-eslint/indent
         @Root() conversation: ConversationType,
         @Ctx() { prisma }: Context,
         @Args((_type) => ConnectionArgs) args: ConnectionArguments,
@@ -71,7 +69,6 @@ export class ConversationTypeResolver {
 
     @FieldResolver((_type) => [LastReadType])
     async lastRead(
-    // eslint-disable-next-line @typescript-eslint/indent
         @Root() conversation: ConversationType,
         @Ctx() { prisma }: Context,
         @Args() args: ConversationLastReadArgs,

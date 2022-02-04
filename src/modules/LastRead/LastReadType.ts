@@ -32,7 +32,6 @@ const whereIDEqalsID = (lastRead: LastReadType) => ({
 export class LastReadTypeResolver {
     @FieldResolver((_type) => PersonType)
     async person(
-    // eslint-disable-next-line @typescript-eslint/indent
         @Root() lastRead: LastReadType,
         @Ctx() { prisma }: Context,
     ) {
@@ -41,7 +40,6 @@ export class LastReadTypeResolver {
 
     @FieldResolver((_type) => ConversationType)
     async conversation(
-    // eslint-disable-next-line @typescript-eslint/indent
         @Root() lastRead: LastReadType,
         @Ctx() { prisma }: Context,
     ) {

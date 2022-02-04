@@ -33,7 +33,6 @@ export class PersonActiveStatusResolver {
         ),
     })
     personActiveStatus(
-    // eslint-disable-next-line @typescript-eslint/indent
         @Root() payload: TPersonActiveStatusEvent,
         @Args() args: PersonActiveStatusArgs,
     ) {

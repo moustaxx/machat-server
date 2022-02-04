@@ -18,7 +18,6 @@ export class CreateConversationResolver {
     @Authorized()
     @Mutation((_returns) => ConversationType)
     async createConversation(
-    // eslint-disable-next-line @typescript-eslint/indent
         @Args() args: CreateConversationArgs,
         @Ctx() { prisma, clientID }: Context<true>,
     ) {
