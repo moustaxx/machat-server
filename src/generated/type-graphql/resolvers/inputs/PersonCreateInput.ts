@@ -6,7 +6,7 @@ import { ConversationCreateNestedManyWithoutParticipantsInput } from "../inputs/
 import { LastReadCreateNestedManyWithoutPersonInput } from "../inputs/LastReadCreateNestedManyWithoutPersonInput";
 import { MessageCreateNestedManyWithoutAuthorInput } from "../inputs/MessageCreateNestedManyWithoutAuthorInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("PersonCreateInput", {
   isAbstract: true
 })
 export class PersonCreateInput {

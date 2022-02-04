@@ -1,6 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
-import { PersonOrderByInput } from "../../../inputs/PersonOrderByInput";
+import { PersonOrderByWithRelationInput } from "../../../inputs/PersonOrderByWithRelationInput";
 import { PersonWhereInput } from "../../../inputs/PersonWhereInput";
 import { PersonWhereUniqueInput } from "../../../inputs/PersonWhereUniqueInput";
 import { PersonScalarFieldEnum } from "../../../../enums/PersonScalarFieldEnum";
@@ -12,10 +12,10 @@ export class FindFirstPersonArgs {
   })
   where?: PersonWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [PersonOrderByInput], {
+  @TypeGraphQL.Field(_type => [PersonOrderByWithRelationInput], {
     nullable: true
   })
-  orderBy?: PersonOrderByInput[] | undefined;
+  orderBy?: PersonOrderByWithRelationInput[] | undefined;
 
   @TypeGraphQL.Field(_type => PersonWhereUniqueInput, {
     nullable: true

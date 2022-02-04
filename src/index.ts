@@ -77,7 +77,6 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
 
     await app.register(mercurius, {
         schema: await createSchema,
-        graphiql: 'playground',
         subscription: {
             pubsub,
             verifyClient(info, next) {
@@ -92,7 +91,7 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
                 req.session = decodedSession;
                 next(true);
             },
-            context: (_con, req) => createContext(req, null as any, { personActiveStatus }),
+            context: (_con, req) => createContext(req, null as never, { personActiveStatus }),
         },
         context: (req, reply) => createContext(req, reply, { personActiveStatus }),
     });

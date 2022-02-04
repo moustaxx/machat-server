@@ -8,7 +8,7 @@ import { PersonUpdateWithoutLastReadInput } from "../inputs/PersonUpdateWithoutL
 import { PersonUpsertWithoutLastReadInput } from "../inputs/PersonUpsertWithoutLastReadInput";
 import { PersonWhereUniqueInput } from "../inputs/PersonWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("PersonUpdateOneRequiredWithoutLastReadInput", {
   isAbstract: true
 })
 export class PersonUpdateOneRequiredWithoutLastReadInput {

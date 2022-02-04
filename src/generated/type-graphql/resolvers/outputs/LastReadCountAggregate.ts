@@ -3,14 +3,14 @@ import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../../../prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 
-@TypeGraphQL.ObjectType({
+@TypeGraphQL.ObjectType("LastReadCountAggregate", {
   isAbstract: true
 })
 export class LastReadCountAggregate {
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
-    nullable: true
+    nullable: false
   })
-  lastRead!: number | null;
+  lastRead!: number;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false

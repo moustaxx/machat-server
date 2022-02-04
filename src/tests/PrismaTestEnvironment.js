@@ -24,7 +24,7 @@ class PrismaTestEnvironment extends NodeEnvironment {
         process.env.DATABASE_URL = this.databaseUrl;
         this.global.process.env.DATABASE_URL = this.databaseUrl;
 
-        await execRepeatedOnErr('prisma db push --preview-feature --skip-generate');
+        await execRepeatedOnErr('yarn pnpify prisma db push --skip-generate');
 
         return super.setup();
     }

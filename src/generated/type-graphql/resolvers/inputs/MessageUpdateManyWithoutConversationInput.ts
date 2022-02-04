@@ -2,6 +2,7 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../../../prisma/client";
 import { DecimalJSScalar } from "../../scalars";
+import { MessageCreateManyConversationInputEnvelope } from "../inputs/MessageCreateManyConversationInputEnvelope";
 import { MessageCreateOrConnectWithoutConversationInput } from "../inputs/MessageCreateOrConnectWithoutConversationInput";
 import { MessageCreateWithoutConversationInput } from "../inputs/MessageCreateWithoutConversationInput";
 import { MessageScalarWhereInput } from "../inputs/MessageScalarWhereInput";
@@ -10,7 +11,7 @@ import { MessageUpdateWithWhereUniqueWithoutConversationInput } from "../inputs/
 import { MessageUpsertWithWhereUniqueWithoutConversationInput } from "../inputs/MessageUpsertWithWhereUniqueWithoutConversationInput";
 import { MessageWhereUniqueInput } from "../inputs/MessageWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("MessageUpdateManyWithoutConversationInput", {
   isAbstract: true
 })
 export class MessageUpdateManyWithoutConversationInput {
@@ -29,10 +30,10 @@ export class MessageUpdateManyWithoutConversationInput {
   })
   upsert?: MessageUpsertWithWhereUniqueWithoutConversationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MessageWhereUniqueInput], {
+  @TypeGraphQL.Field(_type => MessageCreateManyConversationInputEnvelope, {
     nullable: true
   })
-  connect?: MessageWhereUniqueInput[] | undefined;
+  createMany?: MessageCreateManyConversationInputEnvelope | undefined;
 
   @TypeGraphQL.Field(_type => [MessageWhereUniqueInput], {
     nullable: true
@@ -48,6 +49,11 @@ export class MessageUpdateManyWithoutConversationInput {
     nullable: true
   })
   delete?: MessageWhereUniqueInput[] | undefined;
+
+  @TypeGraphQL.Field(_type => [MessageWhereUniqueInput], {
+    nullable: true
+  })
+  connect?: MessageWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field(_type => [MessageUpdateWithWhereUniqueWithoutConversationInput], {
     nullable: true

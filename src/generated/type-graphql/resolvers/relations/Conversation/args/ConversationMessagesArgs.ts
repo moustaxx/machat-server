@@ -1,6 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
-import { MessageOrderByInput } from "../../../inputs/MessageOrderByInput";
+import { MessageOrderByWithRelationInput } from "../../../inputs/MessageOrderByWithRelationInput";
 import { MessageWhereInput } from "../../../inputs/MessageWhereInput";
 import { MessageWhereUniqueInput } from "../../../inputs/MessageWhereUniqueInput";
 import { MessageScalarFieldEnum } from "../../../../enums/MessageScalarFieldEnum";
@@ -12,10 +12,10 @@ export class ConversationMessagesArgs {
   })
   where?: MessageWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [MessageOrderByInput], {
+  @TypeGraphQL.Field(_type => [MessageOrderByWithRelationInput], {
     nullable: true
   })
-  orderBy?: MessageOrderByInput[] | undefined;
+  orderBy?: MessageOrderByWithRelationInput[] | undefined;
 
   @TypeGraphQL.Field(_type => MessageWhereUniqueInput, {
     nullable: true

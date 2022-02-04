@@ -6,7 +6,7 @@ import { ConversationUpdateOneRequiredWithoutMessagesInput } from "../inputs/Con
 import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("MessageUpdateWithoutAuthorInput", {
   isAbstract: true
 })
 export class MessageUpdateWithoutAuthorInput {

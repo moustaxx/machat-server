@@ -11,7 +11,7 @@ import { LastReadListRelationFilter } from "../inputs/LastReadListRelationFilter
 import { MessageListRelationFilter } from "../inputs/MessageListRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("PersonWhereInput", {
   isAbstract: true
 })
 export class PersonWhereInput {

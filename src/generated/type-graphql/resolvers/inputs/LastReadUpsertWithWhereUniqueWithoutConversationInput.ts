@@ -6,7 +6,7 @@ import { LastReadCreateWithoutConversationInput } from "../inputs/LastReadCreate
 import { LastReadUpdateWithoutConversationInput } from "../inputs/LastReadUpdateWithoutConversationInput";
 import { LastReadWhereUniqueInput } from "../inputs/LastReadWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("LastReadUpsertWithWhereUniqueWithoutConversationInput", {
   isAbstract: true
 })
 export class LastReadUpsertWithWhereUniqueWithoutConversationInput {

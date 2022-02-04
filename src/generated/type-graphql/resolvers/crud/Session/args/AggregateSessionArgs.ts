@@ -1,6 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
-import { SessionOrderByInput } from "../../../inputs/SessionOrderByInput";
+import { SessionOrderByWithRelationInput } from "../../../inputs/SessionOrderByWithRelationInput";
 import { SessionWhereInput } from "../../../inputs/SessionWhereInput";
 import { SessionWhereUniqueInput } from "../../../inputs/SessionWhereUniqueInput";
 
@@ -11,10 +11,10 @@ export class AggregateSessionArgs {
   })
   where?: SessionWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [SessionOrderByInput], {
+  @TypeGraphQL.Field(_type => [SessionOrderByWithRelationInput], {
     nullable: true
   })
-  orderBy?: SessionOrderByInput[] | undefined;
+  orderBy?: SessionOrderByWithRelationInput[] | undefined;
 
   @TypeGraphQL.Field(_type => SessionWhereUniqueInput, {
     nullable: true

@@ -6,7 +6,7 @@ import { Person } from "../../../models/Person";
 import { PersonConversationsArgs } from "./args/PersonConversationsArgs";
 import { PersonLastReadArgs } from "./args/PersonLastReadArgs";
 import { PersonMessagesArgs } from "./args/PersonMessagesArgs";
-import { transformFields, getPrismaFromContext } from "../../../helpers";
+import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => Person)
 export class PersonRelationsResolver {

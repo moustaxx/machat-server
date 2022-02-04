@@ -2,6 +2,7 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../../../prisma/client";
 import { DecimalJSScalar } from "../../scalars";
+import { LastReadCreateManyPersonInputEnvelope } from "../inputs/LastReadCreateManyPersonInputEnvelope";
 import { LastReadCreateOrConnectWithoutPersonInput } from "../inputs/LastReadCreateOrConnectWithoutPersonInput";
 import { LastReadCreateWithoutPersonInput } from "../inputs/LastReadCreateWithoutPersonInput";
 import { LastReadScalarWhereInput } from "../inputs/LastReadScalarWhereInput";
@@ -10,7 +11,7 @@ import { LastReadUpdateWithWhereUniqueWithoutPersonInput } from "../inputs/LastR
 import { LastReadUpsertWithWhereUniqueWithoutPersonInput } from "../inputs/LastReadUpsertWithWhereUniqueWithoutPersonInput";
 import { LastReadWhereUniqueInput } from "../inputs/LastReadWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("LastReadUpdateManyWithoutPersonInput", {
   isAbstract: true
 })
 export class LastReadUpdateManyWithoutPersonInput {
@@ -29,10 +30,10 @@ export class LastReadUpdateManyWithoutPersonInput {
   })
   upsert?: LastReadUpsertWithWhereUniqueWithoutPersonInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LastReadWhereUniqueInput], {
+  @TypeGraphQL.Field(_type => LastReadCreateManyPersonInputEnvelope, {
     nullable: true
   })
-  connect?: LastReadWhereUniqueInput[] | undefined;
+  createMany?: LastReadCreateManyPersonInputEnvelope | undefined;
 
   @TypeGraphQL.Field(_type => [LastReadWhereUniqueInput], {
     nullable: true
@@ -48,6 +49,11 @@ export class LastReadUpdateManyWithoutPersonInput {
     nullable: true
   })
   delete?: LastReadWhereUniqueInput[] | undefined;
+
+  @TypeGraphQL.Field(_type => [LastReadWhereUniqueInput], {
+    nullable: true
+  })
+  connect?: LastReadWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field(_type => [LastReadUpdateWithWhereUniqueWithoutPersonInput], {
     nullable: true

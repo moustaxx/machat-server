@@ -9,7 +9,7 @@ import { MessageListRelationFilter } from "../inputs/MessageListRelationFilter";
 import { PersonListRelationFilter } from "../inputs/PersonListRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("ConversationWhereInput", {
   isAbstract: true
 })
 export class ConversationWhereInput {

@@ -2,6 +2,7 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../../../prisma/client";
 import { DecimalJSScalar } from "../../scalars";
+import { LastReadCreateManyConversationInputEnvelope } from "../inputs/LastReadCreateManyConversationInputEnvelope";
 import { LastReadCreateOrConnectWithoutConversationInput } from "../inputs/LastReadCreateOrConnectWithoutConversationInput";
 import { LastReadCreateWithoutConversationInput } from "../inputs/LastReadCreateWithoutConversationInput";
 import { LastReadScalarWhereInput } from "../inputs/LastReadScalarWhereInput";
@@ -10,7 +11,7 @@ import { LastReadUpdateWithWhereUniqueWithoutConversationInput } from "../inputs
 import { LastReadUpsertWithWhereUniqueWithoutConversationInput } from "../inputs/LastReadUpsertWithWhereUniqueWithoutConversationInput";
 import { LastReadWhereUniqueInput } from "../inputs/LastReadWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("LastReadUpdateManyWithoutConversationInput", {
   isAbstract: true
 })
 export class LastReadUpdateManyWithoutConversationInput {
@@ -29,10 +30,10 @@ export class LastReadUpdateManyWithoutConversationInput {
   })
   upsert?: LastReadUpsertWithWhereUniqueWithoutConversationInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [LastReadWhereUniqueInput], {
+  @TypeGraphQL.Field(_type => LastReadCreateManyConversationInputEnvelope, {
     nullable: true
   })
-  connect?: LastReadWhereUniqueInput[] | undefined;
+  createMany?: LastReadCreateManyConversationInputEnvelope | undefined;
 
   @TypeGraphQL.Field(_type => [LastReadWhereUniqueInput], {
     nullable: true
@@ -48,6 +49,11 @@ export class LastReadUpdateManyWithoutConversationInput {
     nullable: true
   })
   delete?: LastReadWhereUniqueInput[] | undefined;
+
+  @TypeGraphQL.Field(_type => [LastReadWhereUniqueInput], {
+    nullable: true
+  })
+  connect?: LastReadWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field(_type => [LastReadUpdateWithWhereUniqueWithoutConversationInput], {
     nullable: true

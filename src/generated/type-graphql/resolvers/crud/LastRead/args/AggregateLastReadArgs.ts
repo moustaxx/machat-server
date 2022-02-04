@@ -1,6 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
-import { LastReadOrderByInput } from "../../../inputs/LastReadOrderByInput";
+import { LastReadOrderByWithRelationInput } from "../../../inputs/LastReadOrderByWithRelationInput";
 import { LastReadWhereInput } from "../../../inputs/LastReadWhereInput";
 import { LastReadWhereUniqueInput } from "../../../inputs/LastReadWhereUniqueInput";
 
@@ -11,10 +11,10 @@ export class AggregateLastReadArgs {
   })
   where?: LastReadWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [LastReadOrderByInput], {
+  @TypeGraphQL.Field(_type => [LastReadOrderByWithRelationInput], {
     nullable: true
   })
-  orderBy?: LastReadOrderByInput[] | undefined;
+  orderBy?: LastReadOrderByWithRelationInput[] | undefined;
 
   @TypeGraphQL.Field(_type => LastReadWhereUniqueInput, {
     nullable: true

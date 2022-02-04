@@ -6,7 +6,7 @@ import { ConversationUpdateOneRequiredWithoutLastReadInput } from "../inputs/Con
 import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
 import { PersonUpdateOneRequiredWithoutLastReadInput } from "../inputs/PersonUpdateOneRequiredWithoutLastReadInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("LastReadUpdateInput", {
   isAbstract: true
 })
 export class LastReadUpdateInput {

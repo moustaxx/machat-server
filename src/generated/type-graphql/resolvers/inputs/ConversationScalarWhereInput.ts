@@ -6,7 +6,7 @@ import { DateTimeFilter } from "../inputs/DateTimeFilter";
 import { IntFilter } from "../inputs/IntFilter";
 import { StringFilter } from "../inputs/StringFilter";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("ConversationScalarWhereInput", {
   isAbstract: true
 })
 export class ConversationScalarWhereInput {

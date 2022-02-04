@@ -4,7 +4,7 @@ import { Prisma } from "../../../../../prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("LastReadUpdateManyMutationInput", {
   isAbstract: true
 })
 export class LastReadUpdateManyMutationInput {

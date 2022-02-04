@@ -4,7 +4,7 @@ import { Prisma } from "../../../../../prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { ConversationCreateNestedOneWithoutMessagesInput } from "../inputs/ConversationCreateNestedOneWithoutMessagesInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("MessageCreateWithoutAuthorInput", {
   isAbstract: true
 })
 export class MessageCreateWithoutAuthorInput {

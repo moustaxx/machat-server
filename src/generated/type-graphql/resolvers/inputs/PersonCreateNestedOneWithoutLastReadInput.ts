@@ -6,7 +6,7 @@ import { PersonCreateOrConnectWithoutLastReadInput } from "../inputs/PersonCreat
 import { PersonCreateWithoutLastReadInput } from "../inputs/PersonCreateWithoutLastReadInput";
 import { PersonWhereUniqueInput } from "../inputs/PersonWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("PersonCreateNestedOneWithoutLastReadInput", {
   isAbstract: true
 })
 export class PersonCreateNestedOneWithoutLastReadInput {

@@ -4,7 +4,7 @@ import { GraphQLResolveInfo } from "graphql";
 import { AggregateConversationArgs } from "./args/AggregateConversationArgs";
 import { Conversation } from "../../../models/Conversation";
 import { AggregateConversation } from "../../outputs/AggregateConversation";
-import { transformFields, getPrismaFromContext } from "../../../helpers";
+import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => Conversation)
 export class AggregateConversationResolver {

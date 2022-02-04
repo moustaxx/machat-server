@@ -5,7 +5,7 @@ import { DecimalJSScalar } from "../../scalars";
 import { ConversationUpdateOneRequiredWithoutLastReadInput } from "../inputs/ConversationUpdateOneRequiredWithoutLastReadInput";
 import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("LastReadUpdateWithoutPersonInput", {
   isAbstract: true
 })
 export class LastReadUpdateWithoutPersonInput {

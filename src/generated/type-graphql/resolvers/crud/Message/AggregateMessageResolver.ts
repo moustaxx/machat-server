@@ -4,7 +4,7 @@ import { GraphQLResolveInfo } from "graphql";
 import { AggregateMessageArgs } from "./args/AggregateMessageArgs";
 import { Message } from "../../../models/Message";
 import { AggregateMessage } from "../../outputs/AggregateMessage";
-import { transformFields, getPrismaFromContext } from "../../../helpers";
+import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => Message)
 export class AggregateMessageResolver {

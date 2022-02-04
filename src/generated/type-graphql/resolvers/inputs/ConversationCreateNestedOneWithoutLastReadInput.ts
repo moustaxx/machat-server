@@ -6,7 +6,7 @@ import { ConversationCreateOrConnectWithoutLastReadInput } from "../inputs/Conve
 import { ConversationCreateWithoutLastReadInput } from "../inputs/ConversationCreateWithoutLastReadInput";
 import { ConversationWhereUniqueInput } from "../inputs/ConversationWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("ConversationCreateNestedOneWithoutLastReadInput", {
   isAbstract: true
 })
 export class ConversationCreateNestedOneWithoutLastReadInput {

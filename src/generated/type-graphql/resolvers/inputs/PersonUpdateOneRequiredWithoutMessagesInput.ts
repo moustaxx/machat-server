@@ -8,7 +8,7 @@ import { PersonUpdateWithoutMessagesInput } from "../inputs/PersonUpdateWithoutM
 import { PersonUpsertWithoutMessagesInput } from "../inputs/PersonUpsertWithoutMessagesInput";
 import { PersonWhereUniqueInput } from "../inputs/PersonWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("PersonUpdateOneRequiredWithoutMessagesInput", {
   isAbstract: true
 })
 export class PersonUpdateOneRequiredWithoutMessagesInput {

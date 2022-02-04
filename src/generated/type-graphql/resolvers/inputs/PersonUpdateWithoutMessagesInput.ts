@@ -9,7 +9,7 @@ import { LastReadUpdateManyWithoutPersonInput } from "../inputs/LastReadUpdateMa
 import { NullableDateTimeFieldUpdateOperationsInput } from "../inputs/NullableDateTimeFieldUpdateOperationsInput";
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("PersonUpdateWithoutMessagesInput", {
   isAbstract: true
 })
 export class PersonUpdateWithoutMessagesInput {

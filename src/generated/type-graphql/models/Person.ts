@@ -5,8 +5,9 @@ import { DecimalJSScalar } from "../scalars";
 import { Conversation } from "../models/Conversation";
 import { LastRead } from "../models/LastRead";
 import { Message } from "../models/Message";
+import { PersonCount } from "../resolvers/outputs/PersonCount";
 
-@TypeGraphQL.ObjectType({
+@TypeGraphQL.ObjectType("Person", {
   isAbstract: true
 })
 export class Person {
@@ -50,4 +51,9 @@ export class Person {
   lastRead?: LastRead[];
 
   conversations?: Conversation[];
+
+  @TypeGraphQL.Field(_type => PersonCount, {
+    nullable: true
+  })
+  _count?: PersonCount | null;
 }

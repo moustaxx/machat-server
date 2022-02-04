@@ -8,32 +8,32 @@ import { ConversationMaxAggregate } from "../outputs/ConversationMaxAggregate";
 import { ConversationMinAggregate } from "../outputs/ConversationMinAggregate";
 import { ConversationSumAggregate } from "../outputs/ConversationSumAggregate";
 
-@TypeGraphQL.ObjectType({
+@TypeGraphQL.ObjectType("AggregateConversation", {
   isAbstract: true
 })
 export class AggregateConversation {
   @TypeGraphQL.Field(_type => ConversationCountAggregate, {
     nullable: true
   })
-  count!: ConversationCountAggregate | null;
+  _count!: ConversationCountAggregate | null;
 
   @TypeGraphQL.Field(_type => ConversationAvgAggregate, {
     nullable: true
   })
-  avg!: ConversationAvgAggregate | null;
+  _avg!: ConversationAvgAggregate | null;
 
   @TypeGraphQL.Field(_type => ConversationSumAggregate, {
     nullable: true
   })
-  sum!: ConversationSumAggregate | null;
+  _sum!: ConversationSumAggregate | null;
 
   @TypeGraphQL.Field(_type => ConversationMinAggregate, {
     nullable: true
   })
-  min!: ConversationMinAggregate | null;
+  _min!: ConversationMinAggregate | null;
 
   @TypeGraphQL.Field(_type => ConversationMaxAggregate, {
     nullable: true
   })
-  max!: ConversationMaxAggregate | null;
+  _max!: ConversationMaxAggregate | null;
 }

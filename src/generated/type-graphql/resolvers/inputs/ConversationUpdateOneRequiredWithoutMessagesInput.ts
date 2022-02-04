@@ -8,7 +8,7 @@ import { ConversationUpdateWithoutMessagesInput } from "../inputs/ConversationUp
 import { ConversationUpsertWithoutMessagesInput } from "../inputs/ConversationUpsertWithoutMessagesInput";
 import { ConversationWhereUniqueInput } from "../inputs/ConversationWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("ConversationUpdateOneRequiredWithoutMessagesInput", {
   isAbstract: true
 })
 export class ConversationUpdateOneRequiredWithoutMessagesInput {

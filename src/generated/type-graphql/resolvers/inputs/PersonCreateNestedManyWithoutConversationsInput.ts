@@ -6,7 +6,7 @@ import { PersonCreateOrConnectWithoutConversationsInput } from "../inputs/Person
 import { PersonCreateWithoutConversationsInput } from "../inputs/PersonCreateWithoutConversationsInput";
 import { PersonWhereUniqueInput } from "../inputs/PersonWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("PersonCreateNestedManyWithoutConversationsInput", {
   isAbstract: true
 })
 export class PersonCreateNestedManyWithoutConversationsInput {

@@ -6,22 +6,22 @@ import { SessionCountAggregate } from "../outputs/SessionCountAggregate";
 import { SessionMaxAggregate } from "../outputs/SessionMaxAggregate";
 import { SessionMinAggregate } from "../outputs/SessionMinAggregate";
 
-@TypeGraphQL.ObjectType({
+@TypeGraphQL.ObjectType("AggregateSession", {
   isAbstract: true
 })
 export class AggregateSession {
   @TypeGraphQL.Field(_type => SessionCountAggregate, {
     nullable: true
   })
-  count!: SessionCountAggregate | null;
+  _count!: SessionCountAggregate | null;
 
   @TypeGraphQL.Field(_type => SessionMinAggregate, {
     nullable: true
   })
-  min!: SessionMinAggregate | null;
+  _min!: SessionMinAggregate | null;
 
   @TypeGraphQL.Field(_type => SessionMaxAggregate, {
     nullable: true
   })
-  max!: SessionMaxAggregate | null;
+  _max!: SessionMaxAggregate | null;
 }

@@ -2,11 +2,12 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../../../prisma/client";
 import { DecimalJSScalar } from "../../scalars";
+import { LastReadCreateManyConversationInputEnvelope } from "../inputs/LastReadCreateManyConversationInputEnvelope";
 import { LastReadCreateOrConnectWithoutConversationInput } from "../inputs/LastReadCreateOrConnectWithoutConversationInput";
 import { LastReadCreateWithoutConversationInput } from "../inputs/LastReadCreateWithoutConversationInput";
 import { LastReadWhereUniqueInput } from "../inputs/LastReadWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("LastReadCreateNestedManyWithoutConversationInput", {
   isAbstract: true
 })
 export class LastReadCreateNestedManyWithoutConversationInput {
@@ -19,6 +20,11 @@ export class LastReadCreateNestedManyWithoutConversationInput {
     nullable: true
   })
   connectOrCreate?: LastReadCreateOrConnectWithoutConversationInput[] | undefined;
+
+  @TypeGraphQL.Field(_type => LastReadCreateManyConversationInputEnvelope, {
+    nullable: true
+  })
+  createMany?: LastReadCreateManyConversationInputEnvelope | undefined;
 
   @TypeGraphQL.Field(_type => [LastReadWhereUniqueInput], {
     nullable: true

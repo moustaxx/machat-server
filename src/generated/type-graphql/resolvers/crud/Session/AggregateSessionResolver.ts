@@ -4,7 +4,7 @@ import { GraphQLResolveInfo } from "graphql";
 import { AggregateSessionArgs } from "./args/AggregateSessionArgs";
 import { Session } from "../../../models/Session";
 import { AggregateSession } from "../../outputs/AggregateSession";
-import { transformFields, getPrismaFromContext } from "../../../helpers";
+import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => Session)
 export class AggregateSessionResolver {

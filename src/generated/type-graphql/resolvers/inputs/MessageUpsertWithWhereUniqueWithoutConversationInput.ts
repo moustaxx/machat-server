@@ -6,7 +6,7 @@ import { MessageCreateWithoutConversationInput } from "../inputs/MessageCreateWi
 import { MessageUpdateWithoutConversationInput } from "../inputs/MessageUpdateWithoutConversationInput";
 import { MessageWhereUniqueInput } from "../inputs/MessageWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("MessageUpsertWithWhereUniqueWithoutConversationInput", {
   isAbstract: true
 })
 export class MessageUpsertWithWhereUniqueWithoutConversationInput {

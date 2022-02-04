@@ -5,7 +5,7 @@ import { DecimalJSScalar } from "../scalars";
 import { Conversation } from "../models/Conversation";
 import { Person } from "../models/Person";
 
-@TypeGraphQL.ObjectType({
+@TypeGraphQL.ObjectType("Message", {
   isAbstract: true
 })
 export class Message {

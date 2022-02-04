@@ -4,7 +4,7 @@ import { GraphQLResolveInfo } from "graphql";
 import { AggregateLastReadArgs } from "./args/AggregateLastReadArgs";
 import { LastRead } from "../../../models/LastRead";
 import { AggregateLastRead } from "../../outputs/AggregateLastRead";
-import { transformFields, getPrismaFromContext } from "../../../helpers";
+import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => LastRead)
 export class AggregateLastReadResolver {

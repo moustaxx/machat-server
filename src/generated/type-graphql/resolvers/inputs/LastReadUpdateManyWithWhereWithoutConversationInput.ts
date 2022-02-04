@@ -5,7 +5,7 @@ import { DecimalJSScalar } from "../../scalars";
 import { LastReadScalarWhereInput } from "../inputs/LastReadScalarWhereInput";
 import { LastReadUpdateManyMutationInput } from "../inputs/LastReadUpdateManyMutationInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("LastReadUpdateManyWithWhereWithoutConversationInput", {
   isAbstract: true
 })
 export class LastReadUpdateManyWithWhereWithoutConversationInput {

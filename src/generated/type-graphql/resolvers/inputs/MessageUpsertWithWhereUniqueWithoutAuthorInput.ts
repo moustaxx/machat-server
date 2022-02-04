@@ -6,7 +6,7 @@ import { MessageCreateWithoutAuthorInput } from "../inputs/MessageCreateWithoutA
 import { MessageUpdateWithoutAuthorInput } from "../inputs/MessageUpdateWithoutAuthorInput";
 import { MessageWhereUniqueInput } from "../inputs/MessageWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("MessageUpsertWithWhereUniqueWithoutAuthorInput", {
   isAbstract: true
 })
 export class MessageUpsertWithWhereUniqueWithoutAuthorInput {

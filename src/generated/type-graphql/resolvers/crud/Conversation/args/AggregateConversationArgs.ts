@@ -1,6 +1,6 @@
 import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
-import { ConversationOrderByInput } from "../../../inputs/ConversationOrderByInput";
+import { ConversationOrderByWithRelationInput } from "../../../inputs/ConversationOrderByWithRelationInput";
 import { ConversationWhereInput } from "../../../inputs/ConversationWhereInput";
 import { ConversationWhereUniqueInput } from "../../../inputs/ConversationWhereUniqueInput";
 
@@ -11,10 +11,10 @@ export class AggregateConversationArgs {
   })
   where?: ConversationWhereInput | undefined;
 
-  @TypeGraphQL.Field(_type => [ConversationOrderByInput], {
+  @TypeGraphQL.Field(_type => [ConversationOrderByWithRelationInput], {
     nullable: true
   })
-  orderBy?: ConversationOrderByInput[] | undefined;
+  orderBy?: ConversationOrderByWithRelationInput[] | undefined;
 
   @TypeGraphQL.Field(_type => ConversationWhereUniqueInput, {
     nullable: true

@@ -4,7 +4,7 @@ import { Prisma } from "../../../../../prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { MessageWhereInput } from "../inputs/MessageWhereInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("MessageListRelationFilter", {
   isAbstract: true
 })
 export class MessageListRelationFilter {

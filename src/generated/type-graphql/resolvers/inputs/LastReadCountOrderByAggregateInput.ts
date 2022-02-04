@@ -4,22 +4,22 @@ import { Prisma } from "../../../../../prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { SortOrder } from "../../enums/SortOrder";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("LastReadCountOrderByAggregateInput", {
   isAbstract: true
 })
-export class SessionOrderByInput {
+export class LastReadCountOrderByAggregateInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  sid?: "asc" | "desc" | undefined;
+  lastRead?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  sess?: "asc" | "desc" | undefined;
+  personID?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  expire?: "asc" | "desc" | undefined;
+  conversationID?: "asc" | "desc" | undefined;
 }

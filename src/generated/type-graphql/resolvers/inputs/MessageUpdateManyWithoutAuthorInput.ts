@@ -2,6 +2,7 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "../../../../../prisma/client";
 import { DecimalJSScalar } from "../../scalars";
+import { MessageCreateManyAuthorInputEnvelope } from "../inputs/MessageCreateManyAuthorInputEnvelope";
 import { MessageCreateOrConnectWithoutAuthorInput } from "../inputs/MessageCreateOrConnectWithoutAuthorInput";
 import { MessageCreateWithoutAuthorInput } from "../inputs/MessageCreateWithoutAuthorInput";
 import { MessageScalarWhereInput } from "../inputs/MessageScalarWhereInput";
@@ -10,7 +11,7 @@ import { MessageUpdateWithWhereUniqueWithoutAuthorInput } from "../inputs/Messag
 import { MessageUpsertWithWhereUniqueWithoutAuthorInput } from "../inputs/MessageUpsertWithWhereUniqueWithoutAuthorInput";
 import { MessageWhereUniqueInput } from "../inputs/MessageWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("MessageUpdateManyWithoutAuthorInput", {
   isAbstract: true
 })
 export class MessageUpdateManyWithoutAuthorInput {
@@ -29,10 +30,10 @@ export class MessageUpdateManyWithoutAuthorInput {
   })
   upsert?: MessageUpsertWithWhereUniqueWithoutAuthorInput[] | undefined;
 
-  @TypeGraphQL.Field(_type => [MessageWhereUniqueInput], {
+  @TypeGraphQL.Field(_type => MessageCreateManyAuthorInputEnvelope, {
     nullable: true
   })
-  connect?: MessageWhereUniqueInput[] | undefined;
+  createMany?: MessageCreateManyAuthorInputEnvelope | undefined;
 
   @TypeGraphQL.Field(_type => [MessageWhereUniqueInput], {
     nullable: true
@@ -48,6 +49,11 @@ export class MessageUpdateManyWithoutAuthorInput {
     nullable: true
   })
   delete?: MessageWhereUniqueInput[] | undefined;
+
+  @TypeGraphQL.Field(_type => [MessageWhereUniqueInput], {
+    nullable: true
+  })
+  connect?: MessageWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field(_type => [MessageUpdateWithWhereUniqueWithoutAuthorInput], {
     nullable: true

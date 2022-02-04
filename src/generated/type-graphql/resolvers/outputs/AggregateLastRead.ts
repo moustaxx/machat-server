@@ -8,32 +8,32 @@ import { LastReadMaxAggregate } from "../outputs/LastReadMaxAggregate";
 import { LastReadMinAggregate } from "../outputs/LastReadMinAggregate";
 import { LastReadSumAggregate } from "../outputs/LastReadSumAggregate";
 
-@TypeGraphQL.ObjectType({
+@TypeGraphQL.ObjectType("AggregateLastRead", {
   isAbstract: true
 })
 export class AggregateLastRead {
   @TypeGraphQL.Field(_type => LastReadCountAggregate, {
     nullable: true
   })
-  count!: LastReadCountAggregate | null;
+  _count!: LastReadCountAggregate | null;
 
   @TypeGraphQL.Field(_type => LastReadAvgAggregate, {
     nullable: true
   })
-  avg!: LastReadAvgAggregate | null;
+  _avg!: LastReadAvgAggregate | null;
 
   @TypeGraphQL.Field(_type => LastReadSumAggregate, {
     nullable: true
   })
-  sum!: LastReadSumAggregate | null;
+  _sum!: LastReadSumAggregate | null;
 
   @TypeGraphQL.Field(_type => LastReadMinAggregate, {
     nullable: true
   })
-  min!: LastReadMinAggregate | null;
+  _min!: LastReadMinAggregate | null;
 
   @TypeGraphQL.Field(_type => LastReadMaxAggregate, {
     nullable: true
   })
-  max!: LastReadMaxAggregate | null;
+  _max!: LastReadMaxAggregate | null;
 }

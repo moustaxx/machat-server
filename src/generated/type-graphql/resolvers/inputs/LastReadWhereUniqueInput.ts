@@ -4,7 +4,7 @@ import { Prisma } from "../../../../../prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { LastReadPersonIDConversationIDCompoundUniqueInput } from "../inputs/LastReadPersonIDConversationIDCompoundUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("LastReadWhereUniqueInput", {
   isAbstract: true
 })
 export class LastReadWhereUniqueInput {

@@ -6,7 +6,7 @@ import { ConversationCreateWithoutParticipantsInput } from "../inputs/Conversati
 import { ConversationUpdateWithoutParticipantsInput } from "../inputs/ConversationUpdateWithoutParticipantsInput";
 import { ConversationWhereUniqueInput } from "../inputs/ConversationWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("ConversationUpsertWithWhereUniqueWithoutParticipantsInput", {
   isAbstract: true
 })
 export class ConversationUpsertWithWhereUniqueWithoutParticipantsInput {

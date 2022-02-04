@@ -7,7 +7,7 @@ import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdat
 import { PersonUpdateOneRequiredWithoutMessagesInput } from "../inputs/PersonUpdateOneRequiredWithoutMessagesInput";
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("MessageUpdateInput", {
   isAbstract: true
 })
 export class MessageUpdateInput {

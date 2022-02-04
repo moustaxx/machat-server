@@ -6,7 +6,7 @@ import { DateTimeFilter } from "../inputs/DateTimeFilter";
 import { JsonFilter } from "../inputs/JsonFilter";
 import { StringFilter } from "../inputs/StringFilter";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("SessionWhereInput", {
   isAbstract: true
 })
 export class SessionWhereInput {

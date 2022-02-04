@@ -5,7 +5,7 @@ import { DecimalJSScalar } from "../../scalars";
 import { MessageCreateWithoutConversationInput } from "../inputs/MessageCreateWithoutConversationInput";
 import { MessageWhereUniqueInput } from "../inputs/MessageWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("MessageCreateOrConnectWithoutConversationInput", {
   isAbstract: true
 })
 export class MessageCreateOrConnectWithoutConversationInput {

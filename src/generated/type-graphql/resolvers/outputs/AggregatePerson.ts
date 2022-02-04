@@ -8,32 +8,32 @@ import { PersonMaxAggregate } from "../outputs/PersonMaxAggregate";
 import { PersonMinAggregate } from "../outputs/PersonMinAggregate";
 import { PersonSumAggregate } from "../outputs/PersonSumAggregate";
 
-@TypeGraphQL.ObjectType({
+@TypeGraphQL.ObjectType("AggregatePerson", {
   isAbstract: true
 })
 export class AggregatePerson {
   @TypeGraphQL.Field(_type => PersonCountAggregate, {
     nullable: true
   })
-  count!: PersonCountAggregate | null;
+  _count!: PersonCountAggregate | null;
 
   @TypeGraphQL.Field(_type => PersonAvgAggregate, {
     nullable: true
   })
-  avg!: PersonAvgAggregate | null;
+  _avg!: PersonAvgAggregate | null;
 
   @TypeGraphQL.Field(_type => PersonSumAggregate, {
     nullable: true
   })
-  sum!: PersonSumAggregate | null;
+  _sum!: PersonSumAggregate | null;
 
   @TypeGraphQL.Field(_type => PersonMinAggregate, {
     nullable: true
   })
-  min!: PersonMinAggregate | null;
+  _min!: PersonMinAggregate | null;
 
   @TypeGraphQL.Field(_type => PersonMaxAggregate, {
     nullable: true
   })
-  max!: PersonMaxAggregate | null;
+  _max!: PersonMaxAggregate | null;
 }

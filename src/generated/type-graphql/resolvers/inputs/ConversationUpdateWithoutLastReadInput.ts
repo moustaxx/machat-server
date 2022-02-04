@@ -7,7 +7,7 @@ import { MessageUpdateManyWithoutConversationInput } from "../inputs/MessageUpda
 import { PersonUpdateManyWithoutConversationsInput } from "../inputs/PersonUpdateManyWithoutConversationsInput";
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("ConversationUpdateWithoutLastReadInput", {
   isAbstract: true
 })
 export class ConversationUpdateWithoutLastReadInput {

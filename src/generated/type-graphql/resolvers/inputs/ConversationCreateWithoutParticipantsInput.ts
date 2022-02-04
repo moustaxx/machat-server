@@ -5,7 +5,7 @@ import { DecimalJSScalar } from "../../scalars";
 import { LastReadCreateNestedManyWithoutConversationInput } from "../inputs/LastReadCreateNestedManyWithoutConversationInput";
 import { MessageCreateNestedManyWithoutConversationInput } from "../inputs/MessageCreateNestedManyWithoutConversationInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("ConversationCreateWithoutParticipantsInput", {
   isAbstract: true
 })
 export class ConversationCreateWithoutParticipantsInput {

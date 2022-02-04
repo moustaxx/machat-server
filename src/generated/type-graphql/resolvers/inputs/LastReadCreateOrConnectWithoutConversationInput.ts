@@ -5,7 +5,7 @@ import { DecimalJSScalar } from "../../scalars";
 import { LastReadCreateWithoutConversationInput } from "../inputs/LastReadCreateWithoutConversationInput";
 import { LastReadWhereUniqueInput } from "../inputs/LastReadWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("LastReadCreateOrConnectWithoutConversationInput", {
   isAbstract: true
 })
 export class LastReadCreateOrConnectWithoutConversationInput {

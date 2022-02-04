@@ -8,7 +8,7 @@ import { IntFilter } from "../inputs/IntFilter";
 import { PersonRelationFilter } from "../inputs/PersonRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("MessageWhereInput", {
   isAbstract: true
 })
 export class MessageWhereInput {

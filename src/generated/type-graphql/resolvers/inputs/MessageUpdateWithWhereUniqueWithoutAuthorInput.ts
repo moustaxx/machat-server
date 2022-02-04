@@ -5,7 +5,7 @@ import { DecimalJSScalar } from "../../scalars";
 import { MessageUpdateWithoutAuthorInput } from "../inputs/MessageUpdateWithoutAuthorInput";
 import { MessageWhereUniqueInput } from "../inputs/MessageWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("MessageUpdateWithWhereUniqueWithoutAuthorInput", {
   isAbstract: true
 })
 export class MessageUpdateWithWhereUniqueWithoutAuthorInput {

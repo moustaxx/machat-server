@@ -4,7 +4,7 @@ import { Prisma } from "../../../../../prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { LastReadWhereInput } from "../inputs/LastReadWhereInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("LastReadListRelationFilter", {
   isAbstract: true
 })
 export class LastReadListRelationFilter {

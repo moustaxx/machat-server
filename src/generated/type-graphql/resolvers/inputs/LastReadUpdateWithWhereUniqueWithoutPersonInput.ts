@@ -5,7 +5,7 @@ import { DecimalJSScalar } from "../../scalars";
 import { LastReadUpdateWithoutPersonInput } from "../inputs/LastReadUpdateWithoutPersonInput";
 import { LastReadWhereUniqueInput } from "../inputs/LastReadWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("LastReadUpdateWithWhereUniqueWithoutPersonInput", {
   isAbstract: true
 })
 export class LastReadUpdateWithWhereUniqueWithoutPersonInput {

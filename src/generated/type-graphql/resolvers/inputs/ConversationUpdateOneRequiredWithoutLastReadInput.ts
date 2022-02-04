@@ -8,7 +8,7 @@ import { ConversationUpdateWithoutLastReadInput } from "../inputs/ConversationUp
 import { ConversationUpsertWithoutLastReadInput } from "../inputs/ConversationUpsertWithoutLastReadInput";
 import { ConversationWhereUniqueInput } from "../inputs/ConversationWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("ConversationUpdateOneRequiredWithoutLastReadInput", {
   isAbstract: true
 })
 export class ConversationUpdateOneRequiredWithoutLastReadInput {

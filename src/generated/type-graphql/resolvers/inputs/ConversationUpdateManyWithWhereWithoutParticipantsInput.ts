@@ -5,7 +5,7 @@ import { DecimalJSScalar } from "../../scalars";
 import { ConversationScalarWhereInput } from "../inputs/ConversationScalarWhereInput";
 import { ConversationUpdateManyMutationInput } from "../inputs/ConversationUpdateManyMutationInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("ConversationUpdateManyWithWhereWithoutParticipantsInput", {
   isAbstract: true
 })
 export class ConversationUpdateManyWithWhereWithoutParticipantsInput {

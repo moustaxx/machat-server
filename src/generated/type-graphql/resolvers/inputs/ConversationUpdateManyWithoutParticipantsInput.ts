@@ -10,7 +10,7 @@ import { ConversationUpdateWithWhereUniqueWithoutParticipantsInput } from "../in
 import { ConversationUpsertWithWhereUniqueWithoutParticipantsInput } from "../inputs/ConversationUpsertWithWhereUniqueWithoutParticipantsInput";
 import { ConversationWhereUniqueInput } from "../inputs/ConversationWhereUniqueInput";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("ConversationUpdateManyWithoutParticipantsInput", {
   isAbstract: true
 })
 export class ConversationUpdateManyWithoutParticipantsInput {
@@ -32,11 +32,6 @@ export class ConversationUpdateManyWithoutParticipantsInput {
   @TypeGraphQL.Field(_type => [ConversationWhereUniqueInput], {
     nullable: true
   })
-  connect?: ConversationWhereUniqueInput[] | undefined;
-
-  @TypeGraphQL.Field(_type => [ConversationWhereUniqueInput], {
-    nullable: true
-  })
   set?: ConversationWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field(_type => [ConversationWhereUniqueInput], {
@@ -48,6 +43,11 @@ export class ConversationUpdateManyWithoutParticipantsInput {
     nullable: true
   })
   delete?: ConversationWhereUniqueInput[] | undefined;
+
+  @TypeGraphQL.Field(_type => [ConversationWhereUniqueInput], {
+    nullable: true
+  })
+  connect?: ConversationWhereUniqueInput[] | undefined;
 
   @TypeGraphQL.Field(_type => [ConversationUpdateWithWhereUniqueWithoutParticipantsInput], {
     nullable: true

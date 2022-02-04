@@ -8,32 +8,32 @@ import { MessageMaxAggregate } from "../outputs/MessageMaxAggregate";
 import { MessageMinAggregate } from "../outputs/MessageMinAggregate";
 import { MessageSumAggregate } from "../outputs/MessageSumAggregate";
 
-@TypeGraphQL.ObjectType({
+@TypeGraphQL.ObjectType("AggregateMessage", {
   isAbstract: true
 })
 export class AggregateMessage {
   @TypeGraphQL.Field(_type => MessageCountAggregate, {
     nullable: true
   })
-  count!: MessageCountAggregate | null;
+  _count!: MessageCountAggregate | null;
 
   @TypeGraphQL.Field(_type => MessageAvgAggregate, {
     nullable: true
   })
-  avg!: MessageAvgAggregate | null;
+  _avg!: MessageAvgAggregate | null;
 
   @TypeGraphQL.Field(_type => MessageSumAggregate, {
     nullable: true
   })
-  sum!: MessageSumAggregate | null;
+  _sum!: MessageSumAggregate | null;
 
   @TypeGraphQL.Field(_type => MessageMinAggregate, {
     nullable: true
   })
-  min!: MessageMinAggregate | null;
+  _min!: MessageMinAggregate | null;
 
   @TypeGraphQL.Field(_type => MessageMaxAggregate, {
     nullable: true
   })
-  max!: MessageMaxAggregate | null;
+  _max!: MessageMaxAggregate | null;
 }

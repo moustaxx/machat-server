@@ -7,7 +7,7 @@ import { DateTimeFilter } from "../inputs/DateTimeFilter";
 import { IntFilter } from "../inputs/IntFilter";
 import { PersonRelationFilter } from "../inputs/PersonRelationFilter";
 
-@TypeGraphQL.InputType({
+@TypeGraphQL.InputType("LastReadWhereInput", {
   isAbstract: true
 })
 export class LastReadWhereInput {
