@@ -1,6 +1,7 @@
 import fastify, { FastifyInstance, FastifyLoggerOptions } from 'fastify';
 import fastifyCors from 'fastify-cors';
 import fastifySession, { Session } from 'fastify-secure-session';
+import AltairFastify from 'altair-fastify-plugin';
 import mercurius from 'mercurius';
 import dotenv from 'dotenv';
 import { IncomingMessage } from 'node:http';
@@ -99,6 +100,7 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
     app.decorate('prisma', prisma);
 
     if (!testing) {
+        if (!isProduction) await app.register(AltairFastify);
         const port = Number(process.env.PORT) || 4000;
         await app.listen(port, '0.0.0.0');
         console.log(`🚀 Server ready at: http://localhost:${port}/graphql`);
