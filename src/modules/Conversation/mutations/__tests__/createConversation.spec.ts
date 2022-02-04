@@ -78,7 +78,7 @@ it('should throw error when converasation name length is < 2', async () => {
         variables: { name: 'a', participantIDs: [user.id] },
     });
 
-    const errorCode = errors?.[0].extensions?.code;
+    const errorCode = errors?.[0].extensions.code;
     expect(errorCode).toEqual('BAD_USER_INPUT');
 });
 
@@ -96,7 +96,7 @@ it('should throw error when no participants declared', async () => {
         variables: { name: randomString(8), participantIDs: [] },
     });
 
-    const errorCode = errors?.[0].extensions?.code;
+    const errorCode = errors?.[0].extensions.code;
     expect(errorCode).toEqual('BAD_USER_INPUT');
 });
 
@@ -114,7 +114,7 @@ it('should throw error when specified only self in participants', async () => {
         variables: { name: randomString(8), participantIDs: me.id },
     });
 
-    const errorCode = errors?.[0].extensions?.code;
+    const errorCode = errors?.[0].extensions.code;
     expect(errorCode).toEqual('BAD_USER_INPUT');
 });
 
@@ -131,6 +131,6 @@ it('should throw error when not logged in', async () => {
         variables: { name: randomString(8), participantIDs: [user.id] },
     });
 
-    const errorCode = errors?.[0].extensions?.code;
+    const errorCode = errors?.[0].extensions.code;
     expect(errorCode).toEqual('UNAUTHORIZED');
 });

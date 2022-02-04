@@ -75,7 +75,7 @@ it('should throw error when not logged in', async () => {
         },
     });
 
-    const errorCode = errors?.[0].extensions?.code;
+    const errorCode = errors?.[0].extensions.code;
     expect(errorCode).toEqual('UNAUTHORIZED');
 });
 
@@ -95,6 +95,6 @@ it('should throw error when not permitted', async () => {
         },
     });
 
-    const errorCode = errors?.[0].extensions?.code;
+    const errorCode = errors?.[0].extensions.code;
     expect(errorCode).toEqual('FORBIDDEN');
 });

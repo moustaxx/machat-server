@@ -39,7 +39,7 @@ const expectErrorOnRegister = async (
         variables: credentials as any,
     });
 
-    const errorCode = errors?.[0].extensions?.code;
+    const errorCode = errors?.[0].extensions.code;
     expect(errorCode).toEqual(expectedError);
 };
 

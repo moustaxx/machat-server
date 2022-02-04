@@ -104,7 +104,7 @@ it('should throw error when not permitted', async () => {
         },
     });
 
-    const errorCode = errors?.[0].extensions?.code;
+    const errorCode = errors?.[0].extensions.code;
     expect(errorCode).toEqual('FORBIDDEN');
 });
 
@@ -128,6 +128,6 @@ it('should throw error if empty message', async () => {
         },
     });
 
-    const errorCode = errors?.[0].extensions?.code;
+    const errorCode = errors?.[0].extensions.code;
     expect(errorCode).toEqual('BAD_USER_INPUT');
 });

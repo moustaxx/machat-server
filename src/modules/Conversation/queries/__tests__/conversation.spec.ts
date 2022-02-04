@@ -82,7 +82,7 @@ it('should throw NO_DATA error when no data', async () => {
         variables: { whereId: 999 },
     });
 
-    const errorCode = errors?.[0].extensions?.code;
+    const errorCode = errors?.[0].extensions.code;
     expect(errorCode).toEqual('NO_DATA');
 });
 
@@ -99,6 +99,6 @@ it('should throw FORBIDDEN error when not permitted', async () => {
         variables: { whereId: conversation.id },
     });
 
-    const errorCode = errors?.[0].extensions?.code;
+    const errorCode = errors?.[0].extensions.code;
     expect(errorCode).toEqual('FORBIDDEN');
 });

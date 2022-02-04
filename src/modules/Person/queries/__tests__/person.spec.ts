@@ -77,6 +77,6 @@ it('should throw error when user not found', async () => {
         cookies,
     });
 
-    const errorCode = errors?.[0].extensions?.code;
+    const errorCode = errors?.[0].extensions.code;
     expect(errorCode).toEqual('USER_NOT_FOUND');
 });

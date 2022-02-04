@@ -79,6 +79,6 @@ it('should throw error when not permitted', async () => {
         variables: { personId: someUser.user.id, conversationId: conversation.id },
     });
 
-    const errorCode = errors?.[0].extensions?.code;
+    const errorCode = errors?.[0].extensions.code;
     expect(errorCode).toEqual('FORBIDDEN');
 });
