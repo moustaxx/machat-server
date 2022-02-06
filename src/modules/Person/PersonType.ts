@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/indent */
 import { Conversation, Message, Prisma } from 'prisma-machat';
 import { Args, Authorized, Ctx, Field, FieldResolver, ObjectType, Resolver, Root } from 'type-graphql';
 import { ConnectionArguments, findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
@@ -78,7 +77,7 @@ export class PersonTypeResolver {
 
 
         return findManyCursorConnection<
-            Conversation, Prisma.ConversationWhereUniqueInput
+        Conversation, Prisma.ConversationWhereUniqueInput
         >(
             async (convArgs) => prisma.conversation.findMany({ ...convArgs, where }),
             async () => prisma.conversation.count({ where }),

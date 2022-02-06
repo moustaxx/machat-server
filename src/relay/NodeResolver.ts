@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/indent */
 import { Arg, Ctx, FieldResolver, ID, Info, Query, Resolver, Root } from 'type-graphql';
 
 import { Node } from './NodeInterface';
