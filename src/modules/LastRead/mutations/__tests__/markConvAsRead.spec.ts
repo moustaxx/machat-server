@@ -1,4 +1,4 @@
-import { LastRead } from '@prisma/client';
+import { LastRead } from 'prisma-machat';
 import { TNodeModel } from '../../../../relay';
 
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';

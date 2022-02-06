@@ -10,7 +10,7 @@
 
 #output
 dist/
-prisma/client
+src/generated/prisma-client
 
 # misc
 .DS_Store

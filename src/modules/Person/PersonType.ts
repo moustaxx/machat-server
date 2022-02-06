@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/indent */
-import { Conversation, Message, Prisma } from '@prisma/client';
+import { Conversation, Message, Prisma } from 'prisma-machat';
 import { Args, Authorized, Ctx, Field, FieldResolver, ObjectType, Resolver, Root } from 'type-graphql';
 import { ConnectionArguments, findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 import { ForbiddenError } from 'apollo-server-errors';

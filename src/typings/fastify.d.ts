@@ -1,5 +1,5 @@
 import 'fastify';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from 'prisma-machat';
 
 declare module 'fastify' {
     type TCookies = Record<string, string>;

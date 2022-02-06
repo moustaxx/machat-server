@@ -1,5 +1,5 @@
 import { Connection, ConnectionArguments, findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
-import { Person, Message, Prisma } from '@prisma/client';
+import { Person, Message, Prisma } from 'prisma-machat';
 import { Args, Ctx, Field, FieldResolver, ObjectType, Resolver, Root } from 'type-graphql';
 
 import { Context } from '../../context';

@@ -6,7 +6,8 @@
     "scripts": {
         "start": "yarn node ./dist/start.js",
         "clean": "rm -rf dist",
-        "build": "yarn clean && yarn generate && tsc",
+        "copy-prisma-schema": "cp \"prisma/schema.prisma\" \"dist/generated/prisma-client/schema.prisma\"",
+        "build": "yarn clean && yarn generate && tsc && yarn copy-prisma-schema",
         "generate": "yarn pnpify prisma generate",
         "postinstall": "yarn generate",
         "test": "jest",
@@ -29,7 +30,7 @@
         "graphql-fields": "^2.0.3",
         "graphql-scalars": "^1.14.1",
         "mercurius": "8.12.0",
-        "prisma-machat": "link:./prisma/client",
+        "prisma-machat": "link:./src/generated/prisma-client",
         "reflect-metadata": "^0.1.13",
         "type-graphql": "^1.1.1",
         "typegraphql-prisma": "^0.18.4"
