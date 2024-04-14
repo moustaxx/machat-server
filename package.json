@@ -7,7 +7,7 @@
         "start": "pnpm node ./dist/start.js",
         "clean": "rm -rf dist",
         "build": "pnpm generate && tsc",
-        "generate": "prisma generate",
+        "generate": "pnpm prisma generate",
         "postinstall": "pnpm generate",
         "test": "jest",
         "lint": "eslint --ignore-path .gitignore --cache --ext .ts,.tsx ./src",
