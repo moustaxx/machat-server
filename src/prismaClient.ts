@@ -1,4 +1,4 @@
-import { PrismaClient } from 'prisma-machat';
+import { PrismaClient } from '@prisma/client';
 
 export type TPrisma = InstanceType<typeof PrismaClient>;
 

@@ -1,4 +1,4 @@
-import { Person, PrismaClient } from 'prisma-machat';
+import { Person, PrismaClient } from '@prisma/client';
 import argon2 from 'argon2';
 
 import randomString from './randomString';

@@ -1,7 +1,7 @@
 import { ApolloError } from 'apollo-server-errors';
 import { Ctx, Arg, Query, Resolver, Authorized } from 'type-graphql';
+import { PersonWhereUniqueInput } from '@generated/type-graphql';
 import { Context } from '../../../context';
-import { PersonWhereUniqueInput } from '../../../generated/type-graphql';
 import { PersonType } from '../PersonType';
 
 @Resolver((_of) => PersonType)

@@ -1,4 +1,4 @@
-import { Person } from 'prisma-machat';
+import { Person } from '@prisma/client';
 import { FastifyInstance } from 'fastify';
 
 import { createRandomUserSep } from './createRandomUser';

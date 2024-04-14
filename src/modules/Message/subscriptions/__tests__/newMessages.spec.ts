@@ -1,5 +1,5 @@
 import { promisify } from 'util';
-import { Message } from 'prisma-machat';
+import { Message } from '@prisma/client';
 import { SubscriptionContext } from 'mercurius/lib/subscriber';
 import { GraphQLSchema } from 'graphql';
 import 'reflect-metadata';

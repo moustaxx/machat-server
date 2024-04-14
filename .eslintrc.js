@@ -36,6 +36,7 @@ module.exports = {
         'class-methods-use-this': 0,
         'consistent-return': 0,
         'import/no-cycle': 0, // not performant
+        'import/no-extraneous-dependencies': 0,
         'import/prefer-default-export': 0,
         'linebreak-style': ['warn', 'windows'],
         'max-classes-per-file': 0,

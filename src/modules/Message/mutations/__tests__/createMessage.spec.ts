@@ -1,4 +1,4 @@
-import { Message } from 'prisma-machat';
+import { Message } from '@prisma/client';
 
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
 import { fromGlobalId, TNodeModel } from '../../../../relay';

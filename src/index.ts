@@ -63,6 +63,7 @@ const main = async (testing?: boolean): Promise<FastifyInstance> => {
 
         if (cookies.loggedIn !== isLoggedIn) {
             // eslint-disable-next-line @typescript-eslint/no-floating-promises
+            // @ts-ignore
             reply.setCookie('loggedIn', isLoggedIn, {
                 maxAge: COOKIE_TTL,
                 sameSite: isProduction && 'none',

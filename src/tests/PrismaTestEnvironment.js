@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const NodeEnvironment = require('jest-environment-node');
 const { Client } = require('pg');
 const util = require('util');
@@ -24,7 +23,7 @@ class PrismaTestEnvironment extends NodeEnvironment {
         process.env.DATABASE_URL = this.databaseUrl;
         this.global.process.env.DATABASE_URL = this.databaseUrl;
 
-        await execRepeatedOnErr('yarn pnpify prisma db push --skip-generate');
+        await execRepeatedOnErr('pnpm prisma db push --skip-generate');
 
         return super.setup();
     }

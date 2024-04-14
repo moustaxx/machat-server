@@ -1,4 +1,4 @@
-import { PrismaClient } from 'prisma-machat';
+import { PrismaClient } from '@prisma/client';
 import { ForbiddenError } from 'apollo-server-errors';
 
 import randomString from '../../tests/helpers/randomString';

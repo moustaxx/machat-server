@@ -13,6 +13,7 @@ export class LogoutResolver {
         session.delete();
 
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        // @ts-ignore
         reply.setCookie('loggedIn', '0', {
             sameSite: isProduction && 'none',
             secure: isProduction,

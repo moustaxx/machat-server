@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { PrismaClient } from 'prisma-machat';
+import { PrismaClient } from '@prisma/client';
 
 import main from '../..';
 import { gqlQuerySep, TGqlQuery } from './gqlQuery';

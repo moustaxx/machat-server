@@ -1,4 +1,4 @@
-import { Conversation, Person } from 'prisma-machat';
+import { Conversation, Person } from '@prisma/client';
 import { Ctx, Field, FieldResolver, Int, ObjectType, Resolver, Root } from 'type-graphql';
 import { Context } from '../../context';
 import { ConnectionType, EdgeType, Node } from '../../relay';

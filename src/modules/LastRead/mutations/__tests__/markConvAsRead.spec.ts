@@ -1,6 +1,6 @@
-import { LastRead } from 'prisma-machat';
-import { TNodeModel } from '../../../../relay';
+import { LastRead } from '@prisma/client';
 
+import { TNodeModel } from '../../../../relay';
 import { initTestServer, ITestUtils } from '../../../../tests/helpers';
 import randomString from '../../../../tests/helpers/randomString';
 

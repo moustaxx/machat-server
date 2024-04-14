@@ -1,10 +1,10 @@
-import { Conversation, Message, Prisma } from 'prisma-machat';
+import { Conversation, Message, Prisma } from '@prisma/client';
 import { Args, Authorized, Ctx, Field, FieldResolver, ObjectType, Resolver, Root } from 'type-graphql';
 import { ConnectionArguments, findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 import { ForbiddenError } from 'apollo-server-errors';
+import { PersonMessagesArgs } from '@generated/type-graphql';
 
 import { Context } from '../../context';
-import { PersonMessagesArgs } from '../../generated/type-graphql';
 import { ConversationConnection, ConversationType } from '../Conversation/ConversationType';
 import { Connection, ConnectionArgs, ConnectionType, EdgeType, Node } from '../../relay';
 import cursorUtils from '../../helpers/cursor';

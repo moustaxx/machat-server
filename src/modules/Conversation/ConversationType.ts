@@ -1,9 +1,9 @@
 import { Connection, ConnectionArguments, findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
-import { Person, Message, Prisma } from 'prisma-machat';
+import { Person, Message, Prisma } from '@prisma/client';
 import { Args, Ctx, Field, FieldResolver, ObjectType, Resolver, Root } from 'type-graphql';
+import { ConversationLastReadArgs } from '@generated/type-graphql';
 
 import { Context } from '../../context';
-import { ConversationLastReadArgs } from '../../generated/type-graphql';
 import cursorUtils from '../../helpers/cursor';
 import { ConnectionArgs, ConnectionType, EdgeType, Node } from '../../relay';
 import { LastReadType } from '../LastRead';
